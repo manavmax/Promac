@@ -1,0 +1,231 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Core Colors */
+    --color-background: #F8FAFC; /* off-white */
+    --color-foreground: #1E293B; /* dark blue-gray */
+    --color-border: #E2E8F0; /* light gray */
+    --color-input: #FFFFFF; /* white */
+    --color-ring: #1A237E; /* deep navy */
+
+    /* Card Colors */
+    --color-card: #FFFFFF; /* white */
+    --color-card-foreground: #1E293B; /* dark blue-gray */
+
+    /* Popover Colors */
+    --color-popover: #F1F5F9; /* light gray */
+    --color-popover-foreground: #1E293B; /* dark blue-gray */
+
+    /* Muted Colors */
+    --color-muted: #F3F4F6; /* very light gray */
+    --color-muted-foreground: #64748B; /* cool gray */
+
+    /* Primary Colors */
+    --color-primary: #1A237E; /* deep navy */
+    --color-primary-foreground: #FFFFFF; /* white */
+
+    /* Secondary Colors */
+    --color-secondary: #64748B; /* cool gray */
+    --color-secondary-foreground: #FFFFFF; /* white */
+
+    /* Accent Colors */
+    --color-accent: #FFC107; /* gold/amber */
+    --color-accent-foreground: #1E293B; /* dark blue-gray */
+
+    /* Success/Warning/Error/Destructive */
+    --color-success: #00B8A9; /* teal */
+    --color-success-foreground: #FFFFFF; /* white */
+    --color-warning: #F59E42; /* amber */
+    --color-warning-foreground: #1E293B; /* dark blue-gray */
+    --color-error: #EF4444; /* red */
+    --color-error-foreground: #FFFFFF; /* white */
+    --color-destructive: #EF4444; /* red */
+    --color-destructive-foreground: #FFFFFF; /* white */
+
+    /* Brand Specific Colors */
+    --color-brand-navy: #1A237E; /* deep navy */
+    --color-brand-amber: #FFC107; /* gold/amber */
+    --color-brand-teal: #00B8A9; /* teal */
+    --color-brand-green: #22C55E; /* green */
+    --color-text-primary: #1E293B; /* dark blue-gray */
+    --color-text-secondary: #64748B; /* cool gray */
+    --color-surface: #FFFFFF; /* white */
+    --color-action-blue: #2563EB; /* blue */
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+  }
+
+  .font-mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+}
+
+@layer components {
+  /* Glassmorphic Effects */
+  .glass-effect {
+    backdrop-filter: blur(20px);
+    background: rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+  }
+
+  .glass-hero {
+    backdrop-filter: blur(10px);
+    background: rgba(255, 255, 255, 0.95);
+    box-shadow: 0 4px 20px rgba(26, 35, 126, 0.1);
+  }
+
+  /* Neumorphic Effects */
+  .neomorphic-card {
+    box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
+    background: linear-gradient(145deg, #f0f0f0, #ffffff);
+    transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .neomorphic-card:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Brand Animations */
+  .brand-transition {
+    transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .scroll-reveal {
+    transform: translateY(60px);
+    opacity: 0;
+    transition: all 800ms cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  }
+
+  .scroll-reveal.revealed {
+    transform: translateY(0);
+    opacity: 1;
+  }
+
+  /* Category Morphing */
+  .category-morph {
+    transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    background: rgba(26, 35, 126, 0.05);
+  }
+
+  .category-morph:hover {
+    transform: scale(1.02);
+    filter: brightness(1.1);
+    background: rgba(255, 193, 7, 0.1);
+  }
+
+  /* Trust Signal Animations */
+  .trust-reveal {
+    transform: translateX(-40px);
+    opacity: 0;
+    transition: all 600ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .trust-reveal.revealed {
+    transform: translateX(0);
+    opacity: 1;
+  }
+
+  /* CTA Enhancements */
+  .cta-primary {
+    background: var(--color-brand-amber);
+    color: var(--color-text-primary);
+    box-shadow: 0 8px 24px rgba(255, 193, 7, 0.3);
+    transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .cta-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(255, 193, 7, 0.4);
+  }
+
+  .cta-secondary {
+    background: var(--color-primary);
+    color: var(--color-primary-foreground);
+    backdrop-filter: blur(10px);
+    transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+  }
+
+  .cta-secondary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(30, 58, 138, 0.3);
+  }
+}
+
+@layer utilities {
+  /* Spacing System */
+  .space-brand-xs { @apply space-y-2; }
+  .space-brand-sm { @apply space-y-4; }
+  .space-brand-md { @apply space-y-6; }
+  .space-brand-lg { @apply space-y-8; }
+  .space-brand-xl { @apply space-y-12; }
+  .space-brand-2xl { @apply space-y-16; }
+
+  /* Text Styles */
+  .text-brand-headline {
+    font-family: 'Inter', sans-serif;
+    font-weight: 600;
+    color: var(--color-text-primary);
+  }
+
+  .text-brand-body {
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    color: var(--color-text-primary);
+  }
+
+  .text-brand-light {
+    font-family: 'Inter', sans-serif;
+    font-weight: 300;
+    color: var(--color-text-primary);
+  }
+
+  .text-brand-cta {
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+  }
+
+  .text-brand-mono {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 400;
+  }
+
+  /* Brand Colors */
+  .bg-brand-navy { background-color: var(--color-brand-navy); }
+  .bg-brand-amber { background-color: var(--color-brand-amber); }
+  .bg-brand-orange { background-color: var(--color-brand-orange); }
+  .bg-brand-green { background-color: var(--color-brand-green); }
+  .bg-action-blue { background-color: var(--color-action-blue); }
+
+  .text-brand-navy { color: var(--color-brand-navy); }
+  .text-brand-amber { color: var(--color-brand-amber); }
+  .text-brand-orange { color: var(--color-brand-orange); }
+  .text-brand-green { color: var(--color-brand-green); }
+  .text-action-blue { color: var(--color-action-blue); }
+
+  .border-brand-navy { border-color: var(--color-brand-navy); }
+  .border-brand-amber { border-color: var(--color-brand-amber); }
+
+  /* Performance Optimizations */
+  .will-change-transform { will-change: transform; }
+  .will-change-opacity { will-change: opacity; }
+  .gpu-accelerated { transform: translateZ(0); }
+}

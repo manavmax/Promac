@@ -1,0 +1,72 @@
+import React from 'react';
+import Icon from '../../../components/AppIcon';
+
+
+const HeroSection = () => {
+  return (
+    <section className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-brand-navy via-action-blue to-brand-navy">
+      {/* Background Pattern */}
+      <div className="absolute inset-0 opacity-10">
+        <div className="absolute top-20 left-20 w-32 h-32 border border-white rounded-full animate-pulse"></div>
+        <div className="absolute top-40 right-32 w-24 h-24 border border-brand-amber rounded-full animate-pulse delay-1000"></div>
+        <div className="absolute bottom-32 left-1/4 w-16 h-16 border border-white rounded-full animate-pulse delay-2000"></div>
+        <div className="absolute bottom-20 right-20 w-20 h-20 border border-brand-amber rounded-full animate-pulse delay-500"></div>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <div className="space-y-8">
+          {/* Main Heading */}
+          <div className="space-y-4">
+            <h1 className="text-5xl md:text-7xl font-bold text-white leading-tight">
+              Powering India's
+              <span className="block text-brand-amber">Electrical Future</span>
+            </h1>
+            <p className="text-xl md:text-2xl text-white/80 max-w-3xl mx-auto leading-relaxed">
+              For over 25 years, Promac has been the trusted partner for electrical professionals across India, 
+              delivering precision, quality, and innovation in every component.
+            </p>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
+            <div className="glass-effect rounded-xl p-6 text-center">
+              <div className="text-3xl md:text-4xl font-bold text-brand-amber mb-2">25+</div>
+              <div className="text-white/80 text-sm">Years of Excellence</div>
+            </div>
+            <div className="glass-effect rounded-xl p-6 text-center">
+              <div className="text-3xl md:text-4xl font-bold text-brand-amber mb-2">50K+</div>
+              <div className="text-white/80 text-sm">Products</div>
+            </div>
+            <div className="glass-effect rounded-xl p-6 text-center">
+              <div className="text-3xl md:text-4xl font-bold text-brand-amber mb-2">1M+</div>
+              <div className="text-white/80 text-sm">Happy Customers</div>
+            </div>
+            <div className="glass-effect rounded-xl p-6 text-center">
+              <div className="text-3xl md:text-4xl font-bold text-brand-amber mb-2">500+</div>
+              <div className="text-white/80 text-sm">Cities Served</div>
+            </div>
+          </div>
+
+          {/* CTA */}
+          <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            <button className="cta-primary px-8 py-4 rounded-xl font-semibold flex items-center space-x-2 brand-transition">
+              <Icon name="Play" size={20} />
+              <span>Watch Our Story</span>
+            </button>
+            <button className="cta-secondary px-8 py-4 rounded-xl font-semibold flex items-center space-x-2 brand-transition">
+              <Icon name="ArrowDown" size={20} />
+              <span>Explore Journey</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Scroll Indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+        <Icon name="ChevronDown" size={32} color="white" />
+      </div>
+    </section>
+  );
+};
+
+export default HeroSection;

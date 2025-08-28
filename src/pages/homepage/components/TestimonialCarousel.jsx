@@ -92,63 +92,63 @@ const TestimonialCarousel = () => {
   const currentTestimonial = testimonials[currentIndex];
 
   return (
-    <section className="py-16 bg-white">
+    <section className="py-20 section-premium">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center space-y-4 mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-brand-headline">
-            Success Stories from Our Customers
+          <h2 className="text-3xl sm:text-4xl font-bold">
+            <span className="text-white">Success </span>
+            <span className="text-[#FF0C0D]">Stories</span>
+            <span className="text-white"> from Our Customers</span>
           </h2>
-          <p className="text-lg text-text-secondary max-w-2xl mx-auto">
+          <p className="text-lg text-slate-300 max-w-2xl mx-auto">
             Real experiences from contractors and homeowners who trust Promac for their electrical projects
           </p>
         </div>
 
         {/* Testimonial Carousel */}
-        <div className="relative max-w-6xl mx-auto">
-          <div className="glass-hero rounded-3xl p-8 lg:p-12 shadow-2xl">
-            <div className="grid lg:grid-cols-2 gap-8 items-center">
+        <div className="relative max-w-4xl mx-auto">
+          <div className="glass-ios rounded-3xl p-6 lg:p-8 shadow-xl bg-white/5 ring-1 ring-white/10">
+            <div className="grid lg:grid-cols-2 gap-6 items-center">
               {/* Content Side */}
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {/* User Type Badge */}
                 <div className="flex items-center space-x-3">
-                  <div className={`px-3 py-1 rounded-full text-xs font-bold ${
-                    currentTestimonial.type === 'contractor' ?'bg-brand-navy/10 text-brand-navy' :'bg-brand-green/10 text-brand-green'
-                  }`}>
+                  <div className="px-3 py-1 rounded-full text-xs font-semibold bg-white/10 text-white ring-1 ring-white/15">
                     {currentTestimonial.type === 'contractor' ? 'Professional Contractor' : 'Homeowner'}
                   </div>
                   <div className="flex items-center space-x-1">
                     {[...Array(currentTestimonial.rating)].map((_, i) => (
-                      <Icon key={i} name="Star" size={16} className="text-brand-amber fill-current" />
+                      <Icon key={i} name="Star" size={16} className="text-yellow-500 fill-current" />
                     ))}
                   </div>
                 </div>
 
                 {/* Quote */}
-                <blockquote className="text-lg text-text-primary leading-relaxed italic">
+                <blockquote className="text-base text-slate-200 leading-relaxed italic">
                   "{currentTestimonial.content}"
                 </blockquote>
 
                 {/* Project Details */}
-                <div className="space-y-3">
+                <div className="space-y-2">
                   <div className="flex items-center space-x-2">
-                    <Icon name="Building" size={16} className="text-brand-navy" />
-                    <span className="text-sm font-medium text-brand-navy">{currentTestimonial.project}</span>
+                    <Icon name="Building" size={16} className="text-blue-600" />
+                    <span className="text-sm font-medium text-blue-600">{currentTestimonial.project}</span>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <Icon name="TrendingUp" size={16} className="text-brand-green" />
-                    <span className="text-sm font-medium text-brand-green">{currentTestimonial.savings}</span>
+                    <Icon name="TrendingUp" size={16} className="text-purple-600" />
+                    <span className="text-sm font-medium text-purple-600">{currentTestimonial.savings}</span>
                   </div>
                 </div>
 
                 {/* Products Used */}
                 <div className="space-y-2">
-                  <h4 className="text-sm font-semibold text-text-secondary">Products Used:</h4>
+                  <h4 className="text-sm font-semibold text-slate-300">Products Used:</h4>
                   <div className="flex flex-wrap gap-2">
                     {currentTestimonial.products.map((product, index) => (
                       <span
                         key={index}
-                        className="px-3 py-1 bg-brand-amber/10 text-brand-navy text-xs font-medium rounded-full"
+                        className="px-3 py-1 bg-gradient-to-r from-blue-500/20 to-purple-500/20 text-slate-200 text-xs font-medium rounded-full border border-blue-400/30"
                       >
                         {product}
                       </span>
@@ -157,15 +157,15 @@ const TestimonialCarousel = () => {
                 </div>
 
                 {/* Author Info */}
-                <div className="flex items-center space-x-4 pt-4 border-t border-gray-200">
+                <div className="flex items-center space-x-4 pt-4 border-t border-white/10">
                   <Image
                     src={currentTestimonial.avatar}
                     alt={currentTestimonial.name}
                     className="w-12 h-12 rounded-full object-cover"
                   />
                   <div>
-                    <h4 className="font-semibold text-brand-navy">{currentTestimonial.name}</h4>
-                    <p className="text-sm text-text-secondary">
+                    <h4 className="font-semibold text-white">{currentTestimonial.name}</h4>
+                    <p className="text-sm text-slate-300">
                       {currentTestimonial.designation} • {currentTestimonial.company}
                     </p>
                   </div>
@@ -174,10 +174,10 @@ const TestimonialCarousel = () => {
 
               {/* Visual Side */}
               <div className="relative">
-                <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-brand-navy/5 to-brand-amber/5">
+                <div className="aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-blue-900/20 to-purple-900/20 ring-1 ring-white/10">
                   <div className="w-full h-full flex items-center justify-center">
                     <div className="text-center space-y-4">
-                      <div className="w-24 h-24 mx-auto bg-gradient-to-br from-brand-navy to-action-blue rounded-full flex items-center justify-center">
+                      <div className="w-24 h-24 mx-auto bg-[#FF0C0D] rounded-full flex items-center justify-center shadow-xl">
                         <Icon 
                           name={currentTestimonial.type === 'contractor' ? 'HardHat' : 'Home'} 
                           size={40} 
@@ -185,17 +185,14 @@ const TestimonialCarousel = () => {
                         />
                       </div>
                       <div className="space-y-2">
-                        <h3 className="text-xl font-bold text-brand-navy">{currentTestimonial.project}</h3>
-                        <p className="text-text-secondary">{currentTestimonial.savings}</p>
+                        <h3 className="text-xl font-bold text-white">{currentTestimonial.project}</h3>
+                        <p className="text-slate-300">{currentTestimonial.savings}</p>
                       </div>
                     </div>
                   </div>
                 </div>
 
-                {/* Floating Elements */}
-                <div className="absolute -top-4 -right-4 glass-effect p-3 rounded-xl">
-                  <Icon name="Quote" size={24} className="text-brand-amber" />
-                </div>
+                {/* Floating Elements removed per request */}
               </div>
             </div>
           </div>
@@ -205,20 +202,23 @@ const TestimonialCarousel = () => {
             {/* Previous Button */}
             <button
               onClick={prevSlide}
-              className="p-3 rounded-full glass-effect hover:bg-white/20 brand-transition"
+              aria-label="Previous testimonial"
+              className="h-12 w-12 rounded-2xl bg-white/10 ring-1 ring-white/15 shadow-lg hover:bg-white/15 hover:ring-white/25 transition-colors duration-200 grid place-items-center"
             >
-              <Icon name="ChevronLeft" size={24} className="text-brand-navy" />
+              <Icon name="ChevronLeft" size={22} className="text-white" />
             </button>
 
             {/* Dots Indicator */}
-            <div className="flex space-x-2">
+            <div className="flex items-center gap-3">
               {testimonials.map((_, index) => (
                 <button
                   key={index}
+                  aria-label={`Go to testimonial ${index + 1}`}
                   onClick={() => goToSlide(index)}
-                  className={`w-3 h-3 rounded-full brand-transition ${
-                    index === currentIndex 
-                      ? 'bg-brand-navy' :'bg-gray-300 hover:bg-gray-400'
+                  className={`h-3.5 w-3.5 rounded-full transition-all duration-200 ring-1 ${
+                    index === currentIndex
+                      ? 'bg-[#FF0C0D] ring-[#FF0C0D]/40 shadow-[0_0_12px_rgba(255,12,13,0.45)]'
+                      : 'bg-white/60 hover:bg-white ring-white/30'
                   }`}
                 />
               ))}
@@ -227,9 +227,10 @@ const TestimonialCarousel = () => {
             {/* Next Button */}
             <button
               onClick={nextSlide}
-              className="p-3 rounded-full glass-effect hover:bg-white/20 brand-transition"
+              aria-label="Next testimonial"
+              className="h-12 w-12 rounded-2xl bg-white/10 ring-1 ring-white/15 shadow-lg hover:bg-white/15 hover:ring-white/25 transition-colors duration-200 grid place-items-center"
             >
-              <Icon name="ChevronRight" size={24} className="text-brand-navy" />
+              <Icon name="ChevronRight" size={22} className="text-white" />
             </button>
           </div>
         </div>

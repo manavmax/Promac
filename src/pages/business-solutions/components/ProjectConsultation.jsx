@@ -124,13 +124,13 @@ const ProjectConsultation = () => {
   };
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-transparent section-premium">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-brand-navy mb-4">
+          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-300 via-sky-400 to-indigo-400 bg-clip-text text-transparent">
             Project Consultation Services
           </h2>
-          <p className="text-xl text-text-secondary max-w-3xl mx-auto">
+          <p className="text-lg text-white/70 max-w-3xl mx-auto">
             Get expert guidance for your electrical projects. From plan reviews to on-site consultations, our team of certified electricians is here to help.
           </p>
         </div>
@@ -138,41 +138,41 @@ const ProjectConsultation = () => {
         <div className="grid lg:grid-cols-3 gap-8">
           {/* Service Selection */}
           <div className="lg:col-span-1">
-            <h3 className="text-xl font-bold text-brand-navy mb-6">Choose Service Type</h3>
+            <h3 className="text-xl font-bold text-white mb-6">Choose Service Type</h3>
             <div className="space-y-4">
               {consultationServices.map((service) => (
                 <button
                   key={service.id}
                   onClick={() => setSelectedService(service.id)}
-                  className={`w-full p-4 rounded-xl text-left brand-transition ${
+                  className={`w-full p-4 rounded-xl text-left brand-transition ring-1 ${
                     selectedService === service.id
-                      ? 'bg-brand-navy text-white shadow-lg'
-                      : 'bg-muted hover:bg-gray-100 text-text-primary'
+                      ? 'bg-gradient-to-br from-cyan-600/30 to-indigo-700/30 text-white ring-white/10 shadow-xl'
+                      : 'bg-white/5 hover:bg-white/10 text-white ring-white/10'
                   }`}
                 >
                   <div className="flex items-start space-x-3">
                     <div className={`w-10 h-10 rounded-lg flex items-center justify-center flex-shrink-0 ${
                       selectedService === service.id
-                        ? 'bg-brand-amber' :'bg-brand-navy/10'
+                        ? 'bg-gradient-to-br from-cyan-500 to-indigo-600' :'bg-white/10'
                     }`}>
                       <Icon 
                         name={service.icon} 
                         size={20} 
-                        color={selectedService === service.id ? '#1A237E' : 'var(--color-brand-navy)'}
+                        color={selectedService === service.id ? '#FFFFFF' : '#A5B4FC'}
                       />
                     </div>
                     <div>
-                      <h4 className="font-semibold mb-1">{service.title}</h4>
+                      <h4 className="font-semibold text-white mb-1">{service.title}</h4>
                       <p className={`text-sm ${
-                        selectedService === service.id ? 'text-white/80' : 'text-text-secondary'
+                        selectedService === service.id ? 'text-white/80' : 'text-white/60'
                       }`}>
                         {service.description}
                       </p>
                       <div className="flex items-center space-x-4 mt-2 text-xs">
-                        <span className={selectedService === service.id ? 'text-brand-amber' : 'text-brand-navy'}>
+                        <span className={selectedService === service.id ? 'text-cyan-300' : 'text-white/70'}>
                           {service.duration}
                         </span>
-                        <span className={selectedService === service.id ? 'text-brand-amber' : 'text-brand-navy'}>
+                        <span className={selectedService === service.id ? 'text-cyan-300' : 'text-white/70'}>
                           {service.price}
                         </span>
                       </div>
@@ -186,43 +186,43 @@ const ProjectConsultation = () => {
           {/* Service Details & Form */}
           <div className="lg:col-span-2">
             {/* Service Details */}
-            <div className="glass-effect rounded-2xl p-8 mb-8">
+            <div className="glass-ios rounded-2xl p-8 mb-8">
               <div className="flex items-center space-x-4 mb-6">
-                <div className="w-16 h-16 bg-brand-navy rounded-xl flex items-center justify-center">
-                  <Icon name={selectedServiceData.icon} size={32} color="white" />
+                <div className="w-16 h-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-cyan-400 via-sky-500 to-indigo-600 shadow-lg shadow-cyan-500/20 ring-1 ring-white/10">
+                  <Icon name={selectedServiceData.icon} size={32} color="#FFFFFF" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-brand-navy">{selectedServiceData.title}</h3>
-                  <p className="text-text-secondary">{selectedServiceData.description}</p>
+                  <h3 className="text-2xl font-bold text-white">{selectedServiceData.title}</h3>
+                  <p className="text-white/70">{selectedServiceData.description}</p>
                 </div>
               </div>
 
               <div className="grid sm:grid-cols-2 gap-6 mb-6">
-                <div className="bg-white/50 rounded-lg p-4">
+                <div className="bg-white/8 ring-1 ring-white/10 rounded-lg p-4">
                   <div className="flex items-center space-x-2 mb-2">
-                    <Icon name="Clock" size={16} color="var(--color-brand-navy)" />
-                    <span className="text-sm font-medium text-brand-navy">Duration</span>
+                    <Icon name="Clock" size={16} color="#93C5FD" />
+                    <span className="text-sm font-medium text-white/90">Duration</span>
                   </div>
-                  <div className="font-semibold text-text-primary">{selectedServiceData.duration}</div>
+                  <div className="font-semibold text-white">{selectedServiceData.duration}</div>
                 </div>
-                <div className="bg-white/50 rounded-lg p-4">
+                <div className="bg-white/8 ring-1 ring-white/10 rounded-lg p-4">
                   <div className="flex items-center space-x-2 mb-2">
-                    <Icon name="CreditCard" size={16} color="var(--color-brand-navy)" />
-                    <span className="text-sm font-medium text-brand-navy">Pricing</span>
+                    <Icon name="CreditCard" size={16} color="#A78BFA" />
+                    <span className="text-sm font-medium text-white/90">Pricing</span>
                   </div>
-                  <div className="font-semibold text-text-primary">{selectedServiceData.price}</div>
+                  <div className="font-semibold text-white">{selectedServiceData.price}</div>
                 </div>
               </div>
 
               <div>
-                <h4 className="font-semibold text-brand-navy mb-3">What's Included</h4>
+                <h4 className="font-semibold text-white mb-3">What's Included</h4>
                 <div className="grid sm:grid-cols-2 gap-2">
                   {selectedServiceData.features.map((feature, index) => (
                     <div key={index} className="flex items-center space-x-2">
-                      <div className="w-4 h-4 bg-brand-amber rounded-full flex items-center justify-center flex-shrink-0">
-                        <Icon name="Check" size={10} color="#1A237E" strokeWidth={3} />
+                      <div className="w-4 h-4 rounded-full bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
+                        <Icon name="Check" size={10} color="#FFFFFF" strokeWidth={3} />
                       </div>
-                      <span className="text-sm text-text-primary">{feature}</span>
+                      <span className="text-sm text-white/95">{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -230,8 +230,8 @@ const ProjectConsultation = () => {
             </div>
 
             {/* Consultation Form */}
-            <div className="neomorphic-card rounded-2xl p-8">
-              <h3 className="text-xl font-bold text-brand-navy mb-6">Request Consultation</h3>
+            <div className="glass-ios rounded-2xl p-8">
+              <h3 className="text-xl font-bold text-white mb-6">Request Consultation</h3>
               
               <form onSubmit={handleSubmit} className="space-y-6">
                 <div className="grid sm:grid-cols-2 gap-6">
@@ -242,6 +242,7 @@ const ProjectConsultation = () => {
                     value={formData.projectName}
                     onChange={(e) => handleInputChange('projectName', e.target.value)}
                     required
+                    className="!bg-white !text-black !border-white placeholder:text-gray-500"
                   />
                   <Select
                     label="Project Type"
@@ -250,6 +251,7 @@ const ProjectConsultation = () => {
                     onChange={(value) => handleInputChange('projectType', value)}
                     placeholder="Select project type"
                     required
+                    className="select-light"
                   />
                 </div>
 
@@ -261,6 +263,7 @@ const ProjectConsultation = () => {
                     onChange={(value) => handleInputChange('timeline', value)}
                     placeholder="Select timeline"
                     required
+                    className="select-light"
                   />
                   <Select
                     label="Budget Range"
@@ -269,6 +272,7 @@ const ProjectConsultation = () => {
                     onChange={(value) => handleInputChange('budget', value)}
                     placeholder="Select budget range"
                     required
+                    className="select-light"
                   />
                 </div>
 
@@ -280,6 +284,7 @@ const ProjectConsultation = () => {
                     value={formData.contactPerson}
                     onChange={(e) => handleInputChange('contactPerson', e.target.value)}
                     required
+                    className="!bg-white !text-black !border-white placeholder:text-gray-500"
                   />
                   <Input
                     label="Company Name"
@@ -287,6 +292,7 @@ const ProjectConsultation = () => {
                     placeholder="Your company name"
                     value={formData.company}
                     onChange={(e) => handleInputChange('company', e.target.value)}
+                    className="!bg-white !text-black !border-white placeholder:text-gray-500"
                   />
                 </div>
 
@@ -298,6 +304,7 @@ const ProjectConsultation = () => {
                     value={formData.email}
                     onChange={(e) => handleInputChange('email', e.target.value)}
                     required
+                    className="!bg-white !text-black !border-white placeholder:text-gray-500"
                   />
                   <Input
                     label="Phone Number"
@@ -306,16 +313,17 @@ const ProjectConsultation = () => {
                     value={formData.phone}
                     onChange={(e) => handleInputChange('phone', e.target.value)}
                     required
+                    className="!bg-white !text-black !border-white placeholder:text-gray-500"
                   />
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium text-brand-navy mb-2">
+                  <label className="block text-sm font-medium text-white mb-2">
                     Project Description
                   </label>
                   <textarea
                     rows={4}
-                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-navy focus:border-transparent resize-none"
+                    className="w-full px-4 py-3 border border-white/10 bg-white/5 text-white placeholder-white/50 rounded-lg focus:ring-2 focus:ring-sky-400 focus:border-transparent resize-none"
                     placeholder="Describe your project requirements, challenges, and specific areas where you need consultation..."
                     value={formData.description}
                     onChange={(e) => handleInputChange('description', e.target.value)}
@@ -340,7 +348,7 @@ const ProjectConsultation = () => {
                     size="lg"
                     iconName="Calendar"
                     iconPosition="left"
-                    className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
+                    className="bg-white text-gray-900 border-white hover:bg-gray-100 hover:text-black"
                   >
                     Schedule Call
                   </Button>

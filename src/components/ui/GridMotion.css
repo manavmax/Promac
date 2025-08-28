@@ -1,0 +1,93 @@
+.grid-motion-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #000000;
+  overflow: hidden;
+  z-index: 1;
+}
+
+.grid-motion-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  padding: 10px;
+  transform: rotate(-3deg);
+  transform-origin: center center;
+}
+
+.grid-row {
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  gap: 1px;
+  will-change: transform;
+}
+
+.grid-cell {
+  aspect-ratio: 1;
+  position: relative;
+}
+
+.grid-cell-inner {
+  width: 100%;
+  height: 100%;
+  background: #e0e0e0;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid #000000;
+}
+
+.grid-cell-pattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(
+      circle at 20% 20%,
+      #ffffff 0%,
+      #f8f8f8 8%,
+      #e8e8e8 16%,
+      #d0d0d0 24%,
+      #b0b0b0 32%,
+      #808080 40%,
+      #505050 48%,
+      #202020 56%,
+      #000000 64%
+    );
+  mask: 
+    repeating-linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 0.5px,
+      rgba(0, 0, 0, 0.2) 0.5px,
+      rgba(0, 0, 0, 0.2) 1px
+    );
+  animation: rippleEffect 8s ease-in-out infinite;
+}
+
+@keyframes rippleEffect {
+  0%, 100% {
+    transform: translateX(0) translateY(0) scale(1);
+    background-position: 20% 20%;
+  }
+  25% {
+    transform: translateX(1px) translateY(-1px) scale(1.05);
+    background-position: 80% 30%;
+  }
+  50% {
+    transform: translateX(-1px) translateY(1px) scale(0.95);
+    background-position: 30% 80%;
+  }
+  75% {
+    transform: translateX(0.5px) translateY(-0.5px) scale(1.02);
+    background-position: 70% 70%;
+  }
+} 

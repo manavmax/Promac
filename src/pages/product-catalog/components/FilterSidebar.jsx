@@ -10,7 +10,8 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
     category: true,
     brand: true,
     certification: true,
-    voltage: false,
+    voltage: true,
+    availability: true,
     price: false
   });
 
@@ -63,11 +64,32 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
         { id: '24v', label: '24V DC', count: 89 },
         { id: '110v', label: '110V AC', count: 67 }
       ]
+    },
+    availability: {
+      title: 'Availability',
+      options: [
+        { id: 'in-stock', label: 'In Stock', count: 1245 },
+        { id: 'bulk-available', label: 'Bulk Available', count: 892 },
+        { id: 'same-day-delivery', label: 'Same Day Delivery', count: 567 }
+      ]
     }
   };
 
   const handlePriceFilter = () => {
     onFilterChange('price', { min: priceRange.min, max: priceRange.max });
+  };
+
+  const handleFilterToggle = (filterType, value) => {
+    const currentFilters = filters[filterType] || [];
+    let newValues;
+    
+    if (currentFilters.includes(value)) {
+      newValues = currentFilters.filter(v => v !== value);
+    } else {
+      newValues = [...currentFilters, value];
+    }
+    
+    onFilterChange(filterType, newValues.length > 0 ? newValues : []);
   };
 
   const clearAllFilters = () => {
@@ -87,13 +109,13 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
 
       {/* Sidebar */}
       <div className={`
-        fixed lg:sticky top-0 left-0 h-screen lg:h-auto w-80 lg:w-64 
-        bg-white lg:bg-transparent z-50 lg:z-auto
+        fixed lg:sticky top-0 left-0 h-screen lg:h-auto w-80 lg:w-72 
+        bg-white rounded-2xl shadow-xl border border-gray-100 z-50 lg:z-auto
         transform transition-transform duration-300 ease-in-out
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
         overflow-y-auto
       `}>
-        <div className="p-6 lg:p-0">
+        <div className="p-8 lg:p-6">
           {/* Mobile Header */}
           <div className="flex items-center justify-between mb-6 lg:hidden">
             <h2 className="text-lg font-semibold text-text-primary">Filters</h2>
@@ -107,7 +129,7 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
 
           {/* Filter Header */}
           <div className="hidden lg:flex items-center justify-between mb-6">
-            <h2 className="text-lg font-semibold text-text-primary">Filters</h2>
+            <h2 className="text-lg font-semibold text-black">Filters</h2>
             <Button
               variant="ghost"
               size="sm"
@@ -126,7 +148,7 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
                   onClick={() => toggleSection(key)}
                   className="flex items-center justify-between w-full text-left mb-4"
                 >
-                  <h3 className="font-medium text-text-primary">{section.title}</h3>
+                  <h3 className="font-medium text-black">{section.title}</h3>
                   <Icon 
                     name={expandedSections[key] ? "ChevronUp" : "ChevronDown"} 
                     size={16} 
@@ -148,9 +170,9 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
                               : currentFilters.filter(id => id !== option.id);
                             onFilterChange(key, newFilters);
                           }}
-                          className="text-sm"
+                          className="text-sm text-black"
                         />
-                        <span className="text-xs text-text-secondary">({option.count})</span>
+                        <span className="text-xs text-gray-600">({option.count})</span>
                       </div>
                     ))}
                   </div>
@@ -223,48 +245,7 @@ const FilterSidebar = ({ isOpen, onClose, filters, onFilterChange }) => {
               )}
             </div>
 
-            {/* Availability */}
-            <div>
-              <h3 className="font-medium text-text-primary mb-4">Availability</h3>
-              <div className="space-y-3">
-                <Checkbox
-                  label="In Stock"
-                  checked={filters.availability?.includes('in-stock') || false}
-                  onChange={(e) => {
-                    const isChecked = e.target.checked;
-                    const currentFilters = filters.availability || [];
-                    const newFilters = isChecked
-                      ? [...currentFilters, 'in-stock']
-                      : currentFilters.filter(id => id !== 'in-stock');
-                    onFilterChange('availability', newFilters);
-                  }}
-                />
-                <Checkbox
-                  label="Bulk Available"
-                  checked={filters.availability?.includes('bulk') || false}
-                  onChange={(e) => {
-                    const isChecked = e.target.checked;
-                    const currentFilters = filters.availability || [];
-                    const newFilters = isChecked
-                      ? [...currentFilters, 'bulk']
-                      : currentFilters.filter(id => id !== 'bulk');
-                    onFilterChange('availability', newFilters);
-                  }}
-                />
-                <Checkbox
-                  label="Same Day Delivery"
-                  checked={filters.availability?.includes('same-day') || false}
-                  onChange={(e) => {
-                    const isChecked = e.target.checked;
-                    const currentFilters = filters.availability || [];
-                    const newFilters = isChecked
-                      ? [...currentFilters, 'same-day']
-                      : currentFilters.filter(id => id !== 'same-day');
-                    onFilterChange('availability', newFilters);
-                  }}
-                />
-              </div>
-            </div>
+
           </div>
 
           {/* Mobile Apply Button */}

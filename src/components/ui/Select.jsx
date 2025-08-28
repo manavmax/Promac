@@ -1,5 +1,6 @@
 // components/ui/Select.jsx - Shadcn style Select
-import React, { useState } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import { ChevronDown, Check, Search, X } from "lucide-react";
 import { cn } from "../../utils/cn";
 import Button from "./Button";
@@ -28,6 +29,9 @@ const Select = React.forwardRef(({
 }, ref) => {
     const [isOpen, setIsOpen] = useState(false);
     const [searchTerm, setSearchTerm] = useState("");
+    const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
+    const selectRef = useRef(null);
+    const dropdownRef = useRef(null);
 
     // Generate unique ID if not provided
     const selectId = id || `select-${Math.random().toString(36).substr(2, 9)}`;
@@ -55,16 +59,63 @@ const Select = React.forwardRef(({
         return selectedOption ? selectedOption.label : placeholder;
     };
 
+    const updateDropdownPosition = () => {
+        if (selectRef.current) {
+            const rect = selectRef.current.getBoundingClientRect();
+            const position = {
+                top: rect.bottom + 4, // Add small gap
+                left: rect.left,
+                width: rect.width
+            };
+            setDropdownPosition(position);
+        }
+    };
+
     const handleToggle = () => {
         if (!disabled) {
             const newIsOpen = !isOpen;
             setIsOpen(newIsOpen);
             onOpenChange?.(newIsOpen);
-            if (!newIsOpen) {
+            if (newIsOpen) {
+                // Update position when opening
+                setTimeout(updateDropdownPosition, 0);
+            } else {
                 setSearchTerm("");
             }
         }
     };
+
+    // Update position on scroll and resize
+    useEffect(() => {
+        if (isOpen) {
+            const handleScroll = () => updateDropdownPosition();
+            const handleResize = () => updateDropdownPosition();
+            
+            window.addEventListener('scroll', handleScroll, true);
+            window.addEventListener('resize', handleResize);
+            
+            return () => {
+                window.removeEventListener('scroll', handleScroll, true);
+                window.removeEventListener('resize', handleResize);
+            };
+        }
+    }, [isOpen]);
+
+    // Handle click outside to close dropdown
+    useEffect(() => {
+        if (isOpen) {
+            const handleClickOutside = (event) => {
+                if (selectRef.current && !selectRef.current.contains(event.target) &&
+                    dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+                    setIsOpen(false);
+                    onOpenChange?.(false);
+                }
+            };
+            
+            document.addEventListener('mousedown', handleClickOutside);
+            return () => document.removeEventListener('mousedown', handleClickOutside);
+        }
+    }, [isOpen, onOpenChange]);
 
     const handleOptionSelect = (option) => {
         if (multiple) {
@@ -99,7 +150,7 @@ const Select = React.forwardRef(({
     const hasValue = multiple ? value?.length > 0 : value !== undefined && value !== '';
 
     return (
-        <div className={cn("relative", className)}>
+        <div className={cn("relative", className)} style={{ zIndex: isOpen ? 9999 : 'auto' }}>
             {label && (
                 <label
                     htmlFor={selectId}
@@ -115,7 +166,11 @@ const Select = React.forwardRef(({
 
             <div className="relative">
                 <button
-                    ref={ref}
+                    ref={(node) => {
+                        selectRef.current = node;
+                        if (typeof ref === 'function') ref(node);
+                        else if (ref) ref.current = node;
+                    }}
                     id={selectId}
                     type="button"
                     className={cn(
@@ -172,9 +227,22 @@ const Select = React.forwardRef(({
                     ))}
                 </select>
 
-                {/* Dropdown */}
-                {isOpen && (
-                    <div className="absolute z-50 w-full mt-1 bg-white text-black border border-border rounded-md shadow-md">
+                {/* Dropdown Portal */}
+                {isOpen && createPortal(
+                    <div 
+                        ref={dropdownRef}
+                        className="fixed z-[9999] bg-white text-black border border-gray-300 rounded-md shadow-xl"
+                        style={{
+                            top: dropdownPosition.top > 0 ? `${dropdownPosition.top}px` : '100px',
+                            left: dropdownPosition.left > 0 ? `${dropdownPosition.left}px` : '100px',
+                            width: dropdownPosition.width > 0 ? `${dropdownPosition.width}px` : '200px',
+                            minWidth: '200px',
+                            minHeight: '100px',
+                            maxHeight: '240px'
+                        }}
+                    >
+
+                        
                         {searchable && (
                             <div className="p-2 border-b">
                                 <div className="relative">
@@ -218,7 +286,8 @@ const Select = React.forwardRef(({
                                 ))
                             )}
                         </div>
-                    </div>
+                    </div>,
+                    document.body
                 )}
             </div>
 

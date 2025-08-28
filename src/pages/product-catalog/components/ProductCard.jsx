@@ -1,11 +1,16 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Icon from '../../../components/AppIcon';
 import Image from '../../../components/AppImage';
 import Button from '../../../components/ui/Button';
+import { useCart } from '../../../contexts/CartContext';
 
 const ProductCard = ({ product, onCompare, onQuickView, isComparing = false }) => {
+  const navigate = useNavigate();
+  const { addToCart } = useCart();
   const [isWishlisted, setIsWishlisted] = useState(false);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
 
   const formatPrice = (price) => {
     return new Intl.NumberFormat('en-IN', {
@@ -25,10 +30,47 @@ const ProductCard = ({ product, onCompare, onQuickView, isComparing = false }) =
 
   const stockStatus = getStockStatus(product.stock);
 
+  const handleAddToCart = (e) => {
+    e.stopPropagation();
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      brand: product.brand,
+      price: formatPrice(product.price),
+      image: product.image,
+      quantity: 1
+    };
+    
+    addToCart(cartItem);
+    setShowNotification(true);
+    setTimeout(() => setShowNotification(false), 2000);
+  };
+
+  const handleBuyNow = (e) => {
+    e.stopPropagation();
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      brand: product.brand,
+      price: formatPrice(product.price),
+      image: product.image,
+      quantity: 1
+    };
+    
+    addToCart(cartItem);
+    navigate(`/product/${product.id}`);
+  };
+
   return (
-    <div className="group relative bg-white rounded-xl shadow-sm hover:shadow-lg border border-promac-red-100 hover:border-promac-red-300 brand-transition overflow-hidden">
+    <div className="group relative bg-white rounded-2xl shadow-lg hover:shadow-2xl border border-gray-100 hover:border-gray-200 transition-all duration-300 transform hover:-translate-y-1 overflow-hidden">
+      {/* Notification */}
+      {showNotification && (
+        <div className="absolute top-4 right-4 z-50 bg-green-500 text-white px-3 py-2 rounded-lg shadow-lg text-xs">
+          Added to cart!
+        </div>
+      )}
       {/* Product Image */}
-      <div className="relative aspect-square overflow-hidden bg-promac-red-50">
+      <div className="relative aspect-square overflow-hidden bg-promac-red-50 cursor-pointer" onClick={() => navigate(`/product/${product.id}`)}>
         <Image
           src={product.image}
           alt={product.name}
@@ -48,19 +90,19 @@ const ProductCard = ({ product, onCompare, onQuickView, isComparing = false }) =
         {/* Badges */}
         <div className="absolute top-3 left-3 flex flex-col space-y-2">
           {product.isNew && (
-            <span className="px-2 py-1 bg-promac-red-400 text-white text-xs font-medium rounded-full">
+            <span className="px-3 py-1 bg-[#FF0C0D] text-white text-xs font-medium rounded-full min-w-[40px] justify-center">
               New
             </span>
           )}
           {product.isBestSeller && (
-            <span className="px-2 py-1 bg-promac-red-600 text-white text-xs font-medium rounded-full">
+            <span className="px-2 py-1 bg-blue-600 text-white text-xs font-medium rounded-full">
               Best Seller
             </span>
           )}
           {product.certifications?.includes('BIS') && (
-            <span className="px-2 py-1 bg-promac-red-200 text-promac-red-900 text-xs font-medium rounded-full flex items-center space-x-1">
-              <Icon name="Award" size={10} />
-              <span>BIS</span>
+            <span className="px-1 py-1 bg-green-200 text-green-800 text-xs font-medium rounded-full flex items-center">
+              <Icon name="Award" size={8} />
+              <span className="ml-0.5">BIS</span>
             </span>
           )}
         </div>
@@ -68,25 +110,34 @@ const ProductCard = ({ product, onCompare, onQuickView, isComparing = false }) =
         {/* Action Buttons */}
         <div className="absolute top-3 right-3 flex flex-col space-y-2 opacity-0 group-hover:opacity-100 brand-transition">
           <button
-            onClick={() => setIsWishlisted(!isWishlisted)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsWishlisted(!isWishlisted);
+            }}
             className={`p-2 rounded-full shadow-md brand-transition ${
               isWishlisted 
-                ? 'bg-promac-red-500 text-white' :'bg-white text-promac-red-400 hover:text-promac-red-600'
+                ? 'bg-blue-500 text-white' :'bg-white text-blue-500 hover:text-blue-600'
             }`}
           >
             <Icon name="Heart" size={16} fill={isWishlisted ? 'currentColor' : 'none'} />
           </button>
           <button
-            onClick={() => onQuickView(product)}
-            className="p-2 bg-white text-promac-red-400 hover:text-promac-red-600 rounded-full shadow-md brand-transition"
+            onClick={(e) => {
+              e.stopPropagation();
+              onQuickView(product);
+            }}
+            className="p-2 bg-white text-green-500 hover:text-green-600 rounded-full shadow-md brand-transition"
           >
             <Icon name="Eye" size={16} />
           </button>
           <button
-            onClick={() => onCompare(product)}
+            onClick={(e) => {
+              e.stopPropagation();
+              onCompare(product);
+            }}
             className={`p-2 rounded-full shadow-md brand-transition ${
               isComparing
-                ? 'bg-promac-red-700 text-white' :'bg-white text-promac-red-400 hover:text-promac-red-700'
+                ? 'bg-purple-600 text-white' :'bg-white text-purple-500 hover:text-purple-600'
             }`}
           >
             <Icon name="GitCompare" size={16} />
@@ -96,10 +147,10 @@ const ProductCard = ({ product, onCompare, onQuickView, isComparing = false }) =
         {/* Stock Status */}
         <div className="absolute bottom-3 left-3">
           <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-            product.stock > 50 ? 'bg-promac-red-100 text-promac-red-700' :
-            product.stock > 10 ? 'bg-promac-red-200 text-promac-red-700' :
-            product.stock > 0 ? 'bg-promac-red-300 text-promac-red-900' :
-            'bg-promac-red-50 text-promac-red-400'
+            product.stock > 50 ? 'bg-green-100 text-green-700' :
+            product.stock > 10 ? 'bg-yellow-200 text-yellow-700' :
+            product.stock > 0 ? 'bg-orange-200 text-orange-700' :
+            'bg-gray-100 text-gray-600'
           }`}>
             {stockStatus.text}
           </span>
@@ -108,7 +159,7 @@ const ProductCard = ({ product, onCompare, onQuickView, isComparing = false }) =
         {/* Bulk Pricing Indicator */}
         {product.bulkPricing && (
           <div className="absolute bottom-3 right-3">
-            <span className="px-2 py-1 bg-brand-amber text-text-primary text-xs font-medium rounded-full flex items-center space-x-1">
+            <span className="px-2 py-1 bg-purple-200 text-purple-800 text-xs font-medium rounded-full flex items-center space-x-1">
               <Icon name="Package2" size={10} />
               <span>Bulk</span>
             </span>
@@ -120,7 +171,7 @@ const ProductCard = ({ product, onCompare, onQuickView, isComparing = false }) =
       <div className="p-4">
         {/* Brand & Model */}
         <div className="flex items-center justify-between mb-2">
-          <span className="text-xs text-text-secondary font-medium">{product.brand}</span>
+          <span className="text-xs text-gray-600 font-medium">{product.brand}</span>
           <div className="flex items-center space-x-1">
             {[...Array(5)].map((_, i) => (
               <Icon
@@ -131,12 +182,15 @@ const ProductCard = ({ product, onCompare, onQuickView, isComparing = false }) =
                 fill={i < Math.floor(product.rating) ? 'currentColor' : 'none'}
               />
             ))}
-            <span className="text-xs text-text-secondary ml-1">({product.reviewCount})</span>
+            <span className="text-xs text-gray-600 ml-1">({product.reviewCount})</span>
           </div>
         </div>
 
         {/* Product Name */}
-        <h3 className="font-semibold text-text-primary mb-2 line-clamp-2 group-hover:text-brand-navy brand-transition">
+        <h3 
+          className="font-semibold text-black mb-2 line-clamp-2 group-hover:text-blue-600 brand-transition cursor-pointer"
+          onClick={() => navigate(`/product/${product.id}`)}
+        >
           {product.name}
         </h3>
 
@@ -144,8 +198,8 @@ const ProductCard = ({ product, onCompare, onQuickView, isComparing = false }) =
         <div className="space-y-1 mb-3">
           {product.keySpecs?.slice(0, 2).map((spec, index) => (
             <div key={index} className="flex items-center justify-between text-xs">
-              <span className="text-text-secondary">{spec.label}:</span>
-              <span className="text-text-primary font-medium">{spec.value}</span>
+              <span className="text-gray-600">{spec.label}:</span>
+              <span className="text-black font-medium">{spec.value}</span>
             </div>
           ))}
         </div>
@@ -154,11 +208,11 @@ const ProductCard = ({ product, onCompare, onQuickView, isComparing = false }) =
         <div className="flex items-center justify-between mb-4">
           <div>
             <div className="flex items-center space-x-2">
-              <span className="text-lg font-bold text-text-primary">
+              <span className="text-lg font-bold text-black">
                 {formatPrice(product.price)}
               </span>
               {product.originalPrice && product.originalPrice > product.price && (
-                <span className="text-sm text-text-secondary line-through">
+                <span className="text-sm text-gray-500 line-through">
                   {formatPrice(product.originalPrice)}
                 </span>
               )}
@@ -170,22 +224,23 @@ const ProductCard = ({ product, onCompare, onQuickView, isComparing = false }) =
             )}
           </div>
           {product.bulkPricing && (
-            <button className="text-xs text-brand-navy hover:text-brand-orange brand-transition">
+            <button className="text-xs text-blue-600 hover:text-blue-800 brand-transition">
               Bulk Pricing
             </button>
           )}
         </div>
 
         {/* Action Buttons */}
-        <div className="flex space-x-2">
+        <div className="flex space-x-2 mt-4 action-buttons">
           <Button
-            variant="outline"
+            variant="default"
             size="sm"
             fullWidth
             iconName="ShoppingCart"
             iconPosition="left"
             disabled={product.stock === 0}
-            className="text-brand-navy border-brand-navy hover:bg-brand-navy hover:text-white"
+            onClick={handleAddToCart}
+            className="bg-red-600 text-white hover:bg-red-700 !opacity-100 !visible"
           >
             Add to Cart
           </Button>
@@ -194,7 +249,8 @@ const ProductCard = ({ product, onCompare, onQuickView, isComparing = false }) =
             size="sm"
             fullWidth
             disabled={product.stock === 0}
-            className="cta-primary"
+            onClick={handleBuyNow}
+            className="bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 text-white hover:from-slate-800 hover:to-slate-900 !opacity-100 !visible"
           >
             Buy Now
           </Button>
@@ -202,21 +258,20 @@ const ProductCard = ({ product, onCompare, onQuickView, isComparing = false }) =
 
         {/* Quick Info */}
         <div className="flex items-center justify-between mt-3 pt-3 border-t border-gray-100">
-          <div className="flex items-center space-x-3 text-xs text-text-secondary">
-            {product.fastDelivery && (
-              <div className="flex items-center space-x-1">
-                <Icon name="Truck" size={12} />
-                <span>Fast Delivery</span>
-              </div>
-            )}
-            {product.warranty && (
-              <div className="flex items-center space-x-1">
-                <Icon name="Shield" size={12} />
-                <span>{product.warranty}</span>
-              </div>
-            )}
+          <div className="flex items-center space-x-4 text-xs text-gray-600">
+            <div className="flex items-center space-x-1">
+              <Icon name="Truck" size={12} />
+              <span>Fast Delivery</span>
+            </div>
+            <div className="flex items-center space-x-1">
+              <Icon name="Shield" size={12} />
+              <span>{product.warranty} Years</span>
+            </div>
           </div>
-          <button className="text-xs text-brand-navy hover:text-brand-orange brand-transition">
+          <button 
+            className="text-xs text-blue-600 hover:text-blue-800 brand-transition"
+            onClick={() => navigate(`/product/${product.id}`)}
+          >
             View Details
           </button>
         </div>

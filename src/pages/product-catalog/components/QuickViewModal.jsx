@@ -2,12 +2,15 @@ import React, { useState } from 'react';
 import Icon from '../../../components/AppIcon';
 import Image from '../../../components/AppImage';
 import Button from '../../../components/ui/Button';
+import { useCart } from '../../../contexts/CartContext';
 
 const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) => {
+  const { addToCart } = useCart();
   const [selectedImage, setSelectedImage] = useState(0);
   const [quantity, setQuantity] = useState(1);
   const [selectedVariant, setSelectedVariant] = useState(null);
 
+  console.log('QuickViewModal render:', { isOpen, product: product?.name });
   if (!isOpen || !product) return null;
 
   const formatPrice = (price) => {
@@ -23,11 +26,17 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
   const variants = product.variants || [];
 
   const handleAddToCart = () => {
-    onAddToCart({
-      ...product,
+    const cartItem = {
+      id: product.id,
+      name: product.name,
+      brand: product.brand,
+      price: formatPrice(selectedVariant?.price || product.price),
+      image: product.image,
       quantity,
       selectedVariant
-    });
+    };
+    
+    addToCart(cartItem);
     onClose();
   };
 
@@ -41,7 +50,7 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
   const stockStatus = getStockStatus(product.stock);
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
       {/* Backdrop */}
       <div 
         className="absolute inset-0 bg-black/50 backdrop-blur-sm"
@@ -52,12 +61,13 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
       <div className="relative bg-white rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden">
         {/* Header */}
         <div className="flex items-center justify-between p-6 border-b border-gray-200">
-          <h2 className="text-xl font-semibold text-text-primary">Quick View</h2>
+          <h2 className="text-xl font-semibold text-black">Quick View</h2>
           <Button
             variant="ghost"
             size="icon"
             onClick={onClose}
             iconName="X"
+            className="bg-black text-white hover:bg-gray-800"
           />
         </div>
 
@@ -99,7 +109,7 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
               fullWidth
               iconName="RotateCcw"
               iconPosition="left"
-              className="text-brand-navy border-brand-navy hover:bg-brand-navy hover:text-white"
+              className="text-white border-white hover:bg-white hover:text-gray-900"
             >
               360° View
             </Button>
@@ -109,7 +119,7 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
           <div className="space-y-6">
             {/* Brand & Rating */}
             <div className="flex items-center justify-between">
-              <span className="text-sm text-text-secondary font-medium">{product.brand}</span>
+              <span className="text-sm text-gray-600 font-medium">{product.brand}</span>
               <div className="flex items-center space-x-1">
                 {[...Array(5)].map((_, i) => (
                   <Icon
@@ -120,21 +130,21 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
                     fill={i < Math.floor(product.rating) ? 'currentColor' : 'none'}
                   />
                 ))}
-                <span className="text-sm text-text-secondary ml-1">({product.reviewCount})</span>
+                <span className="text-sm text-gray-600 ml-1">({product.reviewCount})</span>
               </div>
             </div>
 
             {/* Product Name */}
-            <h1 className="text-2xl font-bold text-text-primary">{product.name}</h1>
+            <h1 className="text-2xl font-bold text-black">{product.name}</h1>
 
             {/* Price */}
             <div className="flex items-center space-x-3">
-              <span className="text-3xl font-bold text-text-primary">
+              <span className="text-3xl font-bold text-black">
                 {formatPrice(product.price)}
               </span>
               {product.originalPrice && product.originalPrice > product.price && (
                 <>
-                  <span className="text-lg text-text-secondary line-through">
+                  <span className="text-lg text-gray-500 line-through">
                     {formatPrice(product.originalPrice)}
                   </span>
                   <span className="px-2 py-1 bg-green-100 text-green-600 text-sm font-medium rounded-full">
@@ -159,12 +169,12 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
 
             {/* Key Specifications */}
             <div className="space-y-3">
-              <h3 className="font-semibold text-text-primary">Key Specifications</h3>
+              <h3 className="font-semibold text-black">Key Specifications</h3>
               <div className="grid grid-cols-2 gap-3">
                 {product.keySpecs?.map((spec, index) => (
                   <div key={index} className="flex justify-between text-sm">
-                    <span className="text-text-secondary">{spec.label}:</span>
-                    <span className="text-text-primary font-medium">{spec.value}</span>
+                    <span className="text-gray-600">{spec.label}:</span>
+                    <span className="text-black font-medium">{spec.value}</span>
                   </div>
                 ))}
               </div>
@@ -173,7 +183,7 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
             {/* Variants */}
             {variants.length > 0 && (
               <div className="space-y-3">
-                <h3 className="font-semibold text-text-primary">Available Variants</h3>
+                <h3 className="font-semibold text-black">Available Variants</h3>
                 <div className="flex flex-wrap gap-2">
                   {variants.map((variant) => (
                     <button
@@ -181,7 +191,7 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
                       onClick={() => setSelectedVariant(variant)}
                       className={`px-3 py-2 text-sm rounded-lg border brand-transition ${
                         selectedVariant?.id === variant.id
-                          ? 'border-brand-navy bg-brand-navy text-white' :'border-gray-300 text-text-primary hover:border-brand-navy'
+                          ? 'border-slate-600 bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 text-white' :'border-gray-300 text-black hover:border-slate-600'
                       }`}
                     >
                       {variant.name}
@@ -193,18 +203,18 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
 
             {/* Quantity */}
             <div className="space-y-3">
-              <h3 className="font-semibold text-text-primary">Quantity</h3>
+              <h3 className="font-semibold text-black">Quantity</h3>
               <div className="flex items-center space-x-3">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:border-brand-navy brand-transition"
+                  className="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:border-blue-600 brand-transition text-gray-600 hover:text-blue-600"
                 >
                   <Icon name="Minus" size={16} />
                 </button>
-                <span className="w-16 text-center font-medium">{quantity}</span>
+                <span className="w-16 text-center font-medium text-black">{quantity}</span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:border-brand-navy brand-transition"
+                  className="w-10 h-10 border border-gray-300 rounded-lg flex items-center justify-center hover:border-blue-600 brand-transition text-gray-600 hover:text-blue-600"
                 >
                   <Icon name="Plus" size={16} />
                 </button>
@@ -220,7 +230,7 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
                 disabled={product.stock === 0}
                 iconName="ShoppingCart"
                 iconPosition="left"
-                className="text-brand-navy border-brand-navy hover:bg-brand-navy hover:text-white"
+                className="bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 text-white border-slate-600 hover:from-slate-800 hover:to-slate-900"
               >
                 Add to Cart
               </Button>
@@ -228,7 +238,7 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
                 variant="default"
                 fullWidth
                 disabled={product.stock === 0}
-                className="cta-primary"
+                className="bg-red-600 text-white hover:bg-red-700"
               >
                 Buy Now
               </Button>
@@ -238,16 +248,16 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
             <div className="flex items-center justify-between pt-4 border-t border-gray-200">
               <button
                 onClick={() => onCompare(product)}
-                className="flex items-center space-x-2 text-brand-navy hover:text-brand-orange brand-transition"
+                className="flex items-center space-x-2 text-blue-600 hover:text-orange-500 brand-transition"
               >
                 <Icon name="GitCompare" size={16} />
                 <span className="text-sm font-medium">Compare</span>
               </button>
-              <button className="flex items-center space-x-2 text-brand-navy hover:text-brand-orange brand-transition">
+              <button className="flex items-center space-x-2 text-blue-600 hover:text-orange-500 brand-transition">
                 <Icon name="Heart" size={16} />
                 <span className="text-sm font-medium">Add to Wishlist</span>
               </button>
-              <button className="flex items-center space-x-2 text-brand-navy hover:text-brand-orange brand-transition">
+              <button className="flex items-center space-x-2 text-blue-600 hover:text-orange-500 brand-transition">
                 <Icon name="Share2" size={16} />
                 <span className="text-sm font-medium">Share</span>
               </button>
@@ -257,7 +267,7 @@ const QuickViewModal = ({ product, isOpen, onClose, onAddToCart, onCompare }) =>
             {product.certifications && product.certifications.length > 0 && (
               <div className="flex items-center space-x-2 pt-4 border-t border-gray-200">
                 <Icon name="Award" size={16} className="text-blue-600" />
-                <span className="text-sm text-text-secondary">Certified:</span>
+                <span className="text-sm text-gray-600">Certified:</span>
                 <div className="flex space-x-2">
                   {product.certifications.map((cert, index) => (
                     <span key={index} className="px-2 py-1 bg-blue-100 text-blue-600 text-xs font-medium rounded">

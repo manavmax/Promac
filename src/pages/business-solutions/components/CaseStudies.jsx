@@ -187,28 +187,28 @@ const CaseStudies = () => {
     : caseStudies.filter(study => study.category === selectedCategory);
 
   return (
-    <section className="py-20 bg-muted">
+    <section className="py-20 bg-transparent section-premium">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-brand-navy mb-4">
+          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-300 via-sky-400 to-indigo-400 bg-clip-text text-transparent">
             Success Stories & Case Studies
           </h2>
-          <p className="text-xl text-text-secondary max-w-3xl mx-auto">
+          <p className="text-lg text-white/70 max-w-3xl mx-auto">
             Discover how Promac products have powered major projects across India. Real projects, real results, and measurable cost savings achieved by our business partners.
           </p>
         </div>
 
         {/* Category Filter */}
         <div className="flex flex-wrap justify-center mb-12">
-          <div className="glass-effect rounded-xl p-2 inline-flex bg-promac-red-50 border border-promac-red-100">
+          <div className="glass-ios rounded-xl p-2 inline-flex">
             {categories.map((category) => (
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
                 className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium brand-transition ${
                   selectedCategory === category.id
-                    ? 'bg-promac-red-600 text-white shadow-lg'
-                    : 'text-promac-red-700 hover:bg-promac-red-100'
+                    ? 'bg-gradient-to-br from-cyan-600/40 to-indigo-700/40 text-white shadow-xl'
+                    : 'text-white hover:bg-white/10'
                 }`}
               >
                 <Icon name={category.icon} size={18} />
@@ -221,7 +221,7 @@ const CaseStudies = () => {
         {/* Case Studies Grid */}
         <div className="grid lg:grid-cols-2 gap-8 mb-12">
           {filteredCases.map((study) => (
-            <div key={study.id} className="bg-promac-red-50 border border-promac-red-100 rounded-2xl overflow-hidden">
+            <div key={study.id} className="glass-effect rounded-2xl overflow-hidden">
               <div className="relative h-64">
                 <Image
                   src={study.image}
@@ -231,7 +231,7 @@ const CaseStudies = () => {
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
                 <div className="absolute bottom-4 left-4 right-4">
                   <div className="flex items-center space-x-2 mb-2">
-                    <span className="px-3 py-1 bg-promac-red-200 rounded-full text-xs font-medium text-promac-red-900">
+                    <span className="px-3 py-1 bg-white/20 rounded-full text-xs font-medium text-white">
                       {categories.find(cat => cat.id === study.category)?.label}
                     </span>
                     <span className="px-3 py-1 bg-white/20 rounded-full text-xs font-medium text-white">
@@ -244,28 +244,28 @@ const CaseStudies = () => {
               </div>
 
               <div className="p-6">
-                <p className="text-text-secondary mb-6 line-clamp-3">{study.description}</p>
+                <p className="text-white/70 mb-6 line-clamp-3">{study.description}</p>
 
                 {/* Key Metrics */}
                 <div className="grid grid-cols-2 gap-4 mb-6">
-                  <div className="bg-promac-red-100 rounded-lg p-3 text-center">
-                    <div className="text-lg font-bold text-promac-red-700">{study.projectValue}</div>
-                    <div className="text-xs text-promac-red-400">Project Value</div>
+                  <div className="bg-white/8 ring-1 ring-white/10 rounded-lg p-3 text-center">
+                    <div className="text-lg font-bold text-white">{study.projectValue}</div>
+                    <div className="text-xs text-white/70">Project Value</div>
                   </div>
-                  <div className="bg-promac-red-100 rounded-lg p-3 text-center">
-                    <div className="text-lg font-bold text-promac-red-700">{study.savings}</div>
-                    <div className="text-xs text-promac-red-400">Cost Savings</div>
+                  <div className="bg-white/8 ring-1 ring-white/10 rounded-lg p-3 text-center">
+                    <div className="text-lg font-bold text-cyan-300">{study.savings}</div>
+                    <div className="text-xs text-white/70">Cost Savings</div>
                   </div>
                 </div>
 
                 {/* Contractor Info */}
                 <div className="flex items-center space-x-3 mb-6">
-                  <div className="w-10 h-10 bg-brand-navy/10 rounded-lg flex items-center justify-center">
-                    <Icon name="Building2" size={16} color="var(--color-brand-navy)" />
+                  <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-500 to-indigo-600">
+                    <Icon name="Building2" size={16} color="#FFFFFF" />
                   </div>
                   <div>
-                    <div className="font-medium text-brand-navy text-sm">{study.contractor}</div>
-                    <div className="text-xs text-text-secondary">Project Contractor</div>
+                    <div className="font-medium text-white text-sm">{study.contractor}</div>
+                    <div className="text-xs text-white/70">Project Contractor</div>
                   </div>
                 </div>
 
@@ -275,7 +275,7 @@ const CaseStudies = () => {
                   iconName="Eye"
                   iconPosition="left"
                   onClick={() => setSelectedCase(study)}
-                  className="border-promac-red-200 text-promac-red-700 hover:bg-promac-red-100 hover:text-promac-red-900"
+                  className="bg-white text-gray-900 border-white hover:bg-white hover:text-black"
                 >
                   View Full Case Study
                 </Button>
@@ -286,13 +286,13 @@ const CaseStudies = () => {
 
         {/* Case Study Modal/Detail View */}
         {selectedCase && (
-          <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-            <div className="bg-white rounded-2xl max-w-4xl max-h-[90vh] overflow-y-auto">
-              <div className="sticky top-0 bg-white border-b border-gray-200 p-6 flex items-center justify-between">
-                <h2 className="text-2xl font-bold text-brand-navy">{selectedCase.title}</h2>
+          <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50 p-4">
+            <div className="glass-ios rounded-2xl max-w-4xl max-h-[90vh] overflow-y-auto w-full">
+              <div className="sticky top-0 glass-effect p-6 flex items-center justify-between rounded-t-2xl">
+                <h2 className="text-2xl font-bold text-white">{selectedCase.title}</h2>
                 <button
                   onClick={() => setSelectedCase(null)}
-                  className="p-2 hover:bg-gray-100 rounded-lg brand-transition"
+                  className="p-2 text-white hover:bg-white/10 rounded-lg brand-transition"
                 >
                   <Icon name="X" size={24} />
                 </button>
@@ -301,21 +301,21 @@ const CaseStudies = () => {
               <div className="p-6 space-y-8">
                 {/* Project Overview */}
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
-                  <div className="bg-muted rounded-lg p-4 text-center">
-                    <div className="text-xl font-bold text-brand-navy">{selectedCase.projectValue}</div>
-                    <div className="text-sm text-text-secondary">Project Value</div>
+                  <div className="bg-white/5 rounded-lg p-4 text-center">
+                    <div className="text-xl font-bold text-white">{selectedCase.projectValue}</div>
+                    <div className="text-sm text-white/70">Project Value</div>
                   </div>
-                  <div className="bg-muted rounded-lg p-4 text-center">
-                    <div className="text-xl font-bold text-brand-green">{selectedCase.savings}</div>
-                    <div className="text-sm text-text-secondary">Cost Savings</div>
+                  <div className="bg-white/5 rounded-lg p-4 text-center">
+                    <div className="text-xl font-bold text-cyan-300">{selectedCase.savings}</div>
+                    <div className="text-sm text-white/70">Cost Savings</div>
                   </div>
-                  <div className="bg-muted rounded-lg p-4 text-center">
-                    <div className="text-xl font-bold text-brand-navy">{selectedCase.duration}</div>
-                    <div className="text-sm text-text-secondary">Duration</div>
+                  <div className="bg-white/5 rounded-lg p-4 text-center">
+                    <div className="text-xl font-bold text-white">{selectedCase.duration}</div>
+                    <div className="text-sm text-white/70">Duration</div>
                   </div>
-                  <div className="bg-muted rounded-lg p-4 text-center">
-                    <div className="text-xl font-bold text-brand-navy">{selectedCase.location}</div>
-                    <div className="text-sm text-text-secondary">Location</div>
+                  <div className="bg-white/5 rounded-lg p-4 text-center">
+                    <div className="text-xl font-bold text-white">{selectedCase.location}</div>
+                    <div className="text-sm text-white/70">Location</div>
                   </div>
                 </div>
 
@@ -326,10 +326,10 @@ const CaseStudies = () => {
                     <div className="space-y-3">
                       {selectedCase.challenges.map((challenge, index) => (
                         <div key={index} className="flex items-start space-x-3">
-                          <div className="w-5 h-5 bg-red-100 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <Icon name="AlertCircle" size={12} color="#EF4444" />
+                    <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 bg-gradient-to-br from-fuchsia-500 to-pink-600">
+                      <Icon name="AlertCircle" size={12} color="#FFFFFF" />
                           </div>
-                          <span className="text-text-primary text-sm">{challenge}</span>
+                    <span className="text-white/95 text-sm">{challenge}</span>
                         </div>
                       ))}
                     </div>
@@ -340,10 +340,10 @@ const CaseStudies = () => {
                     <div className="space-y-3">
                       {selectedCase.solutions.map((solution, index) => (
                         <div key={index} className="flex items-start space-x-3">
-                          <div className="w-5 h-5 bg-brand-green/20 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                            <Icon name="CheckCircle" size={12} color="var(--color-brand-green)" />
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5 bg-gradient-to-br from-teal-400 to-cyan-500">
+                        <Icon name="CheckCircle" size={12} color="#FFFFFF" />
                           </div>
-                          <span className="text-text-primary text-sm">{solution}</span>
+                      <span className="text-white/95 text-sm">{solution}</span>
                         </div>
                       ))}
                     </div>
@@ -357,10 +357,10 @@ const CaseStudies = () => {
                     {selectedCase.products.map((product, index) => (
                       <div key={index} className="glass-effect rounded-lg p-4">
                         <div className="flex justify-between items-start mb-2">
-                          <h4 className="font-medium text-brand-navy">{product.name}</h4>
-                          <span className="text-sm font-bold text-brand-green">{product.value}</span>
+                          <h4 className="font-medium text-white">{product.name}</h4>
+                          <span className="text-sm font-bold text-cyan-300">{product.value}</span>
                         </div>
-                        <p className="text-sm text-text-secondary">{product.quantity}</p>
+                        <p className="text-sm text-white/70">{product.quantity}</p>
                       </div>
                     ))}
                   </div>
@@ -372,26 +372,26 @@ const CaseStudies = () => {
                   <div className="grid sm:grid-cols-2 gap-3">
                     {selectedCase.results.map((result, index) => (
                       <div key={index} className="flex items-center space-x-3">
-                        <div className="w-5 h-5 bg-brand-amber rounded-full flex items-center justify-center flex-shrink-0">
-                          <Icon name="TrendingUp" size={12} color="#1A237E" strokeWidth={3} />
+                      <div className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-cyan-500 to-indigo-600">
+                        <Icon name="TrendingUp" size={12} color="#FFFFFF" strokeWidth={3} />
                         </div>
-                        <span className="text-text-primary text-sm">{result}</span>
+                      <span className="text-white/95 text-sm">{result}</span>
                       </div>
                     ))}
                   </div>
                 </div>
 
                 {/* Testimonial */}
-                <div className="bg-brand-navy/5 rounded-xl p-6">
+                <div className="bg-white/5 rounded-xl p-6">
                   <div className="flex items-start space-x-4">
-                    <div className="w-12 h-12 bg-brand-navy rounded-full flex items-center justify-center flex-shrink-0">
-                      <Icon name="Quote" size={20} color="white" />
+                    <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 bg-gradient-to-br from-cyan-500 to-indigo-600">
+                      <Icon name="Quote" size={20} color="#FFFFFF" />
                     </div>
                     <div>
-                      <p className="text-text-primary italic mb-4">"{selectedCase.testimonial.text}"</p>
+                      <p className="text-white/95 italic mb-4">"{selectedCase.testimonial.text}"</p>
                       <div>
-                        <div className="font-semibold text-brand-navy">{selectedCase.testimonial.author}</div>
-                        <div className="text-sm text-text-secondary">{selectedCase.testimonial.position}</div>
+                        <div className="font-semibold text-white">{selectedCase.testimonial.author}</div>
+                        <div className="text-sm text-white/70">{selectedCase.testimonial.position}</div>
                       </div>
                     </div>
                   </div>
@@ -403,11 +403,11 @@ const CaseStudies = () => {
 
         {/* CTA Section */}
         <div className="text-center">
-          <div className="glass-effect rounded-2xl p-8 max-w-3xl mx-auto">
-            <h3 className="text-2xl font-bold text-brand-navy mb-4">
+          <div className="glass-ios rounded-2xl p-8 max-w-3xl mx-auto">
+            <h3 className="text-2xl font-bold text-white mb-4">
               Ready to Start Your Success Story?
             </h3>
-            <p className="text-text-secondary mb-6">
+            <p className="text-white/70 mb-6">
               Join hundreds of successful contractors and businesses who trust Promac for their electrical projects. Get expert consultation and competitive pricing for your next project.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -425,7 +425,7 @@ const CaseStudies = () => {
                 size="lg"
                 iconName="Calculator"
                 iconPosition="left"
-                className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
+                className="bg-white text-gray-900 border-white hover:bg-white hover:text-black"
               >
                 Calculate Your Savings
               </Button>

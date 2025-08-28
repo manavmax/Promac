@@ -202,13 +202,13 @@ const LoyaltyProgram = () => {
   const selectedTierData = loyaltyTiers.find(tier => tier.id === selectedTier);
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-transparent section-premium">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-brand-navy mb-4">
+          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-300 via-sky-400 to-indigo-400 bg-clip-text text-transparent">
             Contractor Loyalty Program
           </h2>
-          <p className="text-xl text-text-secondary max-w-3xl mx-auto">
+          <p className="text-lg text-white/70 max-w-3xl mx-auto">
             Earn rewards, unlock exclusive benefits, and get priority access to new products with our comprehensive loyalty program designed for electrical professionals.
           </p>
         </div>
@@ -217,30 +217,27 @@ const LoyaltyProgram = () => {
           {/* Tier Selection & Current Status */}
           <div className="lg:col-span-1 space-y-6">
             {/* Current Tier Status */}
-            <div className="neomorphic-card rounded-2xl p-6">
+            <div className="glass-ios rounded-2xl p-6">
               <div className="text-center mb-6">
-                <div className={`w-20 h-20 bg-${selectedTierData.color} rounded-full flex items-center justify-center mx-auto mb-4`}>
-                  <Icon name={selectedTierData.icon} size={32} color="white" />
+                <div className={`w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 bg-gradient-to-br from-cyan-500 to-indigo-600`}>
+                  <Icon name={selectedTierData.icon} size={32} color="#FFFFFF" />
                 </div>
-                <h3 className="text-xl font-bold text-brand-navy">{selectedTierData.name}</h3>
-                <p className="text-text-secondary">Current Tier Status</p>
+                <h3 className="text-xl font-bold text-white">{selectedTierData.name}</h3>
+                <p className="text-white/70">Current Tier Status</p>
               </div>
 
               <div className="space-y-4">
                 <div className="text-center">
-                  <div className="text-3xl font-bold text-brand-navy">{selectedTierData.currentPoints.toLocaleString()}</div>
-                  <div className="text-sm text-text-secondary">Available Points</div>
+                  <div className="text-3xl font-bold text-white">{selectedTierData.currentPoints.toLocaleString()}</div>
+                  <div className="text-sm text-white/70">Available Points</div>
                 </div>
 
                 {selectedTierData.nextTierPoints && (
                   <>
-                    <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div 
-                        className={`bg-${selectedTierData.color} h-3 rounded-full brand-transition`}
-                        style={{ width: `${selectedTierData.progress}%` }}
-                      ></div>
+                    <div className="w-full bg-white/10 rounded-full h-3">
+                      <div className={`bg-gradient-to-r from-cyan-400 to-indigo-500 h-3 rounded-full brand-transition`} style={{ width: `${selectedTierData.progress}%` }}></div>
                     </div>
-                    <div className="text-center text-sm text-text-secondary">
+                    <div className="text-center text-sm text-white/70">
                       {selectedTierData.nextTierPoints - selectedTierData.currentPoints} points to next tier
                     </div>
                   </>
@@ -250,24 +247,24 @@ const LoyaltyProgram = () => {
 
             {/* Tier Selection */}
             <div className="space-y-3">
-              <h4 className="font-semibold text-brand-navy">Loyalty Tiers</h4>
+              <h4 className="font-semibold text-white">Loyalty Tiers</h4>
               {loyaltyTiers.map((tier) => (
                 <button
                   key={tier.id}
                   onClick={() => setSelectedTier(tier.id)}
-                  className={`w-full p-4 rounded-xl text-left brand-transition ${
+                  className={`w-full p-4 rounded-xl text-left brand-transition ring-1 ${
                     selectedTier === tier.id
-                      ? `bg-${tier.bgColor} border-2 border-${tier.color}`
-                      : 'bg-muted hover:bg-gray-100 border-2 border-transparent'
+                      ? 'bg-gradient-to-br from-cyan-600/30 to-indigo-700/30 text-white ring-white/10'
+                      : 'bg-white/5 hover:bg-white/10 text-white ring-white/10'
                   }`}
                 >
                   <div className="flex items-center space-x-3">
-                    <div className={`w-10 h-10 bg-${tier.color} rounded-lg flex items-center justify-center`}>
-                      <Icon name={tier.icon} size={20} color="white" />
+                    <div className={`w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-500 to-indigo-600`}>
+                      <Icon name={tier.icon} size={20} color="#FFFFFF" />
                     </div>
                     <div>
-                      <h5 className="font-semibold text-brand-navy">{tier.name}</h5>
-                      <p className="text-sm text-text-secondary">Min. {tier.minSpend}/year</p>
+                      <h5 className="font-semibold text-white">{tier.name}</h5>
+                      <p className="text-sm text-white/60">Min. {tier.minSpend}/year</p>
                     </div>
                   </div>
                 </button>
@@ -278,28 +275,28 @@ const LoyaltyProgram = () => {
           {/* Tier Details & Benefits */}
           <div className="lg:col-span-2 space-y-8">
             {/* Tier Benefits */}
-            <div className="glass-effect rounded-2xl p-8">
+            <div className="glass-ios rounded-2xl p-8">
               <div className="flex items-center space-x-4 mb-8">
-                <div className={`w-16 h-16 bg-${selectedTierData.color} rounded-xl flex items-center justify-center`}>
-                  <Icon name={selectedTierData.icon} size={32} color="white" />
+                <div className={`w-16 h-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-cyan-500 to-indigo-600`}>
+                  <Icon name={selectedTierData.icon} size={32} color="#FFFFFF" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-brand-navy">{selectedTierData.name}</h3>
-                  <p className="text-text-secondary">Minimum annual spend: {selectedTierData.minSpend}</p>
+                  <h3 className="text-2xl font-bold text-white">{selectedTierData.name}</h3>
+                  <p className="text-white/70">Minimum annual spend: {selectedTierData.minSpend}</p>
                 </div>
               </div>
 
               <div className="grid md:grid-cols-2 gap-8">
                 {/* Standard Benefits */}
                 <div>
-                  <h4 className="font-semibold text-brand-navy mb-4">Standard Benefits</h4>
+                  <h4 className="font-semibold text-white mb-4">Standard Benefits</h4>
                   <div className="space-y-3">
                     {selectedTierData.benefits.map((benefit, index) => (
                       <div key={index} className="flex items-start space-x-3">
-                        <div className="w-5 h-5 bg-brand-amber rounded-full flex items-center justify-center flex-shrink-0 mt-0.5">
-                          <Icon name="Check" size={12} color="#1A237E" strokeWidth={3} />
+                        <div className="w-5 h-5 rounded-full bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center flex-shrink-0 mt-0.5">
+                          <Icon name="Check" size={12} color="#FFFFFF" strokeWidth={3} />
                         </div>
-                        <span className="text-text-primary text-sm">{benefit}</span>
+                        <span className="text-white/95 text-sm">{benefit}</span>
                       </div>
                     ))}
                   </div>
@@ -307,14 +304,14 @@ const LoyaltyProgram = () => {
 
                 {/* Exclusive Features */}
                 <div>
-                  <h4 className="font-semibold text-brand-navy mb-4">Exclusive Features</h4>
+                  <h4 className="font-semibold text-white mb-4">Exclusive Features</h4>
                   <div className="space-y-3">
                     {selectedTierData.exclusiveFeatures.map((feature, index) => (
                       <div key={index} className="flex items-start space-x-3">
-                        <div className={`w-5 h-5 bg-${selectedTierData.color} rounded-full flex items-center justify-center flex-shrink-0 mt-0.5`}>
-                          <Icon name="Star" size={12} color="white" strokeWidth={3} />
+                        <div className={`w-5 h-5 rounded-full bg-gradient-to-br from-violet-500 to-fuchsia-600 flex items-center justify-center flex-shrink-0 mt-0.5`}>
+                          <Icon name="Star" size={12} color="#FFFFFF" strokeWidth={3} />
                         </div>
-                        <span className="text-text-primary text-sm">{feature}</span>
+                        <span className="text-white/95 text-sm">{feature}</span>
                       </div>
                     ))}
                   </div>
@@ -323,34 +320,34 @@ const LoyaltyProgram = () => {
             </div>
 
             {/* Available Rewards */}
-            <div className="neomorphic-card rounded-2xl p-8">
-              <h3 className="text-xl font-bold text-brand-navy mb-6">Available Rewards</h3>
+            <div className="glass-ios rounded-2xl p-8">
+              <h3 className="text-xl font-bold text-white mb-6">Available Rewards</h3>
               <div className="grid sm:grid-cols-2 gap-6">
                 {availableRewards.map((reward) => (
                   <div key={reward.id} className="glass-effect rounded-xl p-6">
                     <div className="flex items-start justify-between mb-4">
                       <div className="flex items-center space-x-3">
-                        <div className="w-12 h-12 bg-brand-navy/10 rounded-lg flex items-center justify-center">
-                          <Icon name={reward.icon} size={20} color="var(--color-brand-navy)" />
+                        <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-500 to-indigo-600">
+                          <Icon name={reward.icon} size={20} color="#FFFFFF" />
                         </div>
                         <div>
-                          <h4 className="font-semibold text-brand-navy">{reward.title}</h4>
-                          <p className="text-xs text-text-secondary">{reward.category}</p>
+                          <h4 className="font-semibold text-white">{reward.title}</h4>
+                          <p className="text-xs text-white/70">{reward.category}</p>
                         </div>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-bold text-brand-navy">{reward.points}</div>
-                        <div className="text-xs text-text-secondary">points</div>
+                        <div className="text-lg font-bold text-white">{reward.points}</div>
+                        <div className="text-xs text-white/70">points</div>
                       </div>
                     </div>
-                    <p className="text-sm text-text-secondary mb-4">{reward.description}</p>
+                    <p className="text-sm text-white/70 mb-4">{reward.description}</p>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm font-medium text-brand-green">Value: {reward.value}</span>
+                      <span className="text-sm font-medium text-cyan-300">Value: {reward.value}</span>
                       <Button
                         variant="outline"
                         size="sm"
                         disabled={selectedTierData.currentPoints < reward.points}
-                        className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white disabled:opacity-50"
+                        className="bg-white text-gray-900 border-white hover:bg-white hover:text-black disabled:opacity-50 disabled:bg-gray-300 disabled:text-gray-500"
                       >
                         {selectedTierData.currentPoints >= reward.points ? 'Redeem' : 'Insufficient Points'}
                       </Button>
@@ -361,20 +358,20 @@ const LoyaltyProgram = () => {
             </div>
 
             {/* Recent Activity */}
-            <div className="glass-effect rounded-2xl p-8">
-              <h3 className="text-xl font-bold text-brand-navy mb-6">Recent Activity</h3>
+            <div className="glass-ios rounded-2xl p-8">
+              <h3 className="text-xl font-bold text-white mb-6">Recent Activity</h3>
               <div className="space-y-4">
                 {recentActivities.map((activity) => (
-                  <div key={activity.id} className="flex items-center space-x-4 p-4 bg-white/50 rounded-lg">
-                    <div className="w-10 h-10 bg-brand-navy/10 rounded-lg flex items-center justify-center">
-                      <Icon name={activity.icon} size={16} color="var(--color-brand-navy)" />
+                  <div key={activity.id} className="flex items-center space-x-4 p-4 bg-white/8 ring-1 ring-white/10 rounded-lg">
+                    <div className="w-10 h-10 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-500 to-indigo-600">
+                      <Icon name={activity.icon} size={16} color="#FFFFFF" />
                     </div>
                     <div className="flex-1">
-                      <p className="text-sm font-medium text-brand-navy">{activity.description}</p>
-                      <p className="text-xs text-text-secondary">{activity.date}</p>
+                      <p className="text-sm font-medium text-white">{activity.description}</p>
+                      <p className="text-xs text-white/70">{activity.date}</p>
                     </div>
                     <div className={`font-semibold ${
-                      activity.points.startsWith('+') ? 'text-brand-green' : 'text-red-500'
+                      activity.points.startsWith('+') ? 'text-cyan-300' : 'text-red-400'
                     }`}>
                       {activity.points}
                     </div>
@@ -386,7 +383,7 @@ const LoyaltyProgram = () => {
                   variant="outline"
                   iconName="History"
                   iconPosition="left"
-                  className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
+                  className="bg-white text-gray-900 border-white hover:bg-white hover:text-black"
                 >
                   View Full History
                 </Button>

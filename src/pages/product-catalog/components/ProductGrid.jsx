@@ -42,10 +42,10 @@ const ProductGrid = ({
           We couldn't find any products matching your current filters. Try adjusting your search criteria or browse our categories.
         </p>
         <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
-          <button className="px-6 py-2 bg-brand-navy text-white rounded-lg hover:bg-opacity-90 brand-transition">
+          <button className="px-6 py-2 bg-brand-navy text-white rounded-full hover:bg-opacity-90 brand-transition">
             Clear Filters
           </button>
-          <button className="px-6 py-2 border border-brand-navy text-brand-navy rounded-lg hover:bg-brand-navy hover:text-white brand-transition">
+          <button className="px-6 py-2 border border-brand-navy text-brand-navy rounded-full hover:bg-brand-navy hover:text-white brand-transition">
             Browse Categories
           </button>
         </div>
@@ -54,8 +54,8 @@ const ProductGrid = ({
   }
 
   const gridClasses = {
-    grid: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6',
-    list: 'space-y-4'
+    grid: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8',
+    list: 'space-y-6'
   };
 
   return (

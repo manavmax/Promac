@@ -33,6 +33,13 @@ const BulkOrderingInterface = () => {
     }
   ]);
 
+  const [newRecurringOrder, setNewRecurringOrder] = useState({
+    name: '',
+    frequency: '',
+    startDate: '',
+    deliveryLocation: ''
+  });
+
   const deliveryLocations = [
     { value: 'mumbai-office', label: 'Mumbai Office - Andheri East' },
     { value: 'mumbai-warehouse', label: 'Mumbai Warehouse - Bhiwandi' },
@@ -97,32 +104,60 @@ const BulkOrderingInterface = () => {
     }).format(amount);
   };
 
+  const handleRecurringOrderChange = (field, value) => {
+    setNewRecurringOrder(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const createRecurringOrder = () => {
+    if (newRecurringOrder.name && newRecurringOrder.frequency && newRecurringOrder.startDate && newRecurringOrder.deliveryLocation) {
+      const newOrder = {
+        id: Date.now(),
+        name: newRecurringOrder.name,
+        frequency: newRecurringOrder.frequency,
+        nextDelivery: newRecurringOrder.startDate,
+        items: 0,
+        value: '₹0',
+        status: 'Active'
+      };
+      setRecurringOrders(prev => [...prev, newOrder]);
+      setNewRecurringOrder({
+        name: '',
+        frequency: '',
+        startDate: '',
+        deliveryLocation: ''
+      });
+    }
+  };
+
   return (
-    <section className="py-20 bg-muted">
+    <section className="py-20 bg-transparent section-premium">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-brand-navy mb-4">
+          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-300 via-sky-400 to-indigo-400 bg-clip-text text-transparent">
             Bulk Ordering Interface
           </h2>
-          <p className="text-xl text-text-secondary max-w-3xl mx-auto">
+          <p className="text-lg text-white/70 max-w-3xl mx-auto">
             Streamlined bulk ordering with CSV upload, recurring orders, and multi-location delivery coordination for efficient procurement management.
           </p>
         </div>
 
         {/* Tab Navigation */}
         <div className="flex flex-wrap justify-center mb-12">
-          <div className="glass-effect rounded-xl p-2 inline-flex">
+          <div className="glass-ios rounded-xl p-2 inline-flex">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium brand-transition ${
                   activeTab === tab.id
-                    ? 'bg-brand-navy text-white shadow-lg'
-                    : 'text-text-primary hover:bg-white/50'
+                    ? 'bg-gradient-to-br from-cyan-600/40 to-indigo-700/40 text-white shadow-xl'
+                    : 'text-white hover:bg-white/10'
                 }`}
               >
-                <Icon name={tab.icon} size={18} />
+                <Icon name={tab.icon} size={18} color={activeTab === tab.id ? '#FFFFFF' : '#93C5FD'} />
                 <span className="hidden sm:inline">{tab.label}</span>
               </button>
             ))}
@@ -132,20 +167,20 @@ const BulkOrderingInterface = () => {
         {/* Tab Content */}
         <div className="space-y-8">
           {activeTab === 'quick-order' && (
-            <div className="neomorphic-card rounded-2xl p-8">
+                <div className="glass-ios rounded-2xl p-8">
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-brand-amber rounded-lg flex items-center justify-center">
-                    <Icon name="Zap" size={24} color="#1A237E" />
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-400 via-sky-500 to-indigo-600 shadow-lg shadow-cyan-500/20 ring-1 ring-white/10">
+                    <Icon name="Zap" size={24} color="#FFFFFF" />
                   </div>
-                  <h3 className="text-2xl font-bold text-brand-navy">Quick Order Entry</h3>
+                  <h3 className="text-2xl font-bold text-white">Quick Order Entry</h3>
                 </div>
                 <Button
                   variant="outline"
                   iconName="Plus"
                   iconPosition="left"
                   onClick={addOrderItem}
-                  className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
+                  className="bg-white text-gray-900 border-white hover:bg-gray-100"
                 >
                   Add Item
                 </Button>
@@ -154,25 +189,25 @@ const BulkOrderingInterface = () => {
               {/* Order Items Table */}
               <div className="overflow-x-auto mb-8">
                 <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-gray-200">
-                      <th className="text-left py-3 px-2 font-semibold text-brand-navy">Product Code</th>
-                      <th className="text-left py-3 px-2 font-semibold text-brand-navy">Product Name</th>
-                      <th className="text-left py-3 px-2 font-semibold text-brand-navy">Quantity</th>
-                      <th className="text-left py-3 px-2 font-semibold text-brand-navy">Unit Price</th>
-                      <th className="text-left py-3 px-2 font-semibold text-brand-navy">Total</th>
-                      <th className="text-left py-3 px-2 font-semibold text-brand-navy">Action</th>
+                   <thead>
+                    <tr className="border-b border-white/10">
+                      <th className="text-left py-3 px-2 font-semibold text-white">Product Code</th>
+                      <th className="text-left py-3 px-2 font-semibold text-white">Product Name</th>
+                      <th className="text-left py-3 px-2 font-semibold text-white">Quantity</th>
+                      <th className="text-left py-3 px-2 font-semibold text-white">Unit Price</th>
+                      <th className="text-left py-3 px-2 font-semibold text-white">Total</th>
+                      <th className="text-left py-3 px-2 font-semibold text-white">Action</th>
                     </tr>
                   </thead>
                   <tbody>
                     {orderItems.map((item) => (
-                      <tr key={item.id} className="border-b border-gray-100">
+                      <tr key={item.id} className="border-b border-white/5">
                         <td className="py-3 px-2">
                           <input
                             type="text"
                             value={item.productCode}
                             onChange={(e) => updateOrderItem(item.id, 'productCode', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-navy focus:border-transparent"
+                            className="w-full px-3 py-2 border border-white/10 bg-white/5 text-white placeholder-white/40 rounded-lg focus:ring-2 focus:ring-sky-400 focus:border-transparent"
                             placeholder="SW-001"
                           />
                         </td>
@@ -181,7 +216,7 @@ const BulkOrderingInterface = () => {
                             type="text"
                             value={item.productName}
                             onChange={(e) => updateOrderItem(item.id, 'productName', e.target.value)}
-                            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-navy focus:border-transparent"
+                            className="w-full px-3 py-2 border border-white/10 bg-white/5 text-white placeholder-white/40 rounded-lg focus:ring-2 focus:ring-sky-400 focus:border-transparent"
                             placeholder="Product name"
                           />
                         </td>
@@ -190,7 +225,7 @@ const BulkOrderingInterface = () => {
                             type="number"
                             value={item.quantity}
                             onChange={(e) => updateOrderItem(item.id, 'quantity', parseInt(e.target.value) || 0)}
-                            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-navy focus:border-transparent"
+                            className="w-full px-3 py-2 border border-white/10 bg-white/5 text-white placeholder-white/40 rounded-lg focus:ring-2 focus:ring-sky-400 focus:border-transparent"
                             placeholder="0"
                           />
                         </td>
@@ -199,17 +234,17 @@ const BulkOrderingInterface = () => {
                             type="number"
                             value={item.unitPrice}
                             onChange={(e) => updateOrderItem(item.id, 'unitPrice', parseFloat(e.target.value) || 0)}
-                            className="w-full px-3 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-brand-navy focus:border-transparent"
+                            className="w-full px-3 py-2 border border-white/10 bg-white/5 text-white placeholder-white/40 rounded-lg focus:ring-2 focus:ring-sky-400 focus:border-transparent"
                             placeholder="0.00"
                           />
                         </td>
-                        <td className="py-3 px-2 font-semibold text-brand-navy">
+                        <td className="py-3 px-2 font-semibold text-white">
                           {formatCurrency(item.total)}
                         </td>
                         <td className="py-3 px-2">
                           <button
                             onClick={() => removeOrderItem(item.id)}
-                            className="p-2 text-red-500 hover:bg-red-50 rounded-lg brand-transition"
+                            className="p-2 text-red-400 hover:bg-red-500/10 rounded-lg brand-transition"
                           >
                             <Icon name="Trash2" size={16} />
                           </button>
@@ -222,10 +257,10 @@ const BulkOrderingInterface = () => {
 
               {/* Order Summary */}
               <div className="flex justify-between items-center mb-8">
-                <div className="text-lg font-semibold text-brand-navy">
+                <div className="text-lg font-semibold text-white">
                   Total Items: {orderItems.length}
                 </div>
-                <div className="text-2xl font-bold text-brand-navy">
+                <div className="text-2xl font-bold text-white">
                   Order Total: {formatCurrency(calculateOrderTotal())}
                 </div>
               </div>
@@ -236,11 +271,13 @@ const BulkOrderingInterface = () => {
                   label="Delivery Location"
                   options={deliveryLocations}
                   placeholder="Select delivery location"
+                  className="select-light"
                 />
                 <Input
                   label="Preferred Delivery Date"
                   type="date"
                   min={new Date().toISOString().split('T')[0]}
+                  className="input-light"
                 />
               </div>
 
@@ -255,12 +292,12 @@ const BulkOrderingInterface = () => {
                 >
                   Place Order
                 </Button>
-                <Button
+                 <Button
                   variant="outline"
                   size="lg"
                   iconName="Save"
                   iconPosition="left"
-                  className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
+                   className="bg-white text-gray-900 border-white hover:bg-gray-100"
                 >
                   Save as Draft
                 </Button>
@@ -269,28 +306,28 @@ const BulkOrderingInterface = () => {
           )}
 
           {activeTab === 'csv-upload' && (
-            <div className="neomorphic-card rounded-2xl p-8">
+                <div className="glass-ios rounded-2xl p-8">
               <div className="flex items-center space-x-3 mb-8">
-                <div className="w-12 h-12 bg-action-blue rounded-lg flex items-center justify-center">
-                  <Icon name="Upload" size={24} color="white" />
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-400 via-sky-500 to-indigo-600 shadow-lg shadow-cyan-500/20 ring-1 ring-white/10">
+                  <Icon name="Upload" size={24} color="#FFFFFF" />
                 </div>
-                <h3 className="text-2xl font-bold text-brand-navy">CSV Upload</h3>
+                <h3 className="text-2xl font-bold text-white">CSV Upload</h3>
               </div>
 
               <div className="grid lg:grid-cols-2 gap-8">
                 {/* Upload Area */}
                 <div>
-                  <div className="border-2 border-dashed border-gray-300 rounded-xl p-12 text-center hover:border-brand-navy brand-transition">
-                    <Icon name="Upload" size={48} color="var(--color-text-secondary)" className="mx-auto mb-4" />
-                    <h4 className="text-lg font-semibold text-brand-navy mb-2">Upload CSV File</h4>
-                    <p className="text-text-secondary mb-4">
+                  <div className="border-2 border-dashed border-white/20 rounded-xl p-12 text-center hover:border-white/40 brand-transition">
+                    <Icon name="Upload" size={48} color="#94A3B8" className="mx-auto mb-4" />
+                    <h4 className="text-lg font-semibold text-white mb-2">Upload CSV File</h4>
+                    <p className="text-white/70 mb-4">
                       Drag and drop your CSV file here, or click to browse
                     </p>
                     <Button
                       variant="outline"
                       iconName="FileText"
                       iconPosition="left"
-                      className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
+                      className="bg-white text-gray-900 border-white hover:bg-white hover:text-black"
                     >
                       Choose File
                     </Button>
@@ -301,7 +338,7 @@ const BulkOrderingInterface = () => {
                       variant="ghost"
                       iconName="Download"
                       iconPosition="left"
-                      className="text-brand-navy hover:bg-brand-navy/10"
+                      className="text-white hover:bg-white/10"
                     >
                       Download CSV Template
                     </Button>
@@ -310,11 +347,11 @@ const BulkOrderingInterface = () => {
 
                 {/* Instructions */}
                 <div>
-                  <h4 className="text-lg font-semibold text-brand-navy mb-4">CSV Format Instructions</h4>
+                  <h4 className="text-lg font-semibold text-white mb-4">CSV Format Instructions</h4>
                   <div className="space-y-4">
-                    <div className="bg-white/50 rounded-lg p-4">
-                      <h5 className="font-medium text-brand-navy mb-2">Required Columns</h5>
-                      <ul className="text-sm text-text-secondary space-y-1">
+                    <div className="bg-white/8 ring-1 ring-white/10 rounded-lg p-4">
+                      <h5 className="font-medium text-white mb-2">Required Columns</h5>
+                      <ul className="text-sm text-white/70 space-y-1">
                         <li>• Product Code (e.g., SW-001)</li>
                         <li>• Quantity (numeric value)</li>
                         <li>• Delivery Location (optional)</li>
@@ -322,9 +359,9 @@ const BulkOrderingInterface = () => {
                       </ul>
                     </div>
 
-                    <div className="bg-white/50 rounded-lg p-4">
-                      <h5 className="font-medium text-brand-navy mb-2">File Requirements</h5>
-                      <ul className="text-sm text-text-secondary space-y-1">
+                    <div className="bg-white/8 ring-1 ring-white/10 rounded-lg p-4">
+                      <h5 className="font-medium text-white mb-2">File Requirements</h5>
+                      <ul className="text-sm text-white/70 space-y-1">
                         <li>• Maximum file size: 5MB</li>
                         <li>• Supported format: .csv only</li>
                         <li>• Maximum 1000 items per upload</li>
@@ -332,9 +369,9 @@ const BulkOrderingInterface = () => {
                       </ul>
                     </div>
 
-                    <div className="bg-brand-amber/10 rounded-lg p-4">
-                      <h5 className="font-medium text-brand-navy mb-2">Pro Tips</h5>
-                      <ul className="text-sm text-text-secondary space-y-1">
+                    <div className="bg-white/8 ring-1 ring-white/10 rounded-lg p-4">
+                      <h5 className="font-medium text-white mb-2">Pro Tips</h5>
+                      <ul className="text-sm text-white/70 space-y-1">
                         <li>• Use our template for best results</li>
                         <li>• Validate product codes before upload</li>
                         <li>• Check inventory availability</li>
@@ -348,19 +385,19 @@ const BulkOrderingInterface = () => {
           )}
 
           {activeTab === 'recurring-orders' && (
-            <div className="neomorphic-card rounded-2xl p-8">
+            <div className="glass-ios rounded-2xl p-8 overflow-visible">
               <div className="flex items-center justify-between mb-8">
                 <div className="flex items-center space-x-3">
-                  <div className="w-12 h-12 bg-brand-green rounded-lg flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-500 to-indigo-600">
                     <Icon name="RotateCcw" size={24} color="white" />
                   </div>
-                  <h3 className="text-2xl font-bold text-brand-navy">Recurring Orders</h3>
+                  <h3 className="text-2xl font-bold text-white">Recurring Orders</h3>
                 </div>
                 <Button
                   variant="outline"
                   iconName="Plus"
                   iconPosition="left"
-                  className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
+                  className="bg-white text-gray-900 border-white hover:bg-white hover:text-black"
                 >
                   Create New Schedule
                 </Button>
@@ -369,15 +406,15 @@ const BulkOrderingInterface = () => {
               {/* Existing Recurring Orders */}
               <div className="space-y-4 mb-8">
                 {recurringOrders.map((order) => (
-                  <div key={order.id} className="glass-effect rounded-xl p-6">
+                  <div key={order.id} className="glass-ios rounded-xl p-6">
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-4">
-                        <div className="w-12 h-12 bg-brand-navy/10 rounded-lg flex items-center justify-center">
-                          <Icon name="Package" size={20} color="var(--color-brand-navy)" />
+                        <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-500 to-indigo-600">
+                          <Icon name="Package" size={20} color="white" />
                         </div>
                         <div>
-                          <h4 className="font-semibold text-brand-navy">{order.name}</h4>
-                          <div className="flex items-center space-x-4 text-sm text-text-secondary">
+                          <h4 className="font-semibold text-white">{order.name}</h4>
+                          <div className="flex items-center space-x-4 text-sm text-white/70">
                             <span>{order.frequency}</span>
                             <span>•</span>
                             <span>{order.items} items</span>
@@ -388,19 +425,19 @@ const BulkOrderingInterface = () => {
                       </div>
                       <div className="flex items-center space-x-4">
                         <div className="text-right">
-                          <div className="text-sm text-text-secondary">Next Delivery</div>
-                          <div className="font-medium text-brand-navy">{order.nextDelivery}</div>
+                          <div className="text-sm text-white/70">Next Delivery</div>
+                          <div className="font-medium text-white">{order.nextDelivery}</div>
                         </div>
                         <div className={`px-3 py-1 rounded-full text-xs font-medium ${
-                          order.status === 'Active' ?'bg-brand-green/10 text-brand-green' :'bg-gray-100 text-gray-600'
+                          order.status === 'Active' ?'bg-green-500/20 text-green-400' :'bg-gray-500/20 text-gray-300'
                         }`}>
                           {order.status}
                         </div>
                         <div className="flex space-x-2">
-                          <button className="p-2 text-brand-navy hover:bg-brand-navy/10 rounded-lg brand-transition">
+                          <button className="p-2 text-white hover:bg-white/10 rounded-lg brand-transition">
                             <Icon name="Edit" size={16} />
                           </button>
-                          <button className="p-2 text-red-500 hover:bg-red-50 rounded-lg brand-transition">
+                          <button className="p-2 text-red-400 hover:bg-red-500/20 rounded-lg brand-transition">
                             <Icon name="Trash2" size={16} />
                           </button>
                         </div>
@@ -411,27 +448,39 @@ const BulkOrderingInterface = () => {
               </div>
 
               {/* Create New Recurring Order */}
-              <div className="bg-white/50 rounded-xl p-6">
-                <h4 className="font-semibold text-brand-navy mb-4">Create New Recurring Order</h4>
+              <div className="glass-ios rounded-xl p-6 overflow-visible">
+                <h4 className="font-semibold text-white mb-4">Create New Recurring Order</h4>
                 <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
                   <Input
                     label="Order Name"
                     placeholder="e.g., Monthly Supplies"
+                    value={newRecurringOrder.name}
+                    onChange={(e) => handleRecurringOrderChange('name', e.target.value)}
+                    className="bg-white text-black border-gray-300 placeholder:text-gray-500"
                   />
                   <Select
                     label="Frequency"
                     options={frequencyOptions}
+                    value={newRecurringOrder.frequency}
+                    onChange={(value) => handleRecurringOrderChange('frequency', value)}
                     placeholder="Select frequency"
+                    className="select-light"
                   />
                   <Input
                     label="Start Date"
                     type="date"
+                    value={newRecurringOrder.startDate}
+                    onChange={(e) => handleRecurringOrderChange('startDate', e.target.value)}
                     min={new Date().toISOString().split('T')[0]}
+                    className="bg-white text-black border-gray-300"
                   />
                   <Select
                     label="Delivery Location"
                     options={deliveryLocations}
+                    value={newRecurringOrder.deliveryLocation}
+                    onChange={(value) => handleRecurringOrderChange('deliveryLocation', value)}
                     placeholder="Select location"
+                    className="select-light"
                   />
                 </div>
                 <div className="mt-4">
@@ -439,7 +488,9 @@ const BulkOrderingInterface = () => {
                     variant="default"
                     iconName="Plus"
                     iconPosition="left"
-                    className="cta-primary"
+                    className="bg-[#FF0C0D] text-white hover:bg-[#FF0C0D]/90"
+                    onClick={createRecurringOrder}
+                    disabled={!newRecurringOrder.name || !newRecurringOrder.frequency || !newRecurringOrder.startDate || !newRecurringOrder.deliveryLocation}
                   >
                     Create Schedule
                   </Button>
@@ -449,40 +500,43 @@ const BulkOrderingInterface = () => {
           )}
 
           {activeTab === 'multi-location' && (
-            <div className="neomorphic-card rounded-2xl p-8">
+                <div className="glass-ios rounded-2xl p-8">
               <div className="flex items-center space-x-3 mb-8">
-                <div className="w-12 h-12 bg-brand-orange rounded-lg flex items-center justify-center">
-                  <Icon name="MapPin" size={24} color="white" />
+                <div className="w-12 h-12 rounded-lg flex items-center justify-center bg-gradient-to-br from-cyan-400 via-sky-500 to-indigo-600 shadow-lg shadow-cyan-500/20 ring-1 ring-white/10">
+                  <Icon name="MapPin" size={24} color="#FFFFFF" />
                 </div>
-                <h3 className="text-2xl font-bold text-brand-navy">Multi-Location Delivery</h3>
+                <h3 className="text-2xl font-bold text-white">Multi-Location Delivery</h3>
               </div>
 
               <div className="space-y-6">
                 {/* Location 1 */}
                 <div className="glass-effect rounded-xl p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h4 className="font-semibold text-brand-navy">Mumbai Office - Andheri East</h4>
+                    <h4 className="font-semibold text-white">Mumbai Office - Andheri East</h4>
                     <Button
                       variant="ghost"
                       size="sm"
                       iconName="Trash2"
-                      className="text-red-500 hover:bg-red-50"
+                      className="text-red-400 hover:bg-red-500/10"
                     />
                   </div>
                   <div className="grid sm:grid-cols-3 gap-4 mb-4">
                     <Input
                       label="Product Code"
                       placeholder="SW-001"
+                      className="bg-white text-black border-gray-300 placeholder:text-gray-500"
                     />
                     <Input
                       label="Quantity"
                       type="number"
                       placeholder="100"
+                      className="bg-white text-black border-gray-300 placeholder:text-gray-500"
                     />
                     <Input
                       label="Delivery Date"
                       type="date"
                       min={new Date().toISOString().split('T')[0]}
+                      className="bg-white text-black border-gray-300"
                     />
                   </div>
                   <Button
@@ -490,7 +544,7 @@ const BulkOrderingInterface = () => {
                     size="sm"
                     iconName="Plus"
                     iconPosition="left"
-                    className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
+                    className="bg-white text-black border-gray-300 hover:bg-white hover:text-black"
                   >
                     Add Item
                   </Button>
@@ -499,28 +553,31 @@ const BulkOrderingInterface = () => {
                 {/* Location 2 */}
                 <div className="glass-effect rounded-xl p-6">
                   <div className="flex items-center justify-between mb-4">
-                    <h4 className="font-semibold text-brand-navy">Pune Construction Site - Hinjewadi</h4>
+                    <h4 className="font-semibold text-white">Pune Construction Site - Hinjewadi</h4>
                     <Button
                       variant="ghost"
                       size="sm"
                       iconName="Trash2"
-                      className="text-red-500 hover:bg-red-50"
+                      className="text-red-400 hover:bg-red-500/10"
                     />
                   </div>
                   <div className="grid sm:grid-cols-3 gap-4 mb-4">
                     <Input
                       label="Product Code"
                       placeholder="CB-015"
+                      className="bg-white text-black border-gray-300 placeholder:text-gray-500"
                     />
                     <Input
                       label="Quantity"
                       type="number"
                       placeholder="50"
+                      className="bg-white text-black border-gray-300 placeholder:text-gray-500"
                     />
                     <Input
                       label="Delivery Date"
                       type="date"
                       min={new Date().toISOString().split('T')[0]}
+                      className="bg-white text-black border-gray-300"
                     />
                   </div>
                   <Button
@@ -528,44 +585,44 @@ const BulkOrderingInterface = () => {
                     size="sm"
                     iconName="Plus"
                     iconPosition="left"
-                    className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
+                    className="bg-white text-black border-gray-300 hover:bg-white hover:text-black"
                   >
                     Add Item
                   </Button>
                 </div>
 
                 {/* Add Location */}
-                <div className="border-2 border-dashed border-gray-300 rounded-xl p-8 text-center">
-                  <Icon name="MapPin" size={32} color="var(--color-text-secondary)" className="mx-auto mb-3" />
-                  <h4 className="font-semibold text-brand-navy mb-2">Add Another Location</h4>
-                  <p className="text-text-secondary mb-4">
+                <div className="border-2 border-dashed border-white/20 rounded-xl p-8 text-center">
+                  <Icon name="MapPin" size={32} color="#94A3B8" className="mx-auto mb-3" />
+                  <h4 className="font-semibold text-white mb-2">Add Another Location</h4>
+                  <p className="text-white/70 mb-4">
                     Coordinate deliveries to multiple locations in a single order
                   </p>
                   <Button
                     variant="outline"
                     iconName="Plus"
                     iconPosition="left"
-                    className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
+                    className="bg-white text-black border-gray-300 hover:bg-white hover:text-black"
                   >
                     Add Location
                   </Button>
                 </div>
 
                 {/* Order Summary */}
-                <div className="bg-brand-navy/5 rounded-xl p-6">
-                  <h4 className="font-semibold text-brand-navy mb-4">Multi-Location Order Summary</h4>
+                <div className="bg-white/5 rounded-xl p-6">
+                  <h4 className="font-semibold text-white mb-4">Multi-Location Order Summary</h4>
                   <div className="grid sm:grid-cols-3 gap-6">
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-brand-navy">2</div>
-                      <div className="text-sm text-text-secondary">Locations</div>
+                      <div className="text-2xl font-bold text-white">2</div>
+                      <div className="text-sm text-white/70">Locations</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-brand-navy">150</div>
-                      <div className="text-sm text-text-secondary">Total Items</div>
+                      <div className="text-2xl font-bold text-white">150</div>
+                      <div className="text-sm text-white/70">Total Items</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-2xl font-bold text-brand-navy">₹26,750</div>
-                      <div className="text-sm text-text-secondary">Total Value</div>
+                      <div className="text-2xl font-bold text-white">₹26,750</div>
+                      <div className="text-sm text-white/70">Total Value</div>
                     </div>
                   </div>
                 </div>
@@ -586,7 +643,7 @@ const BulkOrderingInterface = () => {
                     size="lg"
                     iconName="Calendar"
                     iconPosition="left"
-                    className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
+                    className="border-white/30 text-white hover:bg-white/10"
                   >
                     Schedule Delivery
                   </Button>

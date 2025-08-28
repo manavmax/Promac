@@ -237,9 +237,9 @@ const QualitySection = () => {
             </div>
             <div className="relative">
               {/* Process Flow */}
-              <div className="flex flex-col lg:flex-row justify-between items-center space-y-8 lg:space-y-0 lg:space-x-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {qualityProcess.map((process, index) => (
-                  <div key={index} className="relative flex-1 max-w-xs">
+                  <div key={index} className="relative">
                     <div className="neomorphic-card rounded-2xl p-6 text-center space-y-4">
                       <div className="w-16 h-16 bg-brand-amber rounded-full flex items-center justify-center mx-auto shadow-brand">
                         <Icon name={process.icon} size={24} color="white" />
@@ -251,7 +251,7 @@ const QualitySection = () => {
                       <p className="text-sm text-text-secondary">{process.description}</p>
                     </div>
                     {index < qualityProcess.length - 1 && (
-                      <div className="hidden lg:block absolute top-1/2 -right-2 transform -translate-y-1/2">
+                      <div className="hidden lg:block absolute top-1/2 -right-3 transform -translate-y-1/2 z-10">
                         <Icon name="ArrowRight" size={20} color="var(--color-brand-amber)" />
                       </div>
                     )}
@@ -323,7 +323,7 @@ const QualitySection = () => {
             <button
               key={tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center space-x-3 px-6 py-4 rounded-xl font-semibold brand-transition ${
+              className={`flex items-center space-x-3 px-6 py-4 rounded-full font-semibold brand-transition h-16 ${
                 activeTab === tab.id
                   ? 'bg-brand-navy text-white shadow-primary'
                   : 'bg-white text-brand-navy border border-brand-navy/20 hover:bg-brand-navy hover:text-white'

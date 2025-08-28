@@ -1,203 +1,261 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Icon from '../../../components/AppIcon';
-import Button from '../../../components/ui/Button';
-import Image from '../../../components/AppImage';
 
 const LiveChatWidget = ({ isOpen, onToggle }) => {
+  const [inputMessage, setInputMessage] = useState('');
   const [messages, setMessages] = useState([
     {
       id: 1,
-      sender: 'support',
-      name: 'Rajesh Kumar',
-      role: 'Technical Expert',
-      avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
-      message: 'Hello! I\'m Rajesh, your electrical support specialist. How can I help you today?',
-      timestamp: new Date(Date.now() - 60000)
+      type: 'agent',
+      content: 'Hello! Welcome to Promac Electrical Support. I\'m Sarah, your technical support specialist. How can I help you today?',
+      timestamp: new Date(Date.now() - 300000),
+      agent: 'Sarah Chen',
+      avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face'
     }
   ]);
-  const [newMessage, setNewMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [chatStatus, setChatStatus] = useState('online');
   const messagesEndRef = useRef(null);
 
-  const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  };
+  useEffect(() => {
+    if (isOpen) {
+      // Simulate agent typing
+      setTimeout(() => {
+        setIsTyping(true);
+        setTimeout(() => {
+          setIsTyping(false);
+          setMessages(prev => [...prev, {
+            id: 2,
+            type: 'agent',
+            content: 'I\'m here to assist you with any electrical product questions, installation guidance, or technical support you might need.',
+            timestamp: new Date(),
+            agent: 'Sarah Chen',
+            avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face'
+          }]);
+        }, 2000);
+      }, 1000);
+    }
+  }, [isOpen]);
 
   useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages, isTyping]);
 
   const handleSendMessage = (e) => {
     e.preventDefault();
-    if (!newMessage.trim()) return;
+    if (!inputMessage.trim()) return;
 
-    const userMessage = {
+    const newMessage = {
       id: messages.length + 1,
-      sender: 'user',
-      name: 'You',
-      message: newMessage,
+      type: 'user',
+      content: inputMessage,
       timestamp: new Date()
     };
 
-    setMessages(prev => [...prev, userMessage]);
-    setNewMessage('');
+    setMessages(prev => [...prev, newMessage]);
+    setInputMessage('');
     setIsTyping(true);
 
-    // Simulate support response
+    // Simulate agent response
     setTimeout(() => {
-      const supportResponse = {
-        id: messages.length + 2,
-        sender: 'support',
-        name: 'Rajesh Kumar',
-        role: 'Technical Expert',
-        avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
-        message: 'I understand your concern. Let me help you with that. Could you please provide more details about the specific product or installation you\'re working with?',
-        timestamp: new Date()
-      };
-      setMessages(prev => [...prev, supportResponse]);
       setIsTyping(false);
+      setMessages(prev => [...prev, {
+        id: prev.length + 1,
+        type: 'agent',
+        content: 'Thank you for your message. I\'m looking into this for you. Could you provide a bit more detail about your specific situation?',
+        timestamp: new Date(),
+        agent: 'Sarah Chen',
+        avatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face'
+      }]);
     }, 2000);
   };
 
-  const quickActions = [
-    { text: 'Product Installation Help', icon: 'Wrench' },
-    { text: 'Warranty Claim', icon: 'Shield' },
-    { text: 'Technical Specifications', icon: 'FileText' },
-    { text: 'Order Status', icon: 'Package' }
-  ];
+  const getStatusColor = () => {
+    switch (chatStatus) {
+      case 'online': return 'bg-[#10B981]';
+      case 'busy': return 'bg-[#F59E0B]';
+      case 'offline': return 'bg-[#6B7280]';
+      default: return 'bg-[#10B981]';
+    }
+  };
 
-  if (!isOpen) {
-    return (
-      <div className="fixed bottom-6 right-6 z-50">
-        <Button
-          onClick={onToggle}
-          className="w-16 h-16 rounded-full bg-brand-green hover:bg-brand-green/90 shadow-2xl"
-          iconName="MessageCircle"
-          iconSize={24}
-        >
-        </Button>
-        <div className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 rounded-full flex items-center justify-center">
-          <span className="text-white text-xs font-bold">1</span>
-        </div>
-      </div>
-    );
-  }
+  const getStatusText = () => {
+    switch (chatStatus) {
+      case 'online': return 'Online';
+      case 'busy': return 'Busy';
+      case 'offline': return 'Offline';
+      default: return 'Online';
+    }
+  };
 
   return (
-    <div className="fixed bottom-6 right-6 w-96 h-[600px] bg-white rounded-2xl shadow-2xl z-50 flex flex-col border border-gray-200">
-      {/* Header */}
-      <div className="bg-brand-green text-white p-4 rounded-t-2xl flex items-center justify-between">
-        <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-            <Icon name="MessageCircle" size={20} color="white" />
+    <>
+      {/* Chat Toggle Button */}
+      <button
+        onClick={onToggle}
+        className="fixed bottom-8 right-8 z-30 w-16 h-16 bg-gradient-to-r from-[#10B981] to-[#34D399] rounded-full shadow-2xl hover:shadow-[#10B981]/25 transition-all duration-300 hover:scale-110 group"
+        style={{
+          boxShadow: '0 20px 40px rgba(16, 185, 129, 0.3)',
+        }}
+      >
+        <div className="relative">
+          <Icon name="MessageCircle" size={28} color="white" />
+          
+          {/* Notification Badge */}
+          <div className="absolute -top-2 -right-2 w-6 h-6 bg-gradient-to-r from-[#EF4444] to-[#F87171] rounded-full flex items-center justify-center animate-pulse">
+            <span className="text-white text-xs font-bold">1</span>
           </div>
-          <div>
-            <h3 className="font-semibold">Live Support</h3>
-            <p className="text-xs text-white/80">Typically replies in 2 minutes</p>
-          </div>
+          
+          {/* Pulse Effect */}
+          <div className="absolute inset-0 bg-gradient-to-r from-[#10B981] to-[#34D399] rounded-full animate-ping opacity-75"></div>
         </div>
-        <Button
-          onClick={onToggle}
-          variant="ghost"
-          className="text-white hover:bg-white/20 p-2"
-          iconName="X"
-          iconSize={20}
-        >
-        </Button>
-      </div>
+      </button>
 
-      {/* Messages */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-4">
-        {messages.map((message) => (
-          <div
-            key={message.id}
-            className={`flex ${message.sender === 'user' ? 'justify-end' : 'justify-start'}`}
-          >
-            <div className={`flex items-start space-x-2 max-w-[80%] ${message.sender === 'user' ? 'flex-row-reverse space-x-reverse' : ''}`}>
-              {message.sender === 'support' && (
-                <Image
-                  src={message.avatar}
-                  alt={message.name}
-                  className="w-8 h-8 rounded-full object-cover"
-                />
-              )}
-              <div className={`rounded-2xl p-3 ${
-                message.sender === 'user' ?'bg-brand-navy text-white' :'bg-gray-100 text-text-primary'
-              }`}>
-                {message.sender === 'support' && (
-                  <div className="text-xs font-medium text-brand-navy mb-1">
-                    {message.name} • {message.role}
+      {/* Chat Widget */}
+      {isOpen && (
+        <div className="fixed bottom-8 right-8 z-30 w-96 h-[600px] bg-[#1F2937] rounded-3xl shadow-2xl border border-[#374151] overflow-hidden backdrop-blur-xl">
+          {/* Chat Header */}
+          <div className="bg-gradient-to-r from-[#10B981] to-[#34D399] p-4 text-white">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
+                  <Icon name="MessageCircle" size={20} color="white" />
+                </div>
+                <div>
+                  <h3 className="font-semibold">Live Chat Support</h3>
+                  <div className="flex items-center space-x-2">
+                    <div className={`w-2 h-2 ${getStatusColor()} rounded-full`}></div>
+                    <span className="text-sm opacity-90">{getStatusText()}</span>
                   </div>
-                )}
-                <p className="text-sm">{message.message}</p>
-                <p className={`text-xs mt-1 ${
-                  message.sender === 'user' ? 'text-white/70' : 'text-text-secondary'
-                }`}>
-                  {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                </p>
-              </div>
-            </div>
-          </div>
-        ))}
-        
-        {isTyping && (
-          <div className="flex justify-start">
-            <div className="flex items-center space-x-2">
-              <Image
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face"
-                alt="Support"
-                className="w-8 h-8 rounded-full object-cover"
-              />
-              <div className="bg-gray-100 rounded-2xl p-3">
-                <div className="flex space-x-1">
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
-                  <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
                 </div>
               </div>
+              
+              <button
+                onClick={onToggle}
+                className="w-8 h-8 bg-white/20 rounded-full flex items-center justify-center hover:bg-white/30 transition-colors duration-200"
+              >
+                <Icon name="X" size={16} color="white" />
+              </button>
+            </div>
+            
+            {/* Agent Info */}
+            <div className="flex items-center space-x-3 bg-white/10 rounded-2xl p-3">
+              <img
+                src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face"
+                alt="Sarah Chen"
+                className="w-8 h-8 rounded-full border-2 border-white/20"
+              />
+              <div className="flex-1">
+                <div className="text-sm font-medium">Sarah Chen</div>
+                <div className="text-xs opacity-80">Technical Support Specialist</div>
+              </div>
+              <div className="text-xs opacity-80">Usually responds in 2 min</div>
             </div>
           </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
 
-      {/* Quick Actions */}
-      <div className="p-3 border-t border-gray-100">
-        <div className="grid grid-cols-2 gap-2 mb-3">
-          {quickActions.map((action, index) => (
-            <button
-              key={index}
-              onClick={() => setNewMessage(action.text)}
-              className="flex items-center space-x-2 p-2 text-xs bg-gray-50 hover:bg-gray-100 rounded-lg brand-transition"
-            >
-              <Icon name={action.icon} size={14} className="text-brand-navy" />
-              <span className="text-text-primary truncate">{action.text}</span>
-            </button>
-          ))}
-        </div>
-      </div>
+          {/* Chat Messages */}
+          <div className="flex-1 p-4 overflow-y-auto bg-[#111827]">
+            <div className="space-y-4">
+              {messages.map((message) => (
+                <div
+                  key={message.id}
+                  className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
+                >
+                  {message.type === 'agent' && (
+                    <img
+                      src={message.avatar}
+                      alt={message.agent}
+                      className="w-8 h-8 rounded-full mr-3 flex-shrink-0"
+                    />
+                  )}
+                  
+                  <div className={`max-w-[80%] ${message.type === 'user' ? 'order-2' : 'order-1'}`}>
+                    <div className={`rounded-2xl px-4 py-3 ${
+                      message.type === 'user'
+                        ? 'bg-gradient-to-r from-[#10B981] to-[#34D399] text-white'
+                        : 'bg-[#374151] text-gray-200'
+                    }`}>
+                      <p className="text-sm leading-relaxed">{message.content}</p>
+                    </div>
+                    
+                    <div className={`text-xs text-gray-500 mt-2 ${
+                      message.type === 'user' ? 'text-right' : 'text-left'
+                    }`}>
+                      {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                    </div>
+                  </div>
+                  
+                  {message.type === 'user' && (
+                    <div className="w-8 h-8 bg-gradient-to-r from-[#10B981] to-[#34D399] rounded-full flex items-center justify-center ml-3 flex-shrink-0">
+                      <Icon name="User" size={16} color="white" />
+                    </div>
+                  )}
+                </div>
+              ))}
+              
+              {/* Typing Indicator */}
+              {isTyping && (
+                <div className="flex justify-start">
+                  <img
+                    src="https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face"
+                    alt="Sarah Chen"
+                    className="w-8 h-8 rounded-full mr-3"
+                  />
+                  <div className="bg-[#374151] rounded-2xl px-4 py-3">
+                    <div className="flex space-x-1">
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce"></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.1s' }}></div>
+                      <div className="w-2 h-2 bg-gray-400 rounded-full animate-bounce" style={{ animationDelay: '0.2s' }}></div>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              <div ref={messagesEndRef} />
+            </div>
+          </div>
 
-      {/* Input */}
-      <form onSubmit={handleSendMessage} className="p-4 border-t border-gray-100">
-        <div className="flex items-center space-x-2">
-          <input
-            type="text"
-            value={newMessage}
-            onChange={(e) => setNewMessage(e.target.value)}
-            placeholder="Type your message..."
-            className="flex-1 border border-gray-200 rounded-full px-4 py-2 text-sm focus:outline-none focus:border-brand-navy"
-          />
-          <Button
-            type="submit"
-            disabled={!newMessage.trim()}
-            className="w-10 h-10 rounded-full bg-brand-navy hover:bg-brand-navy/90 disabled:opacity-50"
-            iconName="Send"
-            iconSize={16}
-          >
-          </Button>
+          {/* Chat Input */}
+          <div className="p-4 bg-[#1F2937] border-t border-[#374151]">
+            <form onSubmit={handleSendMessage} className="flex items-center space-x-3">
+              <div className="flex-1 relative">
+                <input
+                  type="text"
+                  value={inputMessage}
+                  onChange={(e) => setInputMessage(e.target.value)}
+                  placeholder="Type your message..."
+                  className="w-full bg-[#374151] text-white placeholder-gray-400 px-4 py-3 rounded-2xl border border-[#4B5563] focus:outline-none focus:border-[#10B981] focus:ring-2 focus:ring-[#10B981]/20 transition-all duration-200"
+                />
+              </div>
+              
+              <button
+                type="submit"
+                disabled={!inputMessage.trim()}
+                className="w-12 h-12 bg-gradient-to-r from-[#10B981] to-[#34D399] rounded-2xl flex items-center justify-center text-white disabled:opacity-50 disabled:cursor-not-allowed hover:scale-105 transition-transform duration-200"
+              >
+                <Icon name="Send" size={18} color="white" />
+              </button>
+            </form>
+            
+            {/* Quick Actions */}
+            <div className="flex items-center justify-between mt-3 text-xs text-gray-400">
+              <div className="flex items-center space-x-4">
+                <button className="flex items-center space-x-1 hover:text-[#10B981] transition-colors duration-200">
+                  <Icon name="Paperclip" size={14} />
+                  <span>Attach</span>
+                </button>
+                <button className="flex items-center space-x-1 hover:text-[#10B981] transition-colors duration-200">
+                  <Icon name="Image" size={14} />
+                  <span>Image</span>
+                </button>
+              </div>
+              
+              <span>24/7 Support Available</span>
+            </div>
+          </div>
         </div>
-      </form>
-    </div>
+      )}
+    </>
   );
 };
 

@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import Header from '../../components/ui/Header';
 import HeroSection from './components/HeroSection';
 import CategoryGrid from './components/CategoryGrid';
 import WhyPromacSection from './components/WhyPromacSection';
 import TestimonialCarousel from './components/TestimonialCarousel';
 import InnovationSpotlight from './components/InnovationSpotlight';
 import TrustSignals from './components/TrustSignals';
+import { Footer } from '../../components/ui/Footer';
 
 const Homepage = () => {
   useEffect(() => {
@@ -27,8 +27,8 @@ const Homepage = () => {
       });
     }, observerOptions);
 
-    // Observe all scroll-reveal elements
-    const scrollElements = document.querySelectorAll('.scroll-reveal');
+    // Observe reveal elements (legacy + new)
+    const scrollElements = document.querySelectorAll('.scroll-reveal, .reveal-up');
     scrollElements.forEach((el) => observer.observe(el));
 
     return () => observer.disconnect();
@@ -51,105 +51,46 @@ const Homepage = () => {
       </Helmet>
 
       <div className="min-h-screen bg-background">
-        {/* Header */}
-        <Header />
-
         {/* Main Content */}
-        <main className="pt-16">
-          {/* Hero Section */}
+        <main>
+          {/* Hero Section with integrated header */}
           <HeroSection />
 
-          {/* Category Grid */}
-          <CategoryGrid />
+          {/* Unified Flow Wrapper (post-hero) */}
+          <div className="homepage-unified">
+            {/* Category Grid */}
+            <section className="section-wrap reveal-up">
+              <CategoryGrid />
+            </section>
+            <div className="section-divider" aria-hidden="true" />
 
-          {/* Why Promac Section */}
-          <WhyPromacSection />
+            {/* Why Promac Section */}
+            <section className="section-wrap reveal-up">
+              <WhyPromacSection />
+            </section>
+            <div className="section-divider" aria-hidden="true" />
 
-          {/* Testimonial Carousel */}
-          <TestimonialCarousel />
+            {/* Testimonial Carousel */}
+            <section className="section-wrap reveal-up">
+              <TestimonialCarousel />
+            </section>
+            <div className="section-divider" aria-hidden="true" />
 
-          {/* Innovation Spotlight */}
-          <InnovationSpotlight />
+            {/* Innovation Spotlight */}
+            <section className="section-wrap reveal-up">
+              <InnovationSpotlight />
+            </section>
+            <div className="section-divider" aria-hidden="true" />
 
-          {/* Trust Signals */}
-          <TrustSignals />
+            {/* Trust Signals */}
+            <section className="section-wrap reveal-up">
+              <TrustSignals />
+            </section>
+          </div>
         </main>
 
         {/* Footer */}
-        <footer className="bg-brand-navy text-white py-12">
-          <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-              {/* Company Info */}
-              <div className="space-y-4">
-                <div className="flex items-center space-x-3">
-                  <div className="w-10 h-10 bg-gradient-to-br from-brand-amber to-brand-orange rounded-lg flex items-center justify-center">
-                    <span className="text-brand-navy font-bold text-lg">P</span>
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-bold">Promac Electrical</h3>
-                    <p className="text-white/80 text-sm">Powering Excellence</p>
-                  </div>
-                </div>
-                <p className="text-white/80 text-sm leading-relaxed">
-                  India's trusted electrical components supplier with 25+ years of expertise, serving contractors, distributors, and homeowners nationwide.
-                </p>
-              </div>
-
-              {/* Quick Links */}
-              <div className="space-y-4">
-                <h4 className="font-semibold text-lg">Quick Links</h4>
-                <ul className="space-y-2 text-sm">
-                  <li><a href="/product-catalog" className="text-white/80 hover:text-brand-amber brand-transition">Products</a></li>
-                  <li><a href="/business-solutions" className="text-white/80 hover:text-brand-amber brand-transition">Business Solutions</a></li>
-                  <li><a href="/about-promac" className="text-white/80 hover:text-brand-amber brand-transition">About Us</a></li>
-                  <li><a href="/support-center" className="text-white/80 hover:text-brand-amber brand-transition">Support</a></li>
-                </ul>
-              </div>
-
-              {/* Support */}
-              <div className="space-y-4">
-                <h4 className="font-semibold text-lg">Support</h4>
-                <ul className="space-y-2 text-sm">
-                  <li><a href="/contact-locations" className="text-white/80 hover:text-brand-amber brand-transition">Contact Us</a></li>
-                  <li><a href="/support-center" className="text-white/80 hover:text-brand-amber brand-transition">Help Center</a></li>
-                  <li><span className="text-white/80">24/7 Technical Support</span></li>
-                  <li><span className="text-white/80">Installation Guides</span></li>
-                </ul>
-              </div>
-
-              {/* Contact Info */}
-              <div className="space-y-4">
-                <h4 className="font-semibold text-lg">Get in Touch</h4>
-                <div className="space-y-3 text-sm">
-                  <div className="flex items-center space-x-2">
-                    <span className="text-brand-amber">📞</span>
-                    <span className="text-white/80">+91 98765 43210</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-brand-amber">✉️</span>
-                    <span className="text-white/80">info@promacelectrical.com</span>
-                  </div>
-                  <div className="flex items-center space-x-2">
-                    <span className="text-brand-amber">📍</span>
-                    <span className="text-white/80">Mumbai, Maharashtra, India</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Bottom Bar */}
-            <div className="border-t border-white/20 mt-8 pt-8 flex flex-col sm:flex-row justify-between items-center">
-              <p className="text-white/60 text-sm">
-                © {new Date().getFullYear()} Promac Electrical. All rights reserved.
-              </p>
-              <div className="flex space-x-6 mt-4 sm:mt-0">
-                <a href="#" className="text-white/60 hover:text-brand-amber text-sm brand-transition">Privacy Policy</a>
-                <a href="#" className="text-white/60 hover:text-brand-amber text-sm brand-transition">Terms of Service</a>
-                <a href="#" className="text-white/60 hover:text-brand-amber text-sm brand-transition">Sitemap</a>
-              </div>
-            </div>
-          </div>
-        </footer>
+        <Footer />
       </div>
     </>
   );

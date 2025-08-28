@@ -6,56 +6,56 @@
 
 @layer base {
   :root {
-    /* Core Colors */
-    --color-background: #F8FAFC; /* off-white */
-    --color-foreground: #1E293B; /* dark blue-gray */
-    --color-border: #E2E8F0; /* light gray */
+    /* Core Colors - Premium Modern Palette */
+    --color-background: #FAFBFC; /* very light gray */
+    --color-foreground: #1F2937; /* dark gray */
+    --color-border: #E5E7EB; /* light gray */
     --color-input: #FFFFFF; /* white */
-    --color-ring: #1A237E; /* deep navy */
+    --color-ring: #3B82F6; /* blue */
 
     /* Card Colors */
     --color-card: #FFFFFF; /* white */
-    --color-card-foreground: #1E293B; /* dark blue-gray */
+    --color-card-foreground: #1F2937; /* dark gray */
 
     /* Popover Colors */
-    --color-popover: #F1F5F9; /* light gray */
-    --color-popover-foreground: #1E293B; /* dark blue-gray */
+    --color-popover: #FFFFFF; /* white */
+    --color-popover-foreground: #1F2937; /* dark gray */
 
     /* Muted Colors */
-    --color-muted: #F3F4F6; /* very light gray */
-    --color-muted-foreground: #64748B; /* cool gray */
+    --color-muted: #F9FAFB; /* very light gray */
+    --color-muted-foreground: #6B7280; /* medium gray */
 
     /* Primary Colors */
-    --color-primary: #1A237E; /* deep navy */
+    --color-primary: #1E40AF; /* deep blue */
     --color-primary-foreground: #FFFFFF; /* white */
 
     /* Secondary Colors */
-    --color-secondary: #64748B; /* cool gray */
+    --color-secondary: #64748B; /* slate gray */
     --color-secondary-foreground: #FFFFFF; /* white */
 
     /* Accent Colors */
-    --color-accent: #FFC107; /* gold/amber */
-    --color-accent-foreground: #1E293B; /* dark blue-gray */
+    --color-accent: #F59E0B; /* amber/gold */
+    --color-accent-foreground: #1F2937; /* dark gray */
 
     /* Success/Warning/Error/Destructive */
-    --color-success: #00B8A9; /* teal */
+    --color-success: #10B981; /* emerald */
     --color-success-foreground: #FFFFFF; /* white */
-    --color-warning: #F59E42; /* amber */
-    --color-warning-foreground: #1E293B; /* dark blue-gray */
+    --color-warning: #F59E0B; /* amber */
+    --color-warning-foreground: #1F2937; /* dark gray */
     --color-error: #EF4444; /* red */
     --color-error-foreground: #FFFFFF; /* white */
     --color-destructive: #EF4444; /* red */
     --color-destructive-foreground: #FFFFFF; /* white */
 
     /* Brand Specific Colors */
-    --color-brand-navy: #1A237E; /* deep navy */
-    --color-brand-amber: #FFC107; /* gold/amber */
-    --color-brand-teal: #00B8A9; /* teal */
-    --color-brand-green: #22C55E; /* green */
-    --color-text-primary: #1E293B; /* dark blue-gray */
-    --color-text-secondary: #64748B; /* cool gray */
+    --color-brand-navy: #1E40AF; /* deep blue */
+    --color-brand-amber: #F59E0B; /* amber/gold */
+    --color-brand-teal: #06B6D4; /* cyan */
+    --color-brand-green: #10B981; /* emerald */
+    --color-text-primary: #1F2937; /* dark gray */
+    --color-text-secondary: #6B7280; /* medium gray */
     --color-surface: #FFFFFF; /* white */
-    --color-action-blue: #2563EB; /* blue */
+    --color-action-blue: #3B82F6; /* blue */ --background: 0 0% 100%; --foreground: 0 0% 3.9%; --card: 0 0% 100%; --card-foreground: 0 0% 3.9%; --popover: 0 0% 100%; --popover-foreground: 0 0% 3.9%; --primary: 0 0% 9%; --primary-foreground: 0 0% 98%; --secondary: 0 0% 96.1%; --secondary-foreground: 0 0% 9%; --muted: 0 0% 96.1%; --muted-foreground: 0 0% 45.1%; --accent: 0 0% 96.1%; --accent-foreground: 0 0% 9%; --destructive: 0 84.2% 60.2%; --destructive-foreground: 0 0% 98%; --border: 0 0% 89.8%; --input: 0 0% 89.8%; --ring: 0 0% 3.9%; --chart-1: 12 76% 61%; --chart-2: 173 58% 39%; --chart-3: 197 37% 24%; --chart-4: 43 74% 66%; --chart-5: 27 87% 67%; --radius: 0.5rem;
   }
 
   * {
@@ -76,32 +76,60 @@
   .font-mono {
     font-family: 'JetBrains Mono', monospace;
   }
+  .dark {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 3.9%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 3.9%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 0 0% 98%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 14.9%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14.9%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14.9%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14.9%;
+    --input: 0 0% 14.9%;
+    --ring: 0 0% 83.1%;
+    --chart-1: 220 70% 50%;
+    --chart-2: 160 60% 45%;
+    --chart-3: 30 80% 55%;
+    --chart-4: 280 65% 60%;
+    --chart-5: 340 75% 55%;
+  }
 }
 
 @layer components {
-  /* Glassmorphic Effects */
+  /* Glassmorphic Effects - Enhanced Premium */
   .glass-effect {
     backdrop-filter: blur(20px);
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.37);
-    border: 1px solid rgba(255, 255, 255, 0.18);
+    background: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
   }
-
+  
   .glass-hero {
     backdrop-filter: blur(10px);
-    background: rgba(255, 255, 255, 0.95);
-    box-shadow: 0 4px 20px rgba(26, 35, 126, 0.1);
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
   }
-
-  /* Neumorphic Effects */
+  
+  /* Neumorphic Effects - Premium */
   .neomorphic-card {
-    box-shadow: 20px 20px 60px #bebebe, -20px -20px 60px #ffffff;
-    background: linear-gradient(145deg, #f0f0f0, #ffffff);
-    transition: transform 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    background: #FFFFFF;
+    border-radius: 12px;
+    transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
   }
-
+  
   .neomorphic-card:hover {
-    transform: translateY(-4px);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
 
   /* Brand Animations */
@@ -144,29 +172,29 @@
     opacity: 1;
   }
 
-  /* CTA Enhancements */
+  /* CTA Enhancements - Premium */
   .cta-primary {
-    background: var(--color-brand-amber);
-    color: var(--color-text-primary);
-    box-shadow: 0 8px 24px rgba(255, 193, 7, 0.3);
+    background: linear-gradient(135deg, #1E40AF, #3B82F6);
+    color: #FFFFFF;
+    box-shadow: 0 4px 14px rgba(30, 64, 175, 0.3);
     transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
   }
-
+  
   .cta-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 12px 32px rgba(255, 193, 7, 0.4);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(30, 64, 175, 0.4);
   }
-
+  
   .cta-secondary {
-    background: var(--color-primary);
-    color: var(--color-primary-foreground);
-    backdrop-filter: blur(10px);
+    background: #F59E0B;
+    color: #1F2937;
+    box-shadow: 0 4px 14px rgba(245, 158, 11, 0.3);
     transition: all 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
   }
-
+  
   .cta-secondary:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 8px 24px rgba(30, 58, 138, 0.3);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.4);
   }
 }
 

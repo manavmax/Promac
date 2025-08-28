@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Helmet } from 'react-helmet';
-import Header from '../../components/ui/Header';
 import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
+import { Footer } from '../../components/ui/Footer';
 import LocationCard from './components/LocationCard';
 import ContactForm from './components/ContactForm';
 import InteractiveMap from './components/InteractiveMap';
@@ -307,8 +307,6 @@ const ContactLocations = () => {
         <meta name="description" content="Find Promac Electrical stores near you, contact our sales team, book consultations, and access 24/7 emergency support. Pan-India presence with expert technical assistance." />
         <meta name="keywords" content="promac locations, electrical stores, contact promac, emergency electrical support, sales representatives, consultation booking" />
       </Helmet>
-
-      <Header />
 
       <main className="pt-16">
         {/* Hero Section */}
@@ -688,68 +686,7 @@ const ContactLocations = () => {
       </main>
 
       {/* Footer */}
-      <footer className="bg-text-primary text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div>
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-10 h-10 bg-brand-amber rounded-lg flex items-center justify-center">
-                  <Icon name="Zap" size={20} color="white" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-bold">Promac</h3>
-                  <p className="text-sm text-gray-400">Electrical</p>
-                </div>
-              </div>
-              <p className="text-gray-400 text-sm">
-                Powering India's electrical infrastructure with premium quality components and expert solutions.
-              </p>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Quick Links</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="/homepage" className="hover:text-white brand-transition">Home</a></li>
-                <li><a href="/product-catalog" className="hover:text-white brand-transition">Products</a></li>
-                <li><a href="/business-solutions" className="hover:text-white brand-transition">Business Solutions</a></li>
-                <li><a href="/about-promac" className="hover:text-white brand-transition">About Us</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Support</h4>
-              <ul className="space-y-2 text-sm text-gray-400">
-                <li><a href="/support-center" className="hover:text-white brand-transition">Help Center</a></li>
-                <li><a href="/contact-locations" className="hover:text-white brand-transition">Contact Us</a></li>
-                <li><a href="tel:1800-PROMAC-911" className="hover:text-white brand-transition">Emergency: 1800-PROMAC-911</a></li>
-                <li><a href="mailto:info@promac.in" className="hover:text-white brand-transition">info@promac.in</a></li>
-              </ul>
-            </div>
-            
-            <div>
-              <h4 className="font-semibold mb-4">Connect</h4>
-              <div className="flex space-x-3">
-                <a href="#" className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-brand-amber brand-transition">
-                  <Icon name="Facebook" size={16} />
-                </a>
-                <a href="#" className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-brand-amber brand-transition">
-                  <Icon name="Twitter" size={16} />
-                </a>
-                <a href="#" className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-brand-amber brand-transition">
-                  <Icon name="Linkedin" size={16} />
-                </a>
-                <a href="#" className="w-8 h-8 bg-gray-700 rounded-lg flex items-center justify-center hover:bg-brand-amber brand-transition">
-                  <Icon name="Youtube" size={16} />
-                </a>
-              </div>
-            </div>
-          </div>
-          
-          <div className="border-t border-gray-700 mt-8 pt-8 text-center text-sm text-gray-400">
-            <p>&copy; {new Date().getFullYear()} Promac Electrical Industries Pvt. Ltd. All rights reserved.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 };

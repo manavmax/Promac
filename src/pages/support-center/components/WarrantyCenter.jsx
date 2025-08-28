@@ -1,489 +1,401 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Icon from '../../../components/AppIcon';
-import Button from '../../../components/ui/Button';
-import Input from '../../../components/ui/Input';
-
 
 const WarrantyCenter = () => {
-  const [activeTab, setActiveTab] = useState('check');
-  const [warrantyNumber, setWarrantyNumber] = useState('');
-  const [claimForm, setClaimForm] = useState({
-    productModel: '',
-    purchaseDate: '',
-    issueDescription: '',
-    contactPhone: '',
-    contactEmail: ''
-  });
+  const [activeTab, setActiveTab] = useState('overview');
+  const [isVisible, setIsVisible] = useState(false);
 
-  const warrantyStatuses = [
-    {
-      id: 'WR2025001234',
-      productName: 'Promac 32A MCB - Series Pro',
-      model: 'PM-MCB-32A-PRO',
-      purchaseDate: '2024-08-15',
-      warrantyPeriod: '5 years',
-      status: 'Active',
-      expiryDate: '2029-08-15',
-      registeredTo: 'Amit Sharma Electricals',
-      serialNumber: 'PM240815001234',
-      coverageType: 'Comprehensive'
-    },
-    {
-      id: 'WR2025001235',
-      productName: 'Promac ELCB 40A/30mA',
-      model: 'PM-ELCB-40A-30MA',
-      purchaseDate: '2024-06-20',
-      warrantyPeriod: '3 years',
-      status: 'Claim Processed',
-      expiryDate: '2027-06-20',
-      registeredTo: 'Mumbai Residential Complex',
-      serialNumber: 'PM240620001235',
-      coverageType: 'Standard'
-    }
-  ];
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
 
-  const activeClaims = [
+  const warrantyTypes = [
     {
-      id: 'CL2025000123',
-      warrantyId: 'WR2025001234',
-      productName: 'Promac 32A MCB - Series Pro',
-      issueType: 'Frequent Tripping',
-      submittedDate: '2025-01-20',
-      status: 'Under Review',
-      expectedResolution: '2025-01-30',
-      assignedTechnician: 'Rajesh Kumar',
-      technicianPhone: '+91 98765 43210',
-      updates: [
-        { date: '2025-01-20', status: 'Claim Submitted', description: 'Initial claim received and documented' },
-        { date: '2025-01-22', status: 'Technical Review', description: 'Product specifications verified' },
-        { date: '2025-01-25', status: 'Under Review', description: 'Technician assigned for evaluation' }
+      id: 1,
+      name: 'Standard Warranty',
+      duration: '2 Years',
+      coverage: 'Manufacturing Defects',
+      icon: 'Shield',
+      color: 'from-[#10B981] to-[#34D399]',
+      features: [
+        'Free replacement of defective parts',
+        'Labor costs covered',
+        'Technical support included',
+        'Return shipping covered'
       ]
     },
     {
-      id: 'CL2025000124',
-      warrantyId: 'WR2025001235',
-      productName: 'Promac ELCB 40A/30mA',
-      issueType: 'Physical Damage',
-      submittedDate: '2025-01-18',
+      id: 2,
+      name: 'Extended Warranty',
+      duration: '5 Years',
+      coverage: 'Comprehensive Protection',
+      icon: 'Star',
+      color: 'from-[#F59E0B] to-[#FBBF24]',
+      features: [
+        'All standard warranty benefits',
+        'Extended coverage period',
+        'Priority support access',
+        'Annual maintenance check'
+      ]
+    },
+    {
+      id: 3,
+      name: 'Premium Warranty',
+      duration: '10 Years',
+      coverage: 'Maximum Protection',
+      icon: 'Crown',
+      color: 'from-[#8B5CF6] to-[#A78BFA]',
+      features: [
+        'Complete system coverage',
+        'On-site service included',
+        'Dedicated support manager',
+        'Performance guarantees'
+      ]
+    }
+  ];
+
+  const recentClaims = [
+    {
+      id: 1,
+      product: 'MCB 32A 3-Pole',
+      serialNumber: 'MCB-32A-3P-2024-001',
+      issue: 'Intermittent tripping under normal load',
+      status: 'In Progress',
+      priority: 'High',
+      submittedDate: '2025-01-15',
+      lastUpdated: '2025-01-16'
+    },
+    {
+      id: 2,
+      product: 'ELCB 63A 4-Pole',
+      serialNumber: 'ELCB-63A-4P-2024-045',
+      issue: 'False tripping during operation',
       status: 'Approved',
-      expectedResolution: '2025-01-28',
-      assignedTechnician: 'Priya Patel',
-      technicianPhone: '+91 87654 32109',
-      updates: [
-        { date: '2025-01-18', status: 'Claim Submitted', description: 'Claim with photos submitted' },
-        { date: '2025-01-19', status: 'Documentation Review', description: 'Photos and purchase proof verified' },
-        { date: '2025-01-21', status: 'Approved', description: 'Replacement approved, shipping initiated' }
-      ]
+      priority: 'Medium',
+      submittedDate: '2025-01-12',
+      lastUpdated: '2025-01-14'
+    },
+    {
+      id: 3,
+      product: 'Distribution Board 200A',
+      serialNumber: 'DB-200A-2024-023',
+      issue: 'Terminal overheating under load',
+      status: 'Completed',
+      priority: 'High',
+      submittedDate: '2025-01-08',
+      lastUpdated: '2025-01-13'
     }
   ];
 
-  const handleWarrantyCheck = (e) => {
-    e.preventDefault();
-    // Mock warranty check logic
-    console.log('Checking warranty for:', warrantyNumber);
-  };
-
-  const handleClaimSubmit = (e) => {
-    e.preventDefault();
-    // Mock claim submission logic
-    console.log('Submitting claim:', claimForm);
+  const getPriorityColor = (priority) => {
+    switch (priority) {
+      case 'High': return 'from-[#EF4444] to-[#F87171]';
+      case 'Medium': return 'from-[#F59E0B] to-[#FBBF24]';
+      case 'Low': return 'from-[#10B981] to-[#34D399]';
+      default: return 'from-[#6B7280] to-[#9CA3AF]';
+    }
   };
 
   const getStatusColor = (status) => {
     switch (status) {
-      case 'Active': return 'bg-brand-green text-white';
-      case 'Expired': return 'bg-red-500 text-white';
-      case 'Claim Processed': return 'bg-brand-amber text-brand-navy';
-      case 'Under Review': return 'bg-action-blue text-white';
-      case 'Approved': return 'bg-brand-green text-white';
-      case 'Rejected': return 'bg-red-500 text-white';
-      default: return 'bg-gray-500 text-white';
+      case 'In Progress': return 'from-[#F59E0B] to-[#FBBF24]';
+      case 'Approved': return 'from-[#10B981] to-[#34D399]';
+      case 'Completed': return 'from-[#8B5CF6] to-[#A78BFA]';
+      case 'Pending': return 'from-[#6B7280] to-[#9CA3AF]';
+      default: return 'from-[#6B7280] to-[#9CA3AF]';
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-text-primary mb-4">
-          Warranty Center
-        </h2>
-        <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-          Check warranty status, submit claims, and track your product coverage
-        </p>
-      </div>
+    <div className="bg-gradient-to-br from-[#0F172A] via-[#1E1B4B] to-[#312E81] min-h-screen py-16 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1F2937] to-[#111827]"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#F59E0B]/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#8B5CF6]/5 rounded-full blur-3xl"></div>
+      
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header Section */}
+        <div className={`text-center mb-16 transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] rounded-full text-white text-sm font-semibold mb-6">
+            <Icon name="Shield" size={16} className="mr-2" />
+            Warranty Center
+          </div>
+          
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
+            Comprehensive{' '}
+            <span className="bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] bg-clip-text text-transparent">
+              Warranty Protection
+            </span>
+          </h1>
+          
+          <p className="text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
+            Manage your warranty claims, register products, and access comprehensive coverage information
+          </p>
+        </div>
 
-      {/* Tab Navigation */}
-      <div className="flex flex-wrap justify-center mb-8">
-        {[
-          { id: 'check', name: 'Check Warranty', icon: 'Search' },
-          { id: 'claim', name: 'Submit Claim', icon: 'FileText' },
-          { id: 'track', name: 'Track Claims', icon: 'Truck' },
-          { id: 'coverage', name: 'Coverage Info', icon: 'Shield' }
-        ].map((tab) => (
-          <button
-            key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
-            className={`flex items-center space-x-2 px-6 py-3 rounded-lg font-medium brand-transition m-1 ${
-              activeTab === tab.id
-                ? 'bg-brand-navy text-white shadow-primary'
-                : 'bg-white text-text-primary border border-gray-200 hover:border-brand-navy hover:text-brand-navy'
-            }`}
-          >
-            <Icon name={tab.icon} size={18} />
-            <span>{tab.name}</span>
-          </button>
-        ))}
-      </div>
-
-      {/* Check Warranty Tab */}
-      {activeTab === 'check' && (
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
-            <h3 className="text-xl font-semibold text-text-primary mb-6">Check Warranty Status</h3>
-            
-            <form onSubmit={handleWarrantyCheck} className="mb-8">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <Input
-                  label="Warranty Number or Serial Number"
-                  type="text"
-                  value={warrantyNumber}
-                  onChange={(e) => setWarrantyNumber(e.target.value)}
-                  placeholder="Enter warranty number (e.g., WR2025001234)"
-                  className="flex-1"
-                  required
-                />
-                <div className="sm:pt-6">
-                  <Button
-                    type="submit"
-                    variant="default"
-                    iconName="Search"
-                    iconPosition="left"
-                    className="bg-brand-navy hover:bg-brand-navy/90 w-full sm:w-auto"
-                  >
-                    Check Status
-                  </Button>
-                </div>
-              </div>
-            </form>
-
-            {/* Sample Warranty Results */}
-            <div className="space-y-6">
-              {warrantyStatuses.map((warranty) => (
-                <div key={warranty.id} className="border border-gray-200 rounded-xl p-6">
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-4">
-                    <div>
-                      <h4 className="text-lg font-semibold text-text-primary">{warranty.productName}</h4>
-                      <p className="text-text-secondary">Model: {warranty.model}</p>
-                    </div>
-                    <span className={`inline-block px-3 py-1 rounded-full text-sm font-medium mt-2 lg:mt-0 ${getStatusColor(warranty.status)}`}>
-                      {warranty.status}
-                    </span>
+        {/* Tab Navigation */}
+        <div className={`mb-12 transition-all duration-1000 delay-200 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <div className="flex justify-center">
+            <div className="bg-[#1F2937] rounded-2xl border border-[#374151] p-2">
+              {[
+                { id: 'overview', name: 'Overview', icon: 'Grid3x3' },
+                { id: 'claims', name: 'My Claims', icon: 'FileText' },
+                { id: 'register', name: 'Register Product', icon: 'Plus' },
+                { id: 'support', name: 'Support', icon: 'HelpCircle' }
+              ].map((tab) => (
+                <button
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`px-8 py-4 rounded-xl transition-all duration-300 ${
+                    activeTab === tab.id
+                      ? 'bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-white shadow-lg'
+                      : 'text-gray-300 hover:text-white hover:bg-[#374151]'
+                  }`}
+                >
+                  <div className="flex items-center space-x-2">
+                    <Icon name={tab.icon} size={20} />
+                    <span className="font-medium">{tab.name}</span>
                   </div>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 text-sm">
-                    <div>
-                      <span className="text-text-secondary">Warranty ID:</span>
-                      <p className="font-medium text-text-primary">{warranty.id}</p>
-                    </div>
-                    <div>
-                      <span className="text-text-secondary">Purchase Date:</span>
-                      <p className="font-medium text-text-primary">{new Date(warranty.purchaseDate).toLocaleDateString()}</p>
-                    </div>
-                    <div>
-                      <span className="text-text-secondary">Warranty Period:</span>
-                      <p className="font-medium text-text-primary">{warranty.warrantyPeriod}</p>
-                    </div>
-                    <div>
-                      <span className="text-text-secondary">Expires On:</span>
-                      <p className="font-medium text-text-primary">{new Date(warranty.expiryDate).toLocaleDateString()}</p>
-                    </div>
-                    <div>
-                      <span className="text-text-secondary">Registered To:</span>
-                      <p className="font-medium text-text-primary">{warranty.registeredTo}</p>
-                    </div>
-                    <div>
-                      <span className="text-text-secondary">Coverage Type:</span>
-                      <p className="font-medium text-text-primary">{warranty.coverageType}</p>
-                    </div>
-                  </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
         </div>
-      )}
 
-      {/* Submit Claim Tab */}
-      {activeTab === 'claim' && (
-        <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-2xl shadow-lg p-8">
-            <h3 className="text-xl font-semibold text-text-primary mb-6">Submit Warranty Claim</h3>
-            
-            <form onSubmit={handleClaimSubmit} className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <Input
-                  label="Product Model"
-                  type="text"
-                  value={claimForm.productModel}
-                  onChange={(e) => setClaimForm({...claimForm, productModel: e.target.value})}
-                  placeholder="e.g., PM-MCB-32A-PRO"
-                  required
-                />
-                <Input
-                  label="Purchase Date"
-                  type="date"
-                  value={claimForm.purchaseDate}
-                  onChange={(e) => setClaimForm({...claimForm, purchaseDate: e.target.value})}
-                  required
-                />
-                <Input
-                  label="Contact Phone"
-                  type="tel"
-                  value={claimForm.contactPhone}
-                  onChange={(e) => setClaimForm({...claimForm, contactPhone: e.target.value})}
-                  placeholder="+91 98765 43210"
-                  required
-                />
-                <Input
-                  label="Contact Email"
-                  type="email"
-                  value={claimForm.contactEmail}
-                  onChange={(e) => setClaimForm({...claimForm, contactEmail: e.target.value})}
-                  placeholder="your.email@example.com"
-                  required
-                />
-              </div>
-              
+        {/* Tab Content */}
+        <div className={`transition-all duration-1000 delay-400 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          {/* Overview Tab */}
+          {activeTab === 'overview' && (
+            <div className="space-y-12">
+              {/* Warranty Coverage Options */}
               <div>
-                <label className="block text-sm font-medium text-text-primary mb-2">
-                  Issue Description *
-                </label>
-                <textarea
-                  value={claimForm.issueDescription}
-                  onChange={(e) => setClaimForm({...claimForm, issueDescription: e.target.value})}
-                  placeholder="Please describe the issue in detail..."
-                  rows={4}
-                  className="w-full border border-gray-200 rounded-lg px-4 py-3 focus:outline-none focus:border-brand-navy"
-                  required
-                />
-              </div>
-              
-              <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
-                <Icon name="Upload" size={48} className="text-text-secondary mx-auto mb-4" />
-                <h4 className="text-lg font-medium text-text-primary mb-2">Upload Photos</h4>
-                <p className="text-text-secondary mb-4">
-                  Upload clear photos of the product and the issue (Max 5 files, 10MB each)
-                </p>
-                <Button
-                  variant="outline"
-                  iconName="Camera"
-                  iconPosition="left"
-                  className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
-                >
-                  Choose Files
-                </Button>
-              </div>
-              
-              <div className="flex justify-end space-x-4">
-                <Button
-                  variant="outline"
-                  className="border-gray-300 text-text-secondary hover:bg-gray-50"
-                >
-                  Save as Draft
-                </Button>
-                <Button
-                  type="submit"
-                  variant="default"
-                  iconName="Send"
-                  iconPosition="left"
-                  className="bg-brand-navy hover:bg-brand-navy/90"
-                >
-                  Submit Claim
-                </Button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* Track Claims Tab */}
-      {activeTab === 'track' && (
-        <div className="max-w-6xl mx-auto">
-          <div className="space-y-6">
-            {activeClaims.map((claim) => (
-              <div key={claim.id} className="bg-white rounded-2xl shadow-lg p-8">
-                <div className="flex flex-col lg:flex-row lg:items-center justify-between mb-6">
-                  <div>
-                    <h3 className="text-xl font-semibold text-text-primary">{claim.productName}</h3>
-                    <p className="text-text-secondary">Claim ID: {claim.id}</p>
-                  </div>
-                  <span className={`inline-block px-4 py-2 rounded-full text-sm font-medium mt-2 lg:mt-0 ${getStatusColor(claim.status)}`}>
-                    {claim.status}
-                  </span>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 text-sm">
-                  <div>
-                    <span className="text-text-secondary">Issue Type:</span>
-                    <p className="font-medium text-text-primary">{claim.issueType}</p>
-                  </div>
-                  <div>
-                    <span className="text-text-secondary">Submitted:</span>
-                    <p className="font-medium text-text-primary">{new Date(claim.submittedDate).toLocaleDateString()}</p>
-                  </div>
-                  <div>
-                    <span className="text-text-secondary">Expected Resolution:</span>
-                    <p className="font-medium text-text-primary">{new Date(claim.expectedResolution).toLocaleDateString()}</p>
-                  </div>
-                  <div>
-                    <span className="text-text-secondary">Assigned Technician:</span>
-                    <p className="font-medium text-text-primary">{claim.assignedTechnician}</p>
-                  </div>
-                </div>
-                
-                <div className="border-t border-gray-200 pt-6">
-                  <h4 className="text-lg font-semibold text-text-primary mb-4">Claim Progress</h4>
-                  <div className="space-y-4">
-                    {claim.updates.map((update, index) => (
-                      <div key={index} className="flex items-start space-x-4">
-                        <div className="w-3 h-3 bg-brand-navy rounded-full mt-2"></div>
-                        <div className="flex-1">
-                          <div className="flex items-center space-x-3 mb-1">
-                            <span className="font-medium text-text-primary">{update.status}</span>
-                            <span className="text-sm text-text-secondary">{new Date(update.date).toLocaleDateString()}</span>
-                          </div>
-                          <p className="text-text-secondary text-sm">{update.description}</p>
-                        </div>
+                <h2 className="text-3xl font-bold text-white mb-8 text-center">
+                  Warranty Coverage Options
+                </h2>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                  {warrantyTypes.map((warranty, index) => (
+                    <div
+                      key={warranty.id}
+                      className="group bg-[#1F2937] rounded-3xl border border-[#374151] p-8 hover:border-[#F59E0B]/50 hover:shadow-xl hover:shadow-[#F59E0B]/10 transition-all duration-500 hover:scale-105"
+                      style={{ animationDelay: `${index * 200}ms` }}
+                    >
+                      {/* Icon */}
+                      <div className={`w-16 h-16 bg-gradient-to-r ${warranty.color} rounded-2xl flex items-center justify-center mx-auto mb-6 group-hover:scale-110 transition-transform duration-300`}>
+                        <Icon name={warranty.icon} size={32} color="white" />
                       </div>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="flex justify-end space-x-3 mt-6">
-                  <Button
-                    variant="outline"
-                    iconName="Phone"
-                    iconPosition="left"
-                    className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
-                  >
-                    Call Technician
-                  </Button>
-                  <Button
-                    variant="default"
-                    iconName="MessageCircle"
-                    iconPosition="left"
-                    className="bg-brand-navy hover:bg-brand-navy/90"
-                  >
-                    Send Message
-                  </Button>
+                      
+                      {/* Content */}
+                      <h3 className="text-xl font-bold text-white text-center mb-4">
+                        {warranty.name}
+                      </h3>
+                      
+                      <div className="text-center mb-6">
+                        <div className="text-3xl font-bold text-[#F59E0B] mb-2">
+                          {warranty.duration}
+                        </div>
+                        <p className="text-gray-400 text-sm">
+                          {warranty.coverage}
+                        </p>
+                      </div>
+                      
+                      {/* Features */}
+                      <ul className="space-y-3 mb-6">
+                        {warranty.features.map((feature, idx) => (
+                          <li key={idx} className="flex items-center text-sm text-gray-300">
+                            <Icon name="Check" size={16} className="text-[#10B981] mr-3 flex-shrink-0" />
+                            {feature}
+                          </li>
+                        ))}
+                      </ul>
+                      
+                      <button className="w-full py-3 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-white font-semibold rounded-xl hover:from-[#FBBF24] hover:to-[#F59E0B] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#F59E0B]/25">
+                        Learn More
+                      </button>
+                    </div>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
-        </div>
-      )}
 
-      {/* Coverage Info Tab */}
-      {activeTab === 'coverage' && (
-        <div className="max-w-6xl mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h3 className="text-xl font-semibold text-text-primary mb-6">Warranty Coverage Types</h3>
-              
-              <div className="space-y-6">
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h4 className="font-semibold text-brand-navy mb-2">Standard Warranty</h4>
-                  <ul className="text-sm text-text-secondary space-y-1">
-                    <li>• Manufacturing defects coverage</li>
-                    <li>• 2-3 years coverage period</li>
-                    <li>• Free replacement for defective parts</li>
-                    <li>• Technical support included</li>
-                  </ul>
-                </div>
-                
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h4 className="font-semibold text-brand-amber mb-2">Comprehensive Warranty</h4>
-                  <ul className="text-sm text-text-secondary space-y-1">
-                    <li>• All standard warranty benefits</li>
-                    <li>• Extended 5-year coverage</li>
-                    <li>• Accidental damage protection</li>
-                    <li>• Priority technical support</li>
-                    <li>• On-site service available</li>
-                  </ul>
-                </div>
-                
-                <div className="border border-gray-200 rounded-lg p-4">
-                  <h4 className="font-semibold text-brand-green mb-2">Commercial Warranty</h4>
-                  <ul className="text-sm text-text-secondary space-y-1">
-                    <li>• Bulk installation coverage</li>
-                    <li>• Dedicated account manager</li>
-                    <li>• 24/7 emergency support</li>
-                    <li>• Preventive maintenance included</li>
-                  </ul>
+              {/* Quick Actions */}
+              <div className="bg-gradient-to-r from-[#1F2937] to-[#111827] rounded-3xl border border-[#374151] p-12">
+                <h3 className="text-2xl font-bold text-white mb-8 text-center">
+                  Quick Actions
+                </h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                  {[
+                    { name: 'File New Claim', icon: 'Plus', color: 'from-[#EF4444] to-[#F87171]' },
+                    { name: 'Register Product', icon: 'Package', color: 'from-[#3B82F6] to-[#60A5FA]' },
+                    { name: 'Check Status', icon: 'Search', color: 'from-[#10B981] to-[#34D399]' },
+                    { name: 'Download Certificate', icon: 'Download', color: 'from-[#8B5CF6] to-[#A78BFA]' }
+                  ].map((action, index) => (
+                    <button
+                      key={action.name}
+                      className="group p-6 bg-[#1F2937] rounded-2xl border border-[#374151] hover:border-[#F59E0B]/50 transition-all duration-300 hover:scale-105"
+                    >
+                      <div className={`w-12 h-12 bg-gradient-to-r ${action.color} rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform duration-300`}>
+                        <Icon name={action.icon} size={24} color="white" />
+                      </div>
+                      <h4 className="text-white font-semibold text-center group-hover:text-[#F59E0B] transition-colors duration-300">
+                        {action.name}
+                      </h4>
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
-            
-            <div className="bg-white rounded-2xl shadow-lg p-8">
-              <h3 className="text-xl font-semibold text-text-primary mb-6">What's Covered</h3>
-              
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <Icon name="CheckCircle" size={20} className="text-brand-green mt-0.5" />
-                  <div>
-                    <h4 className="font-medium text-text-primary">Manufacturing Defects</h4>
-                    <p className="text-sm text-text-secondary">Any defects in materials or workmanship</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3">
-                  <Icon name="CheckCircle" size={20} className="text-brand-green mt-0.5" />
-                  <div>
-                    <h4 className="font-medium text-text-primary">Electrical Failures</h4>
-                    <p className="text-sm text-text-secondary">Component failures under normal usage</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start space-x-3">
-                  <Icon name="CheckCircle" size={20} className="text-brand-green mt-0.5" />
-                  <div>
-                    <h4 className="font-medium text-text-primary">Performance Issues</h4>
-                    <p className="text-sm text-text-secondary">Products not meeting specified performance</p>
-                  </div>
-                </div>
+          )}
+
+          {/* My Claims Tab */}
+          {activeTab === 'claims' && (
+            <div className="space-y-8">
+              <div className="flex items-center justify-between">
+                <h2 className="text-3xl font-bold text-white">
+                  Warranty Claims
+                </h2>
+                <button className="px-6 py-3 bg-gradient-to-r from-[#10B981] to-[#34D399] text-white font-semibold rounded-xl hover:from-[#34D399] hover:to-[#10B981] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#10B981]/25">
+                  <Icon name="Plus" size={20} className="mr-2 inline" />
+                  File New Claim
+                </button>
               </div>
               
-              <h3 className="text-xl font-semibold text-text-primary mb-6 mt-8">What's Not Covered</h3>
-              
               <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <Icon name="XCircle" size={20} className="text-red-500 mt-0.5" />
-                  <div>
-                    <h4 className="font-medium text-text-primary">Physical Damage</h4>
-                    <p className="text-sm text-text-secondary">Damage due to mishandling or accidents</p>
+                {recentClaims.map((claim, index) => (
+                  <div
+                    key={claim.id}
+                    className="bg-[#1F2937] rounded-2xl border border-[#374151] p-6 hover:border-[#F59E0B]/50 transition-all duration-300"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="flex-1">
+                        <h3 className="text-lg font-bold text-white mb-2">{claim.product}</h3>
+                        <p className="text-gray-400 text-sm mb-2">Serial: {claim.serialNumber}</p>
+                        <p className="text-gray-300">{claim.issue}</p>
+                      </div>
+                      <div className="flex flex-col items-end space-y-2">
+                        <span className={`px-3 py-1 bg-gradient-to-r ${getStatusColor(claim.status)} text-white text-xs font-semibold rounded-full`}>
+                          {claim.status}
+                        </span>
+                        <span className={`px-3 py-1 bg-gradient-to-r ${getPriorityColor(claim.priority)} text-white text-xs font-semibold rounded-full`}>
+                          {claim.priority}
+                        </span>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center justify-between text-sm text-gray-400">
+                      <span>Submitted: {new Date(claim.submittedDate).toLocaleDateString()}</span>
+                      <span>Updated: {new Date(claim.lastUpdated).toLocaleDateString()}</span>
+                    </div>
                   </div>
-                </div>
-                
-                <div className="flex items-start space-x-3">
-                  <Icon name="XCircle" size={20} className="text-red-500 mt-0.5" />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Register Product Tab */}
+          {activeTab === 'register' && (
+            <div className="max-w-2xl mx-auto">
+              <h2 className="text-3xl font-bold text-white mb-8 text-center">
+                Register Your Product
+              </h2>
+              
+              <div className="bg-[#1F2937] rounded-3xl border border-[#374151] p-8">
+                <form className="space-y-6">
                   <div>
-                    <h4 className="font-medium text-text-primary">Improper Installation</h4>
-                    <p className="text-sm text-text-secondary">Issues arising from incorrect installation</p>
+                    <label className="block text-white font-medium mb-2">Product Type</label>
+                    <select className="w-full bg-[#374151] text-white border border-[#4B5563] rounded-xl px-4 py-3 focus:outline-none focus:border-[#F59E0B] focus:ring-2 focus:ring-[#F59E0B]/20">
+                      <option>Select Product Type</option>
+                      <option>MCB (Miniature Circuit Breaker)</option>
+                      <option>ELCB (Earth Leakage Circuit Breaker)</option>
+                      <option>Distribution Board</option>
+                      <option>Switchgear</option>
+                      <option>Other</option>
+                    </select>
                   </div>
-                </div>
-                
-                <div className="flex items-start space-x-3">
-                  <Icon name="XCircle" size={20} className="text-red-500 mt-0.5" />
+                  
                   <div>
-                    <h4 className="font-medium text-text-primary">Normal Wear & Tear</h4>
-                    <p className="text-sm text-text-secondary">Expected degradation over time</p>
+                    <label className="block text-white font-medium mb-2">Serial Number</label>
+                    <input
+                      type="text"
+                      placeholder="Enter product serial number"
+                      className="w-full bg-[#374151] text-white border border-[#4B5563] rounded-xl px-4 py-3 focus:outline-none focus:border-[#F59E0B] focus:ring-2 focus:ring-[#F59E0B]/20"
+                    />
                   </div>
+                  
+                  <div>
+                    <label className="block text-white font-medium mb-2">Purchase Date</label>
+                    <input
+                      type="date"
+                      className="w-full bg-[#374151] text-white border border-[#4B5563] rounded-xl px-4 py-3 focus:outline-none focus:border-[#F59E0B] focus:ring-2 focus:ring-[#F59E0B]/20"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-white font-medium mb-2">Installation Address</label>
+                    <textarea
+                      placeholder="Enter installation address"
+                      rows={3}
+                      className="w-full bg-[#374151] text-white border border-[#4B5563] rounded-xl px-4 py-3 focus:outline-none focus:border-[#F59E0B] focus:ring-2 focus:ring-[#F59E0B]/20"
+                    ></textarea>
+                  </div>
+                  
+                  <button
+                    type="submit"
+                    className="w-full py-4 bg-gradient-to-r from-[#F59E0B] to-[#FBBF24] text-white font-semibold rounded-xl hover:from-[#FBBF24] hover:to-[#F59E0B] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#F59E0B]/25"
+                  >
+                    Register Product
+                  </button>
+                </form>
+              </div>
+            </div>
+          )}
+
+          {/* Support Tab */}
+          {activeTab === 'support' && (
+            <div className="max-w-4xl mx-auto space-y-8">
+              <h2 className="text-3xl font-bold text-white mb-8 text-center">
+                Warranty Support
+              </h2>
+              
+              {/* Contact Methods */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {[
+                  { name: 'Live Chat', icon: 'MessageCircle', color: 'from-[#10B981] to-[#34D399]', description: 'Get instant help from our support team' },
+                  { name: 'Phone Support', icon: 'Phone', color: 'from-[#3B82F6] to-[#60A5FA]', description: 'Call us for immediate assistance' },
+                  { name: 'Email Support', icon: 'Mail', color: 'from-[#8B5CF6] to-[#A78BFA]', description: 'Send us detailed information' }
+                ].map((method, index) => (
+                  <div
+                    key={method.name}
+                    className="bg-[#1F2937] rounded-2xl border border-[#374151] p-6 text-center hover:border-[#F59E0B]/50 transition-all duration-300"
+                  >
+                    <div className={`w-16 h-16 bg-gradient-to-r ${method.color} rounded-2xl flex items-center justify-center mx-auto mb-4`}>
+                      <Icon name={method.icon} size={32} color="white" />
+                    </div>
+                    <h3 className="text-xl font-bold text-white mb-2">{method.name}</h3>
+                    <p className="text-gray-400 text-sm">{method.description}</p>
+                  </div>
+                ))}
+              </div>
+              
+              {/* FAQ Section */}
+              <div className="bg-[#1F2937] rounded-3xl border border-[#374151] p-8">
+                <h3 className="text-2xl font-bold text-white mb-6">Frequently Asked Questions</h3>
+                <div className="space-y-4">
+                  {[
+                    { question: 'What is covered under standard warranty?', answer: 'Standard warranty covers manufacturing defects, material failures, and performance issues under normal operating conditions.' },
+                    { question: 'How long does warranty processing take?', answer: 'Most warranty claims are processed within 5-7 business days. Complex cases may take up to 14 days.' },
+                    { question: 'Can I extend my warranty period?', answer: 'Yes, you can upgrade to extended warranty plans at any time during the standard warranty period.' }
+                  ].map((faq, index) => (
+                    <div key={index} className="border-b border-[#374151] pb-4 last:border-b-0">
+                      <h4 className="text-white font-semibold mb-2">{faq.question}</h4>
+                      <p className="text-gray-400 text-sm">{faq.answer}</p>
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
-      )}
+      </div>
     </div>
   );
 };

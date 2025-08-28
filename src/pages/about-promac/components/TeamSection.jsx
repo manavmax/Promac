@@ -282,11 +282,11 @@ const TeamSection = () => {
               Be part of India's leading electrical component company and help shape the future of electrical technology. We're always looking for passionate professionals who share our commitment to excellence.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="cta-primary px-8 py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 brand-transition">
+              <button className="cta-primary px-8 py-4 rounded-full font-semibold flex items-center justify-center space-x-2 brand-transition">
                 <Icon name="Users" size={20} />
                 <span>View Open Positions</span>
               </button>
-              <button className="cta-secondary px-8 py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 brand-transition">
+              <button className="cta-secondary px-8 py-4 rounded-full font-semibold flex items-center justify-center space-x-2 brand-transition">
                 <Icon name="FileText" size={20} />
                 <span>Submit Resume</span>
               </button>

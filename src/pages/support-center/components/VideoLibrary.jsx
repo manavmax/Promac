@@ -1,292 +1,329 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Icon from '../../../components/AppIcon';
 import Image from '../../../components/AppImage';
-import Button from '../../../components/ui/Button';
 
 const VideoLibrary = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [isVisible, setIsVisible] = useState(false);
 
-  const videoCategories = [
-    { id: 'all', name: 'All Videos', count: 89 },
-    { id: 'installation', name: 'Installation Guides', count: 32 },
-    { id: 'troubleshooting', name: 'Troubleshooting', count: 18 },
-    { id: 'product-demo', name: 'Product Demos', count: 24 },
-    { id: 'safety', name: 'Safety Training', count: 15 }
+  useEffect(() => {
+    setIsVisible(true);
+  }, []);
+
+  const categories = [
+    { id: 'all', name: 'All Videos', icon: 'Grid3x3', count: 89, color: 'from-[#8B5CF6] to-[#A78BFA]' },
+    { id: 'installation', name: 'Installation', icon: 'Wrench', count: 34, color: 'from-[#10B981] to-[#34D399]' },
+    { id: 'troubleshooting', name: 'Troubleshooting', icon: 'AlertTriangle', count: 28, color: 'from-[#F59E0B] to-[#FBBF24]' },
+    { id: 'maintenance', name: 'Maintenance', icon: 'Settings', count: 18, color: 'from-[#3B82F6] to-[#60A5FA]' },
+    { id: 'safety', name: 'Safety', icon: 'Shield', count: 9, color: 'from-[#EF4444] to-[#F87171]' }
   ];
 
   const videos = [
     {
       id: 1,
-      title: 'Complete MCB Installation Guide for Residential Projects',
+      title: 'Complete MCB Installation Guide - Step by Step Tutorial',
+      description: 'Learn the proper installation process for Miniature Circuit Breakers including mounting, wiring, and testing procedures. Perfect for electricians and DIY enthusiasts.',
       category: 'installation',
+      thumbnail: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=300&h=200&fit=crop',
       duration: '12:45',
-      views: 15420,
-      likes: 892,
-      thumbnail: 'https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=400&h=225&fit=crop',
-      description: 'Learn the complete process of installing MCBs in residential distribution boards following BIS standards and safety protocols.',
+      views: 2847,
+      likes: 234,
       instructor: 'Rajesh Kumar',
-      instructorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&h=150&fit=crop&crop=face',
-      level: 'Beginner',
-      uploadDate: '2025-01-15',
-      tags: ['MCB', 'Installation', 'Residential', 'BIS Standards']
+      instructorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face',
+      difficulty: 'Beginner',
+      tags: ['MCB', 'Installation', 'Tutorial', 'Safety']
     },
     {
       id: 2,
-      title: 'ELCB Troubleshooting: Common Issues and Solutions',
+      title: 'Troubleshooting ELCB Tripping Issues - Expert Solutions',
+      description: 'Comprehensive guide to diagnose and resolve Earth Leakage Circuit Breaker problems. Learn common causes and effective solutions.',
       category: 'troubleshooting',
-      duration: '8:32',
-      views: 9876,
-      likes: 543,
-      thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=225&fit=crop',
-      description: 'Identify and resolve the most common ELCB tripping issues with practical troubleshooting techniques.',
-      instructor: 'Priya Patel',
-      instructorAvatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=150&h=150&fit=crop&crop=face',
-      level: 'Intermediate',
-      uploadDate: '2025-01-12',
-      tags: ['ELCB', 'Troubleshooting', 'Safety', 'Maintenance']
+      thumbnail: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=300&h=200&fit=crop',
+      duration: '18:32',
+      views: 1923,
+      likes: 189,
+      instructor: 'Priya Sharma',
+      instructorAvatar: 'https://images.unsplash.com/photo-1494790108755-2616b612b786?w=40&h=40&fit=crop&crop=face',
+      difficulty: 'Intermediate',
+      tags: ['ELCB', 'Troubleshooting', 'Ground Fault', 'Electrical Safety']
     },
     {
       id: 3,
-      title: 'Promac Distribution Board Features and Benefits',
-      category: 'product-demo',
-      duration: '6:18',
-      views: 7234,
-      likes: 421,
-      thumbnail: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=400&h=225&fit=crop',
-      description: 'Detailed demonstration of Promac distribution board features, specifications, and installation benefits.',
-      instructor: 'Amit Sharma',
-      instructorAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=150&h=150&fit=crop&crop=face',
-      level: 'All Levels',
-      uploadDate: '2025-01-10',
-      tags: ['Distribution Board', 'Product Demo', 'Features']
+      title: 'Load Calculation Methods for Electrical Panel Design',
+      description: 'Master the art of electrical load calculations for residential and commercial applications. Includes diversity factors and safety margins.',
+      category: 'installation',
+      thumbnail: 'https://images.unsplash.com/photo-1581092160562-40aa08e78837?w=300&h=200&fit=crop',
+      duration: '25:18',
+      views: 3156,
+      likes: 312,
+      instructor: 'Amit Patel',
+      instructorAvatar: 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=40&h=40&fit=crop&crop=face',
+      difficulty: 'Advanced',
+      tags: ['Load Calculation', 'Panel Design', 'Electrical Engineering', 'Design']
     },
     {
       id: 4,
-      title: 'Electrical Safety Protocols for Industrial Work',
+      title: 'Electrical Safety Protocols for Industrial Installations',
+      description: 'Essential safety guidelines and procedures for working with high-voltage industrial electrical systems. PPE requirements and best practices.',
       category: 'safety',
-      duration: '18:24',
-      views: 12567,
-      likes: 756,
-      thumbnail: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=400&h=225&fit=crop',
-      description: 'Comprehensive safety training for electrical work in industrial environments, covering PPE, lockout procedures, and emergency protocols.',
-      instructor: 'Dr. Suresh Menon',
-      instructorAvatar: 'https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&h=150&fit=crop&crop=face',
-      level: 'Advanced',
-      uploadDate: '2025-01-08',
-      tags: ['Safety', 'Industrial', 'Training', 'PPE']
+      thumbnail: 'https://images.unsplash.com/photo-1581092160607-ee22621dd758?w=300&h=200&fit=crop',
+      duration: '22:15',
+      views: 1654,
+      likes: 178,
+      instructor: 'Deepak Singh',
+      instructorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=40&h=40&fit=crop&crop=face',
+      difficulty: 'Expert',
+      tags: ['Industrial Safety', 'High Voltage', 'PPE', 'Safety Protocols']
     },
     {
       id: 5,
-      title: 'Smart Home Electrical Panel Setup and Configuration',
-      category: 'installation',
-      duration: '14:56',
-      views: 8901,
-      likes: 634,
-      thumbnail: 'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=400&h=225&fit=crop',
-      description: 'Step-by-step guide to setting up electrical panels for smart home automation systems.',
-      instructor: 'Neha Singh',
-      instructorAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&h=150&fit=crop&crop=face',
-      level: 'Intermediate',
-      uploadDate: '2025-01-05',
-      tags: ['Smart Home', 'Automation', 'Installation', 'Technology']
+      title: 'Preventive Maintenance Schedule for Electrical Panels',
+      description: 'Create an effective maintenance schedule to ensure optimal performance and longevity of electrical panels and distribution boards.',
+      category: 'maintenance',
+      thumbnail: 'https://images.unsplash.com/photo-1621905252507-b35492cc74b4?w=300&h=200&fit=crop',
+      duration: '15:42',
+      views: 1456,
+      likes: 156,
+      instructor: 'Meera Iyer',
+      instructorAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=40&h=40&fit=crop&crop=face',
+      difficulty: 'Beginner',
+      tags: ['Maintenance', 'Electrical Panels', 'Preventive Care', 'Inspection']
     },
     {
       id: 6,
-      title: 'Load Calculation Methods for Commercial Buildings',
+      title: 'Code Compliance for Electrical Installations in India',
+      description: 'Understanding BIS standards and local electrical codes for residential and commercial installations. Compliance requirements and verification.',
       category: 'installation',
-      duration: '16:12',
-      views: 6543,
-      likes: 389,
-      thumbnail: 'https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?w=400&h=225&fit=crop',
-      description: 'Learn professional methods for calculating electrical loads in commercial building projects.',
+      thumbnail: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=300&h=200&fit=crop',
+      duration: '20:35',
+      views: 2234,
+      likes: 245,
       instructor: 'Vikram Reddy',
-      instructorAvatar: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&h=150&fit=crop&crop=face',
-      level: 'Advanced',
-      uploadDate: '2025-01-03',
-      tags: ['Load Calculation', 'Commercial', 'Electrical Design']
+      instructorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=40&h=40&fit=crop&crop=face',
+      difficulty: 'Intermediate',
+      tags: ['Code Compliance', 'BIS Standards', 'Regulations', 'Electrical Codes']
     }
   ];
 
-  const filteredVideos = videos.filter(video => {
-    const matchesCategory = selectedCategory === 'all' || video.category === selectedCategory;
-    const matchesSearch = video.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         video.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         video.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
-    return matchesCategory && matchesSearch;
-  });
+  const filteredVideos = videos.filter(video => 
+    selectedCategory === 'all' || video.category === selectedCategory
+  );
 
-  const getLevelColor = (level) => {
-    switch (level) {
-      case 'Beginner': return 'bg-brand-green text-white';
-      case 'Intermediate': return 'bg-brand-amber text-brand-navy';
-      case 'Advanced': return 'bg-brand-navy text-white';
-      default: return 'bg-gray-500 text-white';
+  const getDifficultyColor = (difficulty) => {
+    switch (difficulty) {
+      case 'Beginner': return 'from-[#10B981] to-[#34D399]';
+      case 'Intermediate': return 'from-[#F59E0B] to-[#FBBF24]';
+      case 'Advanced': return 'from-[#EF4444] to-[#F87171]';
+      case 'Expert': return 'from-[#8B5CF6] to-[#A78BFA]';
+      default: return 'from-[#6B7280] to-[#9CA3AF]';
     }
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-      <div className="text-center mb-12">
-        <h2 className="text-3xl font-bold text-text-primary mb-4">
-          Video Support Library
-        </h2>
-        <p className="text-lg text-text-secondary max-w-2xl mx-auto">
-          Learn from our experts with comprehensive video tutorials and product demonstrations
-        </p>
-      </div>
-
-      {/* Search */}
-      <div className="max-w-2xl mx-auto mb-8">
-        <div className="relative">
-          <Icon name="Search" size={20} className="absolute left-4 top-1/2 transform -translate-y-1/2 text-text-secondary" />
-          <input
-            type="text"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-            placeholder="Search videos, tutorials, and guides..."
-            className="w-full pl-12 pr-4 py-3 border border-gray-200 rounded-xl focus:outline-none focus:border-brand-navy bg-white"
-          />
-        </div>
-      </div>
-
-      {/* Categories */}
-      <div className="flex flex-wrap justify-center gap-3 mb-12">
-        {videoCategories.map((category) => (
-          <button
-            key={category.id}
-            onClick={() => setSelectedCategory(category.id)}
-            className={`flex items-center space-x-2 px-4 py-2 rounded-full text-sm font-medium brand-transition ${
-              selectedCategory === category.id
-                ? 'bg-brand-navy text-white shadow-primary'
-                : 'bg-white text-text-primary border border-gray-200 hover:border-brand-navy hover:text-brand-navy'
-            }`}
-          >
-            <span>{category.name}</span>
-            <span className={`text-xs px-2 py-0.5 rounded-full ${
-              selectedCategory === category.id
-                ? 'bg-white/20 text-white' :'bg-gray-100 text-text-secondary'
-            }`}>
-              {category.count}
+    <div className="bg-gradient-to-br from-[#0F172A] via-[#1E1B4B] to-[#312E81] min-h-screen py-16 relative overflow-hidden">
+      {/* Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#1F2937] to-[#111827]"></div>
+      <div className="absolute top-0 right-0 w-96 h-96 bg-[#EF4444]/5 rounded-full blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#8B5CF6]/5 rounded-full blur-3xl"></div>
+      
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        {/* Header Section */}
+        <div className={`text-center mb-16 transition-all duration-1000 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <div className="inline-flex items-center px-6 py-3 bg-gradient-to-r from-[#EF4444] to-[#F87171] rounded-full text-white text-sm font-semibold mb-6">
+            <Icon name="Video" size={16} className="mr-2" />
+            Video Library
+          </div>
+          
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
+            Learn from{' '}
+            <span className="bg-gradient-to-r from-[#EF4444] to-[#F87171] bg-clip-text text-transparent">
+              Expert Videos
             </span>
-          </button>
-        ))}
-      </div>
+          </h1>
+          
+          <p className="text-xl text-gray-200 max-w-3xl mx-auto leading-relaxed">
+            Access our comprehensive collection of video tutorials, installation guides, and technical training materials
+          </p>
+        </div>
 
-      {/* Videos Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredVideos.map((video) => (
-          <div
-            key={video.id}
-            className="group bg-white rounded-2xl shadow-lg hover:shadow-2xl brand-transition overflow-hidden border border-gray-100"
-          >
-            <div className="relative overflow-hidden">
-              <Image
-                src={video.thumbnail}
-                alt={video.title}
-                className="w-full h-48 object-cover group-hover:scale-105 brand-transition"
-              />
-              
-              {/* Play Button Overlay */}
-              <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 brand-transition">
-                <div className="w-16 h-16 bg-white/90 rounded-full flex items-center justify-center backdrop-blur-sm">
-                  <Icon name="Play" size={24} className="text-brand-navy ml-1" />
-                </div>
-              </div>
-              
-              {/* Duration Badge */}
-              <div className="absolute bottom-4 right-4 bg-black/80 text-white text-xs font-medium px-2 py-1 rounded">
-                {video.duration}
-              </div>
-              
-              {/* Level Badge */}
-              <div className="absolute top-4 left-4">
-                <span className={`text-xs font-medium px-2 py-1 rounded-full ${getLevelColor(video.level)}`}>
-                  {video.level}
-                </span>
-              </div>
-            </div>
-            
-            <div className="p-6">
-              <h3 className="text-lg font-semibold text-text-primary mb-2 group-hover:text-brand-navy brand-transition line-clamp-2">
-                {video.title}
-              </h3>
-              
-              <p className="text-text-secondary text-sm mb-4 line-clamp-3">
-                {video.description}
-              </p>
-              
-              {/* Instructor Info */}
-              <div className="flex items-center space-x-3 mb-4">
-                <Image
-                  src={video.instructorAvatar}
-                  alt={video.instructor}
-                  className="w-8 h-8 rounded-full object-cover"
-                />
-                <div>
-                  <p className="text-sm font-medium text-text-primary">{video.instructor}</p>
-                  <p className="text-xs text-text-secondary">Instructor</p>
-                </div>
-              </div>
-              
-              {/* Tags */}
-              <div className="flex flex-wrap gap-1 mb-4">
-                {video.tags.slice(0, 3).map((tag, index) => (
-                  <span
-                    key={index}
-                    className="text-xs bg-gray-100 text-text-secondary px-2 py-1 rounded-full"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-              
-              {/* Stats */}
-              <div className="flex items-center justify-between text-xs text-text-secondary mb-4">
-                <div className="flex items-center space-x-4">
-                  <div className="flex items-center space-x-1">
-                    <Icon name="Eye" size={12} />
-                    <span>{video.views.toLocaleString()}</span>
-                  </div>
-                  <div className="flex items-center space-x-1">
-                    <Icon name="Heart" size={12} />
-                    <span>{video.likes}</span>
+        {/* Search and Filters */}
+        <div className={`mb-12 transition-all duration-1000 delay-200 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          {/* Search Bar */}
+          <div className="max-w-2xl mx-auto mb-8">
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#EF4444] to-[#F87171] rounded-2xl blur-xl opacity-30"></div>
+              <div className="relative bg-[#1F2937]/80 backdrop-blur-xl rounded-2xl border border-[#374151] p-2">
+                <div className="flex items-center">
+                  <Icon name="Search" size={24} color="#EF4444" className="ml-4" />
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search videos, tutorials, or training materials..."
+                    className="flex-1 bg-transparent text-white placeholder-gray-300 px-4 py-4 text-lg focus:outline-none"
+                  />
+                  <div className="mr-4 text-sm text-gray-300">
+                    {filteredVideos.length} videos found
                   </div>
                 </div>
-                <span>{new Date(video.uploadDate).toLocaleDateString()}</span>
-              </div>
-              
-              {/* Action Buttons */}
-              <div className="flex space-x-2">
-                <Button
-                  variant="default"
-                  size="sm"
-                  iconName="Play"
-                  iconPosition="left"
-                  className="flex-1 bg-brand-navy hover:bg-brand-navy/90"
-                >
-                  Watch Now
-                </Button>
-                <Button
-                  variant="outline"
-                  size="sm"
-                  iconName="Bookmark"
-                  className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
-                >
-                </Button>
               </div>
             </div>
           </div>
-        ))}
-      </div>
 
-      {filteredVideos.length === 0 && (
-        <div className="text-center py-12">
-          <Icon name="Video" size={48} className="text-text-secondary mx-auto mb-4" />
-          <h3 className="text-xl font-semibold text-text-primary mb-2">No videos found</h3>
-          <p className="text-text-secondary">Try adjusting your search terms or category filter</p>
+          {/* Category Filters */}
+          <div className="flex flex-wrap justify-center gap-4">
+            {categories.map((category) => (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                className={`group relative px-6 py-4 rounded-2xl transition-all duration-300 ${
+                  selectedCategory === category.id
+                    ? 'bg-gradient-to-r ' + category.color + ' text-white shadow-xl scale-105'
+                    : 'bg-[#1F2937] text-gray-300 hover:bg-[#374151] hover:text-white'
+                } border border-[#374151]`}
+              >
+                <div className="flex items-center space-x-3">
+                  <Icon name={category.icon} size={20} />
+                  <span className="font-semibold">{category.name}</span>
+                  <span className="bg-white/20 px-2 py-1 rounded-full text-xs font-medium">
+                    {category.count}
+                  </span>
+                </div>
+              </button>
+            ))}
+          </div>
         </div>
-      )}
+
+        {/* Videos Grid */}
+        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 transition-all duration-1000 delay-400 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          {filteredVideos.map((video, index) => (
+            <div
+              key={video.id}
+              className="group bg-[#1F2937] rounded-3xl border border-[#374151] overflow-hidden hover:border-[#EF4444]/50 hover:shadow-xl hover:shadow-[#EF4444]/10 transition-all duration-500 hover:scale-105 cursor-pointer"
+              style={{ animationDelay: `${index * 100}ms` }}
+            >
+              <div className="relative h-48 overflow-hidden">
+                <Image
+                  src={video.thumbnail}
+                  alt={video.title}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
+                
+                {/* Category Badge */}
+                <div className="absolute top-4 left-4">
+                  <span className="px-3 py-1 bg-[#1F2937]/90 backdrop-blur-sm text-white text-xs font-semibold rounded-full border border-[#374151]">
+                    {video.category}
+                  </span>
+                </div>
+                
+                {/* Difficulty Badge */}
+                <div className="absolute top-4 right-4">
+                  <span className={`px-3 py-1 bg-gradient-to-r ${getDifficultyColor(video.difficulty)} text-white text-xs font-semibold rounded-full`}>
+                    {video.difficulty}
+                  </span>
+                </div>
+                
+                {/* Play Button Overlay */}
+                <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  <div className="w-16 h-16 bg-gradient-to-r from-[#EF4444] to-[#F87171] rounded-full flex items-center justify-center group-hover:scale-110 transition-transform duration-300 shadow-2xl">
+                    <Icon name="Play" size={28} color="white" />
+                  </div>
+                </div>
+                
+                {/* Duration Badge */}
+                <div className="absolute bottom-4 right-4 bg-black/80 text-white px-3 py-1 rounded-full text-sm font-semibold">
+                  {video.duration}
+                </div>
+              </div>
+              
+              <div className="p-6">
+                <h3 className="text-xl font-bold text-white mb-3 group-hover:text-[#EF4444] transition-colors duration-300 line-clamp-2">
+                  {video.title}
+                </h3>
+                
+                <p className="text-gray-300 text-sm mb-4 line-clamp-3 leading-relaxed">
+                  {video.description}
+                </p>
+                
+                {/* Instructor and Stats */}
+                <div className="flex items-center justify-between text-sm text-gray-500 mb-4">
+                  <div className="flex items-center space-x-2">
+                    <Image
+                      src={video.instructorAvatar}
+                      alt={video.instructor}
+                      className="w-6 h-6 rounded-full"
+                    />
+                    <span className="text-white font-medium">{video.instructor}</span>
+                  </div>
+                  <div className="flex items-center space-x-4">
+                    <span className="flex items-center">
+                      <Icon name="Eye" size={14} className="mr-1" />
+                      {video.views.toLocaleString()}
+                    </span>
+                    <span className="flex items-center">
+                      <Icon name="Heart" size={14} className="mr-1" />
+                      {video.likes}
+                    </span>
+                  </div>
+                </div>
+                
+                {/* Tags */}
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {video.tags.slice(0, 3).map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2 py-1 bg-[#374151] text-gray-300 text-xs rounded-full border border-[#4B5563]"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+                
+                {/* Watch Now Button */}
+                <button className="w-full mt-4 py-3 bg-gradient-to-r from-[#EF4444] to-[#F87171] text-white font-semibold rounded-xl hover:from-[#F87171] hover:to-[#EF4444] transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-[#EF4444]/25">
+                  <Icon name="Play" size={20} className="mr-2 inline" />
+                  Watch Now
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* No Results */}
+        {filteredVideos.length === 0 && (
+          <div className="text-center py-16">
+            <div className="w-24 h-24 bg-[#1F2937] rounded-full flex items-center justify-center mx-auto mb-6">
+              <Icon name="Video" size={48} color="#6B7280" />
+            </div>
+            <h3 className="text-2xl font-bold text-white mb-2">No videos found</h3>
+            <p className="text-gray-300">Try adjusting your search terms or category filter</p>
+          </div>
+        )}
+
+        {/* Bottom CTA */}
+        <div className={`text-center mt-20 transition-all duration-1000 delay-600 transform ${isVisible ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+          <div className="bg-gradient-to-r from-[#1F2937] to-[#111827] rounded-3xl border border-[#374151] p-12">
+            <h3 className="text-2xl font-bold text-white mb-4">
+              Need personalized video training?
+            </h3>
+            <p className="text-gray-300 mb-8 max-w-2xl mx-auto">
+              Our technical experts can create custom video content tailored to your specific needs and requirements
+            </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              <button className="px-8 py-4 bg-gradient-to-r from-[#8B5CF6] to-[#A78BFA] text-white font-semibold rounded-xl hover:from-[#A78BFA] hover:to-[#8B5CF6] transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[#8B5CF6]/25">
+                <Icon name="MessageCircle" size={20} className="mr-2 inline" />
+                Contact Support
+              </button>
+              <button className="px-8 py-4 bg-gradient-to-r from-[#3B82F6] to-[#60A5FA] text-white font-semibold rounded-xl hover:from-[#60A5FA] hover:to-[#3B82F6] transition-all duration-300 hover:scale-105 hover:shadow-2xl hover:shadow-[#3B82F6]/25">
+                <Icon name="Video" size={20} className="mr-2 inline" />
+                Schedule Consultation
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

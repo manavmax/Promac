@@ -8,19 +8,22 @@ const SortingControls = ({
   viewMode, 
   onViewModeChange, 
   resultsCount,
-  onFilterToggle 
+  onFilterToggle,
+  filteredProducts = []
 }) => {
   const [showSortDropdown, setShowSortDropdown] = useState(false);
 
   const sortOptions = [
-    { value: 'relevance', label: 'Best Match', icon: 'Target' },
-    { value: 'price-low', label: 'Price: Low to High', icon: 'ArrowUp' },
-    { value: 'price-high', label: 'Price: High to Low', icon: 'ArrowDown' },
-    { value: 'rating', label: 'Customer Rating', icon: 'Star' },
-    { value: 'newest', label: 'Newest First', icon: 'Clock' },
-    { value: 'popularity', label: 'Most Popular', icon: 'TrendingUp' },
-    { value: 'name-az', label: 'Name: A to Z', icon: 'ArrowUp' },
-    { value: 'name-za', label: 'Name: Z to A', icon: 'ArrowDown' }
+    { value: 'relevance', label: 'Best Match', icon: 'Target', description: 'Most relevant to your search' },
+    { value: 'price-low', label: 'Price: Low to High', icon: 'ArrowUp', description: 'Affordable options first' },
+    { value: 'price-high', label: 'Price: High to Low', icon: 'ArrowDown', description: 'Premium products first' },
+    { value: 'rating', label: 'Customer Rating', icon: 'Star', description: 'Highest rated products' },
+    { value: 'newest', label: 'Newest First', icon: 'Clock', description: 'Latest arrivals' },
+    { value: 'popularity', label: 'Most Popular', icon: 'TrendingUp', description: 'Best selling products' },
+    { value: 'name-az', label: 'Name: A to Z', icon: 'ArrowUp', description: 'Alphabetical order' },
+    { value: 'name-za', label: 'Name: Z to A', icon: 'ArrowDown', description: 'Reverse alphabetical' },
+    { value: 'stock', label: 'In Stock First', icon: 'Package', description: 'Available products first' },
+    { value: 'discount', label: 'Highest Discount', icon: 'Percent', description: 'Best deals first' }
   ];
 
   const getCurrentSortLabel = () => {
@@ -34,7 +37,7 @@ const SortingControls = ({
   };
 
   return (
-    <div className="flex items-center justify-between bg-white border-b border-gray-200 p-4 sticky top-16 z-30">
+    <div className="flex items-center justify-between bg-white p-6">
       <div className="flex items-center space-x-4">
         {/* Mobile Filter Toggle */}
         <Button
@@ -48,11 +51,9 @@ const SortingControls = ({
           Filters
         </Button>
 
-        {/* Results Count */}
+        {/* Results Count - Removed as requested */}
         <div className="hidden sm:block">
-          <p className="text-sm text-text-secondary">
-            Showing <span className="font-medium text-text-primary">{resultsCount.toLocaleString('en-IN')}</span> products
-          </p>
+          {/* Results count removed */}
         </div>
       </div>
 
@@ -65,7 +66,7 @@ const SortingControls = ({
             onClick={() => setShowSortDropdown(!showSortDropdown)}
             iconName="ChevronDown"
             iconPosition="right"
-            className="min-w-[140px] justify-between"
+            className="min-w-[140px] justify-between bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 text-white border-slate-600 hover:from-slate-800 hover:to-slate-900"
           >
             <span className="truncate">{getCurrentSortLabel()}</span>
           </Button>
@@ -79,25 +80,33 @@ const SortingControls = ({
               />
               
               {/* Dropdown Menu */}
-              <div className="absolute top-full right-0 mt-2 w-56 bg-white border border-gray-200 rounded-xl shadow-lg z-50">
-                <div className="p-2">
+              <div className="absolute top-full right-0 mt-2 w-72 bg-white border border-gray-200 rounded-xl shadow-lg z-50">
+                <div className="p-3">
+                  <div className="mb-2 pb-2 border-b border-gray-100">
+                    <h4 className="text-xs font-semibold text-gray-500 uppercase tracking-wide">Sort By</h4>
+                  </div>
                   {sortOptions.map((option) => (
                     <button
                       key={option.value}
                       onClick={() => handleSortSelect(option.value)}
-                      className={`flex items-center space-x-3 w-full text-left p-3 rounded-lg brand-transition ${
+                      className={`flex items-start space-x-3 w-full text-left p-3 rounded-lg brand-transition ${
                         sortBy === option.value
-                          ? 'bg-brand-navy text-white' :'text-text-primary hover:bg-gray-50'
+                          ? 'bg-gradient-to-r from-slate-700 via-slate-800 to-slate-900 text-white' :'text-black hover:bg-gray-50'
                       }`}
                     >
                       <Icon 
                         name={option.icon} 
                         size={16} 
-                        className={sortBy === option.value ? 'text-white' : 'text-gray-400'}
+                        className={`mt-0.5 ${sortBy === option.value ? 'text-white' : 'text-gray-400'}`}
                       />
-                      <span className="text-sm font-medium">{option.label}</span>
+                      <div className="flex-1">
+                        <div className="text-sm font-medium">{option.label}</div>
+                        <div className={`text-xs ${sortBy === option.value ? 'text-gray-200' : 'text-gray-500'}`}>
+                          {option.description}
+                        </div>
+                      </div>
                       {sortBy === option.value && (
-                        <Icon name="Check" size={16} className="text-white ml-auto" />
+                        <Icon name="Check" size={16} className="text-white ml-auto mt-0.5" />
                       )}
                     </button>
                   ))}
@@ -136,14 +145,38 @@ const SortingControls = ({
             size="sm"
             iconName="Download"
             title="Export Results"
-            className="text-gray-500 hover:text-brand-navy"
+            onClick={() => {
+              const csvContent = "data:text/csv;charset=utf-8," + 
+                "Product Name,Brand,Price,Rating\n" +
+                filteredProducts.map(p => `${p.name},${p.brand},${p.price},${p.rating}`).join('\n');
+              const encodedUri = encodeURI(csvContent);
+              const link = document.createElement("a");
+              link.setAttribute("href", encodedUri);
+              link.setAttribute("download", "products.csv");
+              document.body.appendChild(link);
+              link.click();
+              document.body.removeChild(link);
+            }}
+            className="text-gray-500 hover:text-blue-600 hover:bg-transparent"
           />
           <Button
             variant="ghost"
             size="sm"
             iconName="Share2"
             title="Share Results"
-            className="text-gray-500 hover:text-brand-navy"
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({
+                  title: 'Promac Electrical Products',
+                  text: `Check out these ${filteredProducts.length} electrical products!`,
+                  url: window.location.href
+                });
+              } else {
+                navigator.clipboard.writeText(window.location.href);
+                alert('Link copied to clipboard!');
+              }
+            }}
+            className="text-gray-500 hover:text-blue-600 hover:bg-transparent"
           />
         </div>
       </div>

@@ -1,110 +1,81 @@
-import React from 'react';
-import { Slot } from "@radix-ui/react-slot";
-import { cva } from "class-variance-authority";
-import { cn } from "../../utils/cn";
-import Icon from '../AppIcon';
+import * as React from "react"
+import { Slot } from "@radix-ui/react-slot"
+import { cva } from "class-variance-authority"
+import { cn } from "../../utils/cn"
+import Icon from "../AppIcon"
 
 const buttonVariants = cva(
-    "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
-    {
-        variants: {
-            variant: {
-                default: "bg-promac-red-600 text-white hover:bg-promac-red-700",
-                destructive: "bg-destructive text-destructive-foreground hover:bg-destructive/90",
-                outline: "border border-promac-red-200 text-promac-red-700 bg-white hover:bg-promac-red-50 hover:text-promac-red-900",
-                secondary: "bg-secondary text-secondary-foreground hover:bg-secondary/80",
-                ghost: "hover:bg-promac-red-50 hover:text-promac-red-700",
-                link: "text-promac-red-600 underline-offset-4 hover:underline hover:text-promac-red-700",
-                success: "bg-success text-success-foreground hover:bg-success/90",
-                warning: "bg-warning text-warning-foreground hover:bg-warning/90",
-                danger: "bg-error text-error-foreground hover:bg-error/90",
-            },
-            size: {
-                default: "h-10 px-4 py-2",
-                sm: "h-9 rounded-md px-3",
-                lg: "h-11 rounded-md px-8",
-                icon: "h-10 w-10",
-                xs: "h-8 rounded-md px-2 text-xs",
-                xl: "h-12 rounded-md px-10 text-base",
-            },
-        },
-        defaultVariants: {
-            variant: "default",
-            size: "default",
-        },
-    }
-);
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50",
+  {
+    variants: {
+      variant: {
+        default: "bg-primary text-primary-foreground hover:bg-primary/90",
+        destructive:
+          "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+        outline:
+          "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
+        secondary:
+          "bg-secondary text-secondary-foreground hover:bg-secondary/80",
+        ghost: "hover:bg-accent hover:text-accent-foreground",
+        link: "text-primary underline-offset-4 hover:underline",
+      },
+      size: {
+        default: "h-10 px-4 py-2",
+        sm: "h-9 rounded-md px-3",
+        lg: "h-11 rounded-md px-8",
+        icon: "h-10 w-10",
+      },
+    },
+    defaultVariants: {
+      variant: "default",
+      size: "default",
+    },
+  },
+)
 
-const Button = React.forwardRef(({
-    className,
-    variant,
-    size,
-    asChild = false,
-    children,
-    loading = false,
-    iconName = null,
-    iconPosition = 'left',
-    iconSize = null,
-    fullWidth = false,
-    disabled = false,
-    ...props
+const Button = React.forwardRef(({ 
+  className, 
+  variant, 
+  size, 
+  asChild = false, 
+  iconName,
+  iconPosition = "left",
+  fullWidth = false,
+  children,
+  ...props 
 }, ref) => {
-    const Comp = asChild ? Slot : "button";
+  const Comp = asChild ? Slot : "button"
+  
+  // Filter out custom props that shouldn't be passed to DOM
+  const { iconName: _, iconPosition: __, fullWidth: ___, ...domProps } = props
+  
+  const buttonContent = (
+    <>
+      {iconName && iconPosition === "left" && (
+        <Icon name={iconName} size={16} className="mr-2" />
+      )}
+      {children}
+      {iconName && iconPosition === "right" && (
+        <Icon name={iconName} size={16} className="ml-2" />
+      )}
+    </>
+  )
 
-    // Icon size mapping based on button size
-    const iconSizeMap = {
-        xs: 12,
-        sm: 14,
-        default: 16,
-        lg: 18,
-        xl: 20,
-        icon: 16,
-    };
+  return (
+    <Comp
+      className={cn(
+        buttonVariants({ variant, size, className }),
+        fullWidth && "w-full"
+      )}
+      ref={ref}
+      {...domProps}
+    >
+      {buttonContent}
+    </Comp>
+  )
+})
+Button.displayName = "Button"
 
-    const calculatedIconSize = iconSize || iconSizeMap[size] || 16;
-
-    // Loading spinner
-    const LoadingSpinner = () => (
-        <svg className="animate-spin -ml-1 mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24">
-            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
-        </svg>
-    );
-
-    // Icon rendering
-    const renderIcon = () => {
-        if (!iconName) return null;
-
-        return (
-            <Icon
-                name={iconName}
-                size={calculatedIconSize}
-                className={cn(
-                    children && iconPosition === 'left' && "mr-2",
-                    children && iconPosition === 'right' && "ml-2"
-                )}
-            />
-        );
-    };
-
-    return (
-        <Comp
-            className={cn(
-                buttonVariants({ variant, size, className }),
-                fullWidth && "w-full"
-            )}
-            ref={ref}
-            disabled={disabled || loading}
-            {...props}
-        >
-            {loading && <LoadingSpinner />}
-            {iconName && iconPosition === 'left' && renderIcon()}
-            {children}
-            {iconName && iconPosition === 'right' && renderIcon()}
-        </Comp>
-    );
-});
-
-Button.displayName = "Button";
-
-export default Button;
+// Export both named and default for backward compatibility
+export { Button, buttonVariants }
+export default Button

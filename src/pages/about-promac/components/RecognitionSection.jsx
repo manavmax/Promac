@@ -270,7 +270,7 @@ const RecognitionSection = () => {
                     <Icon name="Calendar" size={14} color="var(--color-brand-amber)" />
                     <span className="text-xs text-brand-amber font-semibold">{item.year}</span>
                   </div>
-                  <button className="text-brand-navy hover:text-brand-amber brand-transition">
+                  <button className="text-brand-navy hover:text-brand-amber brand-transition rounded-full">
                     <Icon name="ExternalLink" size={16} />
                   </button>
                 </div>
@@ -292,11 +292,11 @@ const RecognitionSection = () => {
               new standards for quality, sustainability, and technological advancement.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <button className="cta-primary px-8 py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 brand-transition">
+              <button className="cta-primary px-8 py-4 rounded-full font-semibold flex items-center justify-center space-x-2 brand-transition">
                 <Icon name="Download" size={20} />
                 <span>Download Certificates</span>
               </button>
-              <button className="cta-secondary px-8 py-4 rounded-xl font-semibold flex items-center justify-center space-x-2 brand-transition">
+              <button className="cta-secondary px-8 py-4 rounded-full font-semibold flex items-center justify-center space-x-2 brand-transition">
                 <Icon name="FileText" size={20} />
                 <span>View Press Kit</span>
               </button>

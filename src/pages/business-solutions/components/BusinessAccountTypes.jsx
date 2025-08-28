@@ -83,13 +83,13 @@ const BusinessAccountTypes = () => {
   const selectedAccount = accountTypes.find(type => type.id === selectedType);
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-transparent section-premium">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-brand-navy mb-4">
+          <h2 className="text-4xl font-bold mb-4 bg-gradient-to-r from-cyan-300 via-sky-400 to-indigo-400 bg-clip-text text-transparent">
             Choose Your Business Account Type
           </h2>
-          <p className="text-xl text-text-secondary max-w-3xl mx-auto">
+          <p className="text-lg text-white/70 max-w-3xl mx-auto">
             Tailored solutions for different business needs with specialized pricing, support, and features designed for your industry.
           </p>
         </div>
@@ -103,29 +103,29 @@ const BusinessAccountTypes = () => {
                 <button
                   key={type.id}
                   onClick={() => setSelectedType(type.id)}
-                  className={`w-full p-6 rounded-xl text-left brand-transition ${
+                  className={`w-full p-6 rounded-xl text-left brand-transition ring-1 ${
                     selectedType === type.id
-                      ? 'bg-brand-navy text-white shadow-lg'
-                      : 'bg-muted hover:bg-gray-100 text-text-primary'
+                      ? 'bg-gradient-to-br from-cyan-600/30 to-indigo-700/30 text-white ring-white/10 shadow-xl'
+                      : 'bg-white/5 hover:bg-white/10 text-white ring-white/10'
                   }`}
                 >
                   <div className="flex items-center space-x-4">
-                    <div className={`w-12 h-12 rounded-lg flex items-center justify-center ${
+                    <div className={`${
                       selectedType === type.id
-                        ? 'bg-brand-amber'
-                        : `bg-${type.color}/10`
-                    }`}>
+                        ? 'bg-gradient-to-br from-cyan-500 to-indigo-600'
+                        : 'bg-gradient-to-br from-white/10 to-white/5'
+                    } w-12 h-12 rounded-lg flex items-center justify-center`}> 
                       <Icon 
                         name={type.icon} 
                         size={24} 
-                        color={selectedType === type.id ? '#1A237E' : `var(--color-${type.color})`}
+                        color={selectedType === type.id ? '#FFFFFF' : '#A5B4FC'}
                       />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-lg">{type.title}</h3>
-                      <p className={`text-sm ${
-                        selectedType === type.id ? 'text-white/80' : 'text-text-secondary'
-                      }`}>
+                      <h3 className="font-semibold text-lg text-white">{type.title}</h3>
+                      <p className={`${
+                        selectedType === type.id ? 'text-white/80' : 'text-white/60'
+                      } text-sm`}>
                         {type.subtitle}
                       </p>
                     </div>
@@ -137,45 +137,45 @@ const BusinessAccountTypes = () => {
 
           {/* Content */}
           <div className="lg:w-2/3">
-            <div className="glass-effect rounded-2xl p-8">
+              <div className="glass-ios rounded-2xl p-8">
               <div className="flex items-center space-x-4 mb-8">
-                <div className={`w-16 h-16 bg-${selectedAccount.color} rounded-xl flex items-center justify-center`}>
+                <div className={`w-16 h-16 rounded-xl flex items-center justify-center bg-gradient-to-br from-cyan-400 via-sky-500 to-indigo-600 shadow-lg shadow-cyan-500/20 ring-1 ring-white/10`}>
                   <Icon name={selectedAccount.icon} size={32} color="white" />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-bold text-brand-navy">{selectedAccount.title}</h3>
-                  <p className="text-text-secondary">{selectedAccount.subtitle}</p>
+                  <h3 className="text-2xl font-bold text-white">{selectedAccount.title}</h3>
+                  <p className="text-white/70">{selectedAccount.subtitle}</p>
                 </div>
               </div>
 
               {/* Key Metrics */}
               <div className="grid sm:grid-cols-2 gap-6 mb-8">
-                <div className="bg-white/50 rounded-lg p-4">
+                <div className="bg-white/8 ring-1 ring-white/10 rounded-lg p-4">
                   <div className="flex items-center space-x-2 mb-2">
-                    <Icon name="ShoppingCart" size={16} color="var(--color-brand-navy)" />
-                    <span className="text-sm font-medium text-brand-navy">Minimum Order</span>
+                    <Icon name="ShoppingCart" size={16} color="#93C5FD" />
+                    <span className="text-sm font-medium text-white/90">Minimum Order</span>
                   </div>
-                  <div className="text-xl font-bold text-text-primary">{selectedAccount.minOrder}</div>
+                  <div className="text-xl font-bold text-white">{selectedAccount.minOrder}</div>
                 </div>
-                <div className="bg-white/50 rounded-lg p-4">
+                <div className="bg-white/8 ring-1 ring-white/10 rounded-lg p-4">
                   <div className="flex items-center space-x-2 mb-2">
-                    <Icon name="CreditCard" size={16} color="var(--color-brand-navy)" />
-                    <span className="text-sm font-medium text-brand-navy">Credit Limit</span>
+                    <Icon name="CreditCard" size={16} color="#A78BFA" />
+                    <span className="text-sm font-medium text-white/90">Credit Limit</span>
                   </div>
-                  <div className="text-xl font-bold text-text-primary">{selectedAccount.creditLimit}</div>
+                  <div className="text-xl font-bold text-white">{selectedAccount.creditLimit}</div>
                 </div>
               </div>
 
               {/* Features */}
               <div className="mb-8">
-                <h4 className="text-lg font-semibold text-brand-navy mb-4">Account Features</h4>
+                <h4 className="text-lg font-semibold text-white mb-4">Account Features</h4>
                 <div className="grid sm:grid-cols-2 gap-3">
                   {selectedAccount.features.map((feature, index) => (
                     <div key={index} className="flex items-center space-x-3">
-                      <div className="w-5 h-5 bg-brand-amber rounded-full flex items-center justify-center flex-shrink-0">
-                        <Icon name="Check" size={12} color="#1A237E" strokeWidth={3} />
+                      <div className="w-5 h-5 rounded-full bg-gradient-to-br from-cyan-500 to-indigo-600 flex items-center justify-center flex-shrink-0">
+                        <Icon name="Check" size={12} color="#ffffff" strokeWidth={3} />
                       </div>
-                      <span className="text-text-primary text-sm">{feature}</span>
+                      <span className="text-white/95 text-sm">{feature}</span>
                     </div>
                   ))}
                 </div>
@@ -183,14 +183,14 @@ const BusinessAccountTypes = () => {
 
               {/* Benefits */}
               <div className="mb-8">
-                <h4 className="text-lg font-semibold text-brand-navy mb-4">Key Benefits</h4>
+                <h4 className="text-lg font-semibold text-white mb-4">Key Benefits</h4>
                 <div className="space-y-3">
                   {selectedAccount.benefits.map((benefit, index) => (
                     <div key={index} className="flex items-start space-x-3">
-                      <div className="w-6 h-6 bg-brand-green/10 rounded-lg flex items-center justify-center flex-shrink-0 mt-0.5">
-                        <Icon name="TrendingUp" size={14} color="var(--color-brand-green)" />
+                      <div className="w-6 h-6 rounded-lg bg-gradient-to-br from-teal-400 to-cyan-500 flex items-center justify-center flex-shrink-0 mt-0.5">
+                        <Icon name="TrendingUp" size={14} color="#ffffff" />
                       </div>
-                      <span className="text-text-primary">{benefit}</span>
+                      <span className="text-white/95">{benefit}</span>
                     </div>
                   ))}
                 </div>
@@ -212,7 +212,7 @@ const BusinessAccountTypes = () => {
                   size="lg"
                   iconName="MessageCircle"
                   iconPosition="left"
-                  className="border-brand-navy text-brand-navy hover:bg-brand-navy hover:text-white"
+                  className="!bg-white !text-brand-navy !border !border-white hover:!bg-white"
                 >
                   Schedule Consultation
                 </Button>

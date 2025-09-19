@@ -1,0 +1,62 @@
+name: CodeRabbit Review
+
+on:
+  pull_request:
+    branches: [ main, develop ]
+    types: [ opened, synchronize, reopened ]
+  push:
+    branches: [ main, develop ]
+
+jobs:
+  coderabbit-review:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Fetch full history for better context
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          cd frontend
+          npm ci
+          cd ../frontend/promac_dashboard_suite
+          npm ci
+      
+      - name: Run linting
+        run: |
+          cd frontend
+          npm run lint || true
+          cd ../frontend/promac_dashboard_suite
+          npm run lint || true
+      
+      - name: Run tests
+        run: |
+          cd frontend
+          npm test -- --coverage --watchAll=false || true
+          cd ../frontend/promac_dashboard_suite
+          npm test -- --coverage --watchAll=false || true
+      
+      - name: Build project
+        run: |
+          cd frontend
+          npm run build
+          cd ../frontend/promac_dashboard_suite
+          npm run build
+      
+      - name: CodeRabbit Review
+        uses: coderabbitai/coderabbit-action@v1.0.0
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          coderabbit_token: ${{ secrets.CODERABBIT_TOKEN }}
+          config_file: .coderabbit.yaml
+          review_type: "full"
+          language: "en"
+          model: "gpt-4o"

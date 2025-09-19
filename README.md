@@ -1,9 +1,10 @@
-# React
+# Promac Electrical
 
-A modern React-based project utilizing the latest frontend technologies and tools for building responsive web applications.
+A modern full-stack application for electrical component distribution, featuring a React frontend and scalable backend architecture.
 
 ## 🚀 Features
 
+### Frontend
 - **React 18** - React version with improved rendering and concurrent features
 - **Vite** - Lightning-fast build tool and development server
 - **Redux Toolkit** - State management with simplified Redux setup
@@ -14,6 +15,11 @@ A modern React-based project utilizing the latest frontend technologies and tool
 - **Animation** - Framer Motion for smooth UI animations
 - **Testing** - Jest and React Testing Library setup
 
+### Backend
+- **Scalable Architecture** - Ready for backend services integration
+- **API Ready** - Structured for RESTful API development
+- **Database Integration** - Prepared for database connections
+
 ## 📋 Prerequisites
 
 - Node.js (v14.x or higher)
@@ -21,37 +27,42 @@ A modern React-based project utilizing the latest frontend technologies and tool
 
 ## 🛠️ Installation
 
-1. Install dependencies:
+1. Install all dependencies:
    ```bash
-   npm install
-   # or
-   yarn install
+   npm run install-all
    ```
    
 2. Start the development server:
    ```bash
-   npm start
+   npm run dev
    # or
-   yarn start
+   npm start
    ```
 
 ## 📁 Project Structure
 
 ```
-react_app/
-├── public/             # Static assets
-├── src/
-│   ├── components/     # Reusable UI components
-│   ├── pages/          # Page components
-│   ├── styles/         # Global styles and Tailwind configuration
-│   ├── App.jsx         # Main application component
-│   ├── Routes.jsx      # Application routes
-│   └── index.jsx       # Application entry point
-├── .env                # Environment variables
-├── index.html          # HTML template
-├── package.json        # Project dependencies and scripts
-├── tailwind.config.js  # Tailwind CSS configuration
-└── vite.config.js      # Vite configuration
+promac_electrical/
+├── frontend/           # React frontend application
+│   ├── src/
+│   │   ├── components/ # Reusable UI components
+│   │   ├── pages/      # Page components
+│   │   ├── contexts/   # React contexts
+│   │   ├── hooks/      # Custom React hooks
+│   │   ├── lib/        # Utility functions
+│   │   ├── styles/     # Global styles and Tailwind configuration
+│   │   ├── App.jsx     # Main application component
+│   │   ├── Routes.jsx  # Application routes
+│   │   └── index.jsx   # Application entry point
+│   ├── public/         # Static assets
+│   ├── build/          # Production build output
+│   ├── package.json    # Frontend dependencies and scripts
+│   ├── tailwind.config.js # Tailwind CSS configuration
+│   └── vite.config.mjs # Vite configuration
+├── backend/            # Backend services (currently empty)
+│   └── README.md       # Backend setup instructions
+├── package.json        # Root project configuration
+└── README.md           # This file
 ```
 
 ## 🧩 Adding Routes

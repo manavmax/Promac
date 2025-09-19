@@ -1,0 +1,183 @@
+# CodeRabbit Configuration for Promac Electrical React Project
+# This configuration optimizes CodeRabbit for React, JavaScript, and modern web development
+
+# Global settings
+language: en
+model: gpt-4o
+
+# Review settings
+review:
+  # Enable comprehensive reviews
+  enabled: true
+  
+  # Focus on code quality, security, and best practices
+  focus:
+    - "code-quality"
+    - "security"
+    - "performance"
+    - "accessibility"
+    - "react-best-practices"
+    - "javascript-best-practices"
+    - "tailwind-css-optimization"
+    - "component-architecture"
+    - "state-management"
+    - "error-handling"
+
+# File patterns to include/exclude
+files:
+  # Include all source files
+  include:
+    - "frontend/src/**/*.{js,jsx,ts,tsx}"
+    - "frontend/promac_dashboard_suite/src/**/*.{js,jsx,ts,tsx}"
+    - "backend/**/*.{js,ts,py,go,java}" # For future backend development
+    - "**/*.{json,yaml,yml,md}"
+    - "**/package.json"
+    - "**/vite.config.*"
+    - "**/tailwind.config.*"
+  
+  # Exclude generated files and dependencies
+  exclude:
+    - "**/node_modules/**"
+    - "**/build/**"
+    - "**/dist/**"
+    - "**/.git/**"
+    - "**/coverage/**"
+    - "**/*.min.js"
+    - "**/*.bundle.js"
+    - "**/package-lock.json"
+    - "**/yarn.lock"
+
+# React-specific settings
+react:
+  # Enable React-specific checks
+  enabled: true
+  
+  # Check for common React issues
+  checks:
+    - "unused-imports"
+    - "missing-dependencies"
+    - "performance-optimization"
+    - "accessibility"
+    - "prop-types-validation"
+    - "hook-dependencies"
+    - "component-structure"
+
+# JavaScript/TypeScript settings
+javascript:
+  # Enable modern JavaScript checks
+  enabled: true
+  
+  # Check for common JS issues
+  checks:
+    - "es6-features"
+    - "async-await"
+    - "error-handling"
+    - "memory-leaks"
+    - "security-vulnerabilities"
+    - "code-duplication"
+
+# Tailwind CSS optimization
+tailwind:
+  enabled: true
+  
+  # Check for Tailwind best practices
+  checks:
+    - "class-optimization"
+    - "responsive-design"
+    - "color-consistency"
+    - "spacing-consistency"
+
+# Security settings
+security:
+  enabled: true
+  
+  # Security checks
+  checks:
+    - "dependency-vulnerabilities"
+    - "xss-prevention"
+    - "data-validation"
+    - "authentication"
+    - "authorization"
+
+# Performance settings
+performance:
+  enabled: true
+  
+  # Performance checks
+  checks:
+    - "bundle-size"
+    - "render-optimization"
+    - "lazy-loading"
+    - "memoization"
+    - "image-optimization"
+
+# Accessibility settings
+accessibility:
+  enabled: true
+  
+  # A11y checks
+  checks:
+    - "aria-labels"
+    - "keyboard-navigation"
+    - "color-contrast"
+    - "semantic-html"
+    - "screen-reader-support"
+
+# Custom rules for this project
+custom:
+  # Project-specific rules
+  rules:
+    - "Check for consistent component naming (PascalCase)"
+    - "Verify proper error boundaries usage"
+    - "Ensure responsive design patterns"
+    - "Check for proper state management patterns"
+    - "Verify authentication flow implementation"
+    - "Check for proper loading states"
+    - "Verify proper form validation patterns"
+
+# Comment settings
+comments:
+  # Enable detailed comments
+  enabled: true
+  
+  # Comment style
+  style: "detailed"
+  
+  # Include suggestions
+  suggestions: true
+  
+  # Include code examples
+  examples: true
+  
+  # Include links to documentation
+  documentation: true
+
+# Ignore patterns for specific issues
+ignore:
+  # Ignore certain types of comments
+  patterns:
+    - "minor-formatting"
+    - "preference-based"
+  
+  # Ignore specific files
+  files:
+    - "**/test/**"
+    - "**/spec/**"
+    - "**/*.test.js"
+    - "**/*.spec.js"
+
+# Notification settings
+notifications:
+  # Enable notifications
+  enabled: true
+  
+  # Notification channels
+  channels:
+    - "github"
+    - "slack" # If you have Slack integration
+  
+  # Notification triggers
+  triggers:
+    - "high-severity-issues"
+    - "security-vulnerabilities"
+    - "performance-regressions"

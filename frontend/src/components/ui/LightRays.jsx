@@ -339,6 +339,12 @@ void main() {
         cleanupFunctionRef.current();
         cleanupFunctionRef.current = null;
       }
+      
+      // Additional cleanup to prevent memory leaks
+      if (animationIdRef.current) {
+        cancelAnimationFrame(animationIdRef.current);
+        animationIdRef.current = null;
+      }
     };
   }, [
     isVisible,

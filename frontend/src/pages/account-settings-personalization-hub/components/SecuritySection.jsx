@@ -41,14 +41,25 @@ const SecuritySection = () => {
     }
   ]);
 
+  const [passwordError, setPasswordError] = useState('');
+
   const handlePasswordChange = () => {
+    setPasswordError('');
+    
     if (passwordData?.newPassword !== passwordData?.confirmPassword) {
-      alert("Passwords don't match!");
+      setPasswordError("Passwords don't match!");
       return;
     }
+    
+    if (passwordData?.newPassword.length < 8) {
+      setPasswordError("Password must be at least 8 characters long!");
+      return;
+    }
+    
     console.log('Password change requested');
     setShowChangePassword(false);
     setPasswordData({ currentPassword: "", newPassword: "", confirmPassword: "" });
+    setPasswordError('');
   };
 
   const handleLogoutDevice = (deviceId) => {
@@ -126,6 +137,7 @@ const SecuritySection = () => {
                   type="password"
                   value={passwordData?.confirmPassword}
                   onChange={(e) => setPasswordData({...passwordData, confirmPassword: e?.target?.value})}
+                  error={passwordError}
                   required
                 />
               </div>

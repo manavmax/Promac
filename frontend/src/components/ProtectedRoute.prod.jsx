@@ -1,19 +1,28 @@
 import React from 'react';
 import { Navigate } from 'react-router-dom';
+import { useAuth } from '@clerk/clerk-react';
 
 const ProtectedRoute = ({ children }) => {
-  // Check if Clerk is available
-  const clerkKey = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+  const { isSignedIn, isLoaded } = useAuth();
   
-  // If Clerk is not available, allow access (for development)
-  if (!clerkKey) {
-    console.warn("Clerk not configured. Allowing access to protected routes for development.");
-    return children;
+  // Show loading state while Clerk is initializing
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-b from-gray-900 via-black to-gray-900">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-brand-red mx-auto mb-4"></div>
+          <p className="text-white text-lg">Loading...</p>
+        </div>
+      </div>
+    );
   }
 
-  // If Clerk is available, we need to use the hook
-  // For now, let's just allow access to avoid the black screen
-  // TODO: Implement proper Clerk authentication when key is available
+  // Redirect to homepage if not authenticated
+  if (!isSignedIn) {
+    return <Navigate to="/homepage" replace />;
+  }
+
+  // Render protected content if authenticated
   return children;
 };
 

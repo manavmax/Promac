@@ -88,10 +88,20 @@ export const CartProvider = ({ children }) => {
   // Load cart from localStorage on mount (only for signed-in users)
   useEffect(() => {
     if (isSignedIn && userId) {
-      const savedCart = localStorage.getItem(`promac-cart-${userId}`);
-      if (savedCart) {
-        const parsedCart = JSON.parse(savedCart);
-        dispatch({ type: 'LOAD_CART', payload: parsedCart });
+      try {
+        const savedCart = localStorage.getItem(`promac-cart-${userId}`);
+        if (savedCart) {
+          const parsedCart = JSON.parse(savedCart);
+          // Validate cart data before loading
+          if (parsedCart && typeof parsedCart === 'object') {
+            dispatch({ type: 'LOAD_CART', payload: parsedCart });
+          }
+        }
+      } catch (error) {
+        console.error('Error loading cart from localStorage:', error);
+        // Clear corrupted cart data
+        localStorage.removeItem(`promac-cart-${userId}`);
+        dispatch({ type: 'CLEAR_CART' });
       }
     } else {
       // Clear cart for unauthenticated users
@@ -102,7 +112,15 @@ export const CartProvider = ({ children }) => {
   // Save cart to localStorage whenever it changes (only for signed-in users)
   useEffect(() => {
     if (isSignedIn && userId) {
-      localStorage.setItem(`promac-cart-${userId}`, JSON.stringify(state));
+      try {
+        localStorage.setItem(`promac-cart-${userId}`, JSON.stringify(state));
+      } catch (error) {
+        console.error('Error saving cart to localStorage:', error);
+        // Handle storage quota exceeded or other errors
+        if (error.name === 'QuotaExceededError') {
+          console.warn('LocalStorage quota exceeded. Cart data may not be saved.');
+        }
+      }
     }
   }, [state, isSignedIn, userId]);
 
@@ -111,7 +129,22 @@ export const CartProvider = ({ children }) => {
       // Return a promise that rejects to indicate authentication is required
       return Promise.reject(new Error('Authentication required'));
     }
-    dispatch({ type: 'ADD_TO_CART', payload: product });
+    
+    // Input validation and sanitization
+    if (!product || !product.id || !product.name) {
+      return Promise.reject(new Error('Invalid product data'));
+    }
+    
+    // Sanitize product data
+    const sanitizedProduct = {
+      ...product,
+      name: product.name.trim(),
+      price: typeof product.price === 'string' 
+        ? parseFloat(product.price.replace(/[^0-9.-]/g, '')) 
+        : Number(product.price) || 0
+    };
+    
+    dispatch({ type: 'ADD_TO_CART', payload: sanitizedProduct });
     return Promise.resolve();
   };
 

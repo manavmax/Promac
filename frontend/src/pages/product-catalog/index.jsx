@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import Icon from '../../components/AppIcon';
 import Button from '../../components/ui/Button';
 import { Footer } from '../../components/ui/Footer';
@@ -231,7 +231,7 @@ const ProductCatalog = () => {
   const [quickViewProduct, setQuickViewProduct] = useState(null);
   const [showQuickView, setShowQuickView] = useState(false);
 
-  const handleFilterChange = (filterType, value) => {
+  const handleFilterChange = useCallback((filterType, value) => {
     if (filterType === 'clear') {
       setFilters({});
     } else {
@@ -240,9 +240,9 @@ const ProductCatalog = () => {
         [filterType]: value
       }));
     }
-  };
+  }, []);
 
-  const handleSearch = (query) => {
+  const handleSearch = useCallback((query) => {
     setSearchQuery(query);
     // Scroll to products section
     setTimeout(() => {
@@ -251,7 +251,7 @@ const ProductCatalog = () => {
         productsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }, 100);
-  };
+  }, []);
 
   const handleSuggestionSelect = (suggestion) => {
     if (suggestion.type === 'product' && suggestion.product) {
@@ -295,52 +295,57 @@ const ProductCatalog = () => {
     // This will be handled by the cart context in the QuickViewModal
   };
 
-  const filteredProducts = products.filter(product => {
-    if (searchQuery) {
-      const query = searchQuery.toLowerCase();
-      return product.name.toLowerCase().includes(query) ||
-             product.brand.toLowerCase().includes(query);
-    }
-    return true;
-  });
+  const filteredProducts = useMemo(() => {
+    return products.filter(product => {
+      if (searchQuery) {
+        const query = searchQuery.toLowerCase();
+        return product.name.toLowerCase().includes(query) ||
+               product.brand.toLowerCase().includes(query);
+      }
+      return true;
+    });
+  }, [products, searchQuery]);
 
   // Apply sorting logic
-  const sortedProducts = [...filteredProducts].sort((a, b) => {
-    switch (sortBy) {
-      case 'price-low':
-        return a.price - b.price;
-      case 'price-high':
-        return b.price - a.price;
-      case 'rating':
-        return b.rating - a.rating;
-      case 'newest':
-        return new Date(b.createdAt || '2024-01-01') - new Date(a.createdAt || '2024-01-01');
-      case 'popularity':
-        return b.reviewCount - a.reviewCount;
-      case 'name-az':
-        return a.name.localeCompare(b.name);
-      case 'name-za':
-        return b.name.localeCompare(a.name);
-      case 'stock':
-        return b.stock - a.stock;
-      case 'discount':
-        const discountA = a.originalPrice ? ((a.originalPrice - a.price) / a.originalPrice) * 100 : 0;
-        const discountB = b.originalPrice ? ((b.originalPrice - b.price) / b.originalPrice) * 100 : 0;
-        return discountB - discountA;
-      case 'relevance':
-      default:
-        // Best match - prioritize search relevance, then rating, then popularity
-        if (searchQuery) {
-          const query = searchQuery.toLowerCase();
-          const aRelevance = a.name.toLowerCase().includes(query) ? 2 : 
-                            a.brand.toLowerCase().includes(query) ? 1 : 0;
-          const bRelevance = b.name.toLowerCase().includes(query) ? 2 : 
-                            b.brand.toLowerCase().includes(query) ? 1 : 0;
-          if (aRelevance !== bRelevance) return bRelevance - aRelevance;
+  const sortedProducts = useMemo(() => {
+    return [...filteredProducts].sort((a, b) => {
+      switch (sortBy) {
+        case 'price-low':
+          return a.price - b.price;
+        case 'price-high':
+          return b.price - a.price;
+        case 'rating':
+          return b.rating - a.rating;
+        case 'newest':
+          return new Date(b.createdAt || '2024-01-01') - new Date(a.createdAt || '2024-01-01');
+        case 'popularity':
+          return b.reviewCount - a.reviewCount;
+        case 'name-az':
+          return a.name.localeCompare(b.name);
+        case 'name-za':
+          return b.name.localeCompare(a.name);
+        case 'stock':
+          return b.stock - a.stock;
+        case 'discount': {
+          const discountA = a.originalPrice ? ((a.originalPrice - a.price) / a.originalPrice) * 100 : 0;
+          const discountB = b.originalPrice ? ((b.originalPrice - b.price) / b.originalPrice) * 100 : 0;
+          return discountB - discountA;
         }
-        return b.rating - a.rating || b.reviewCount - a.reviewCount;
-    }
-  });
+        case 'relevance':
+        default:
+          // Best match - prioritize search relevance, then rating, then popularity
+          if (searchQuery) {
+            const query = searchQuery.toLowerCase();
+            const aRelevance = a.name.toLowerCase().includes(query) ? 2 : 
+                              a.brand.toLowerCase().includes(query) ? 1 : 0;
+            const bRelevance = b.name.toLowerCase().includes(query) ? 2 : 
+                              b.brand.toLowerCase().includes(query) ? 1 : 0;
+            if (aRelevance !== bRelevance) return bRelevance - aRelevance;
+          }
+          return b.rating - a.rating || b.reviewCount - a.reviewCount;
+      }
+    });
+  }, [filteredProducts, sortBy, searchQuery]);
 
   return (
     <div className="min-h-screen bg-gray-100">
@@ -493,6 +498,8 @@ const ProductCatalog = () => {
             </Button>
           </div>
         )}
+          </div>
+        </div>
       </div>
 
       {/* Category Mega Menu */}

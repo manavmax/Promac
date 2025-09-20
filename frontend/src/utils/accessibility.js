@@ -198,21 +198,17 @@ export const keyboardNavigation = {
     let nextIndex = currentIndex;
     const isVertical = orientation === 'vertical';
     
-    switch (e.key) {
-      case isVertical ? 'ArrowDown' : 'ArrowRight':
-        nextIndex = (currentIndex + 1) % items.length;
-        break;
-      case isVertical ? 'ArrowUp' : 'ArrowLeft':
-        nextIndex = (currentIndex - 1 + items.length) % items.length;
-        break;
-      case 'Home':
-        nextIndex = 0;
-        break;
-      case 'End':
-        nextIndex = items.length - 1;
-        break;
-      default:
-        return;
+    // Handle arrow keys based on orientation
+    if ((isVertical && e.key === 'ArrowDown') || (!isVertical && e.key === 'ArrowRight')) {
+      nextIndex = (currentIndex + 1) % items.length;
+    } else if ((isVertical && e.key === 'ArrowUp') || (!isVertical && e.key === 'ArrowLeft')) {
+      nextIndex = (currentIndex - 1 + items.length) % items.length;
+    } else if (e.key === 'Home') {
+      nextIndex = 0;
+    } else if (e.key === 'End') {
+      nextIndex = items.length - 1;
+    } else {
+      return;
     }
     
     e.preventDefault();

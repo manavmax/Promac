@@ -139,9 +139,25 @@ export const CartProvider = ({ children }) => {
     const sanitizedProduct = {
       ...product,
       name: product.name.trim(),
-      price: typeof product.price === 'string' 
-        ? parseFloat(product.price.replace(/[^0-9.-]/g, '')) 
-        : Number(product.price) || 0
+      price: (() => {
+        if (typeof product.price === 'string') {
+          // Strip whitespace and currency symbols
+          const cleaned = product.price.replace(/[\s$€£¥₹]/g, '');
+          
+          // Validate against strict pattern: optional leading minus, digits, optional decimal point with digits
+          const pricePattern = /^-?\d+(\.\d+)?$/;
+          
+          if (pricePattern.test(cleaned)) {
+            return parseFloat(cleaned);
+          } else {
+            console.warn(`Invalid price format: "${product.price}" - setting to null`);
+            return null;
+          }
+        } else {
+          const numPrice = Number(product.price);
+          return isNaN(numPrice) ? null : numPrice;
+        }
+      })()
     };
     
     dispatch({ type: 'ADD_TO_CART', payload: sanitizedProduct });
